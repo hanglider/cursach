@@ -1,0 +1,64 @@
+# ---- Секреты и доступы ----
+# Kubeconfig'и стенда: содержат клиентские сертификаты кластеров
+*.kubeconfig
+kubeconfig*
+.kube/
+*.pem
+*.key
+*.crt
+.env
+.env.*
+!.env.example
+secrets/
+
+# ---- Go ----
+bin/
+dist/
+*.exe
+*.test
+*.out
+vendor/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ---- Локальные настройки Claude Code ----
+# settings.json коммитится (общие правила команды),
+# settings.local.json - нет (личные настройки)
+.claude/settings.local.json
+
+# ---- Редакторы ----
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+._*
+
+# ---- Терраформ, если появится ----
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# ---- Стенд ----
+# Временные артефакты kind/k3d
+.kind-cache/
+stand/**/generated/
+
+# ---- Что НЕ игнорируем намеренно ----
+# experiments/results/ - сырые данные прогонов, основной результат НИР.
+# Коммитятся всегда, даже если крупные. См. CLAUDE.md.
