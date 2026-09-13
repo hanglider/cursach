@@ -41,7 +41,23 @@ for c in "${FEDERATION[@]}"; do
   kc "$c" apply -f "$STAND/federation/backend.yaml" >/dev/null
 done
 for c in "${FEDERATION[@]}"; do
+  kc "$c" apply -f "$STAND/federation/app.yaml" >/dev/null
   kc "$c" -n workloads rollout status deployment/backend --timeout=120s >/dev/null
+  kc "$c" -n workloads rollout status deployment/app --timeout=120s >/dev/null
+done
+
+# --- 3b. Федерация: Prometheus + Thanos sidecar (ADR 0002, 0024) ------------
+for c in "${FEDERATION[@]}"; do
+  log "$c: Prometheus + Thanos sidecar"
+  kc "$c" apply -f "$STAND/observability/federation/namespace-rbac.yaml" >/dev/null
+  "$STAND/scripts/render-prometheus-config.sh" "$c" | kc "$c" apply -f - >/dev/null
+  "$STAND/scripts/render-capacity-rules.sh" "$c" | kc "$c" apply -f - >/dev/null
+  kc "$c" apply -f "$STAND/observability/federation/prometheus-rules.yaml" >/dev/null
+  kc "$c" apply -f "$STAND/observability/federation/prometheus.yaml" >/dev/null
+  # Конфиг мог измениться при повторном stand-up: перечитать без пересоздания пода.
+  kc "$c" -n observability rollout status deployment/prometheus --timeout=180s >/dev/null
+  kc "$c" -n observability exec deploy/prometheus -c prometheus -- \
+    wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
 done
 
 # --- 4. Control: Envoy Gateway + Gateway -----------------------------------
@@ -56,6 +72,29 @@ kc "$CONTROL" -n gateway wait gateway/stand --for=condition=Programmed --timeout
 # Прокси поднимается отдельным Deployment'ом после Gateway.
 kc "$CONTROL" -n "$EG_NAMESPACE" wait deployment -l gateway.envoyproxy.io/owning-gateway-name=stand \
   --for=condition=Available --timeout=180s >/dev/null
+# Маршрут долгоживущего сервиса app с весами по кластерам (ADR 0011).
+"$STAND/scripts/render-app-route.sh" | kc "$CONTROL" apply -f - >/dev/null
+
+# --- 4b. Control: Prometheus, Thanos Querier + Ruler, Grafana (ADR 0024) ---
+log "$CONTROL: Prometheus, Thanos Querier + Ruler, Grafana"
+kc "$CONTROL" apply -f "$STAND/observability/federation/namespace-rbac.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/control/prometheus-config.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/federation/prometheus.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/control/prometheus-nodeport.yaml" >/dev/null
+"$STAND/scripts/render-thanos-sd.sh" | kc "$CONTROL" apply -f - >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/control/thanos-query.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/control/thanos-rule.yaml" >/dev/null
+kc "$CONTROL" create configmap grafana-dashboards -n observability \
+  --from-file="$STAND/observability/control/grafana/dashboards/federation-slo.json" \
+  --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
+kc "$CONTROL" apply -f "$STAND/observability/control/grafana.yaml" >/dev/null
+for d in prometheus thanos-query thanos-rule grafana; do
+  kc "$CONTROL" -n observability rollout status "deployment/$d" --timeout=180s >/dev/null
+done
+# Список store'ов мог измениться (IP узлов): Querier перечитывает файл сам,
+# но после stand-up с нуля ждать 30 с незачем.
+kc "$CONTROL" -n observability rollout restart deployment/thanos-query >/dev/null
+kc "$CONTROL" -n observability rollout status deployment/thanos-query --timeout=120s >/dev/null
 
 # --- 5. Дымовой тест: workload в первом кластере федерации через шлюз -------
 log "дымовой тест: smoke.fed.local -> ${FEDERATION[0]}"
@@ -65,6 +104,19 @@ body=$(curl -sf -H 'Host: smoke.fed.local' http://127.0.0.1:8080/)
 $GEN remove --name smoke >/dev/null
 echo "$body" | jq -e '.tier == "frontend" and .backend.tier == "backend"' >/dev/null \
   || die "дымовой тест: неожиданный ответ: $body"
+app=$(curl -sf -H 'Host: app.fed.local' http://127.0.0.1:8080/ | jq -r .workload)
+[ "$app" = "app" ] || die "дымовой тест: app.fed.local не отвечает"
+
+# Наблюдаемость: Querier видит все store'ы, Grafana жива.
+log "дымовой тест: Thanos Querier и Grafana"
+expected=$(( ${#FEDERATION[@]} + 2 ))
+for _ in $(seq 1 30); do
+  stores=$(curl -sf http://127.0.0.1:10902/api/v1/stores | jq '[.data[][] | select(.lastCheck != null)] | length' 2>/dev/null || echo 0)
+  [ "$stores" -ge "$expected" ] && break
+  sleep 2
+done
+[ "$stores" -ge "$expected" ] || die "Thanos Querier видит $stores store'ов из $expected"
+curl -sf http://127.0.0.1:3000/api/health | jq -e '.database == "ok"' >/dev/null || die "Grafana не отвечает"
 
 log "стенд готов"
 "$STAND/scripts/status.sh"

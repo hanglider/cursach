@@ -12,3 +12,15 @@ nodes:
       - containerPort: 30080
         hostPort: 8080
         protocol: TCP
+      # Prometheus control: remote write от k6 (ADR 0008).
+      - containerPort: 30090
+        hostPort: 9090
+        protocol: TCP
+      # Thanos Querier: экспорт результатов и ручные запросы (ADR 0002).
+      - containerPort: 30902
+        hostPort: 10902
+        protocol: TCP
+      # Grafana.
+      - containerPort: 30300
+        hostPort: 3000
+        protocol: TCP

@@ -428,7 +428,7 @@ Kyverno-политику — например, запуск на кластер�
 | Компонент | Технология | Обоснование |
 |---|---|---|
 | Кластеры (стенд) | kind | Лёгкий запуск на одной машине, подходит для экспериментов (ADR 0013, 0021) |
-| Метрики | Prometheus + Thanos (sidecar + Querier, без object storage) | CNCF-стандарт, поддержка федерации через Thanos (ADR 0002) |
+| Метрики | Prometheus + Thanos (sidecar, Querier, Ruler; без object storage) | CNCF-стандарт, поддержка федерации через Thanos (ADR 0002, 0024) |
 | Визуализация | Grafana | Де-факто стандарт, готовые дашборды для k8s |
 | Трассировка | OpenTelemetry + Jaeger | Vendor-neutral, CNCF, поддержка Go и Python |
 | Chaos Engineering | Chaos Mesh | CNCF-проект, k8s-native сценарии |

@@ -51,11 +51,22 @@ while :; do
 done
 log "живых workload'ов: $n, запускаю k6 на $DURATION при $RPS RPS"
 
+# Remote write в Prometheus control (ADR 0008), если он доступен; иначе только сводка.
+PROM_URL=${PROM_URL:-http://127.0.0.1:9090}
+k6_out=()
+if curl -sf "$PROM_URL/-/ready" >/dev/null 2>&1; then
+  k6_out=(-o experimental-prometheus-rw)
+  export K6_PROMETHEUS_RW_SERVER_URL="$PROM_URL/api/v1/write"
+  export K6_PROMETHEUS_RW_TREND_STATS="p(95),p(99),avg,max"
+else
+  log "Prometheus control недоступен на $PROM_URL: без remote write"
+fi
+
 STARTED=$(date -u +%FT%TZ)
 set +e
 DURATION="$DURATION" RPS="$RPS" GATEWAY_URL="$GATEWAY_URL" LIVE_URL="http://$LIVE_LISTEN/live" \
   SUMMARY_PATH="$OUT/k6-summary.json" \
-  k6 run --quiet "$ROOT/experiments/load/steady.js" 2>&1 | tee "$OUT/k6.log"
+  k6 run --quiet --tag "run_id=$RUN_ID" "${k6_out[@]}" "$ROOT/experiments/load/steady.js" 2>&1 | tee "$OUT/k6.log"
 K6_RC=${PIPESTATUS[0]}
 set -e
 FINISHED=$(date -u +%FT%TZ)
@@ -69,6 +80,15 @@ jq -n \
   '{run_id:$run_id, started_at:$started, finished_at:$finished, k6:{duration:$duration, rps:$rps, exit_code:$k6_rc},
     workloads:{interval_s:$interval, ttl_s:$ttl}, scenario:$scenario, scheduler:$scheduler, git_rev:$git}' \
   >"$OUT/meta.json"
+
+# Серверные ряды из Thanos (ADR 0002): ждём последний scrape и выгружаем.
+THANOS_URL=${THANOS_URL:-http://127.0.0.1:10902}
+if curl -sf "$THANOS_URL/-/healthy" >/dev/null 2>&1; then
+  sleep 15
+  RESULTS_ROOT="$RESULTS_ROOT" THANOS_URL="$THANOS_URL" "$ROOT/experiments/load/export.sh" "$RUN_ID"
+else
+  log "Thanos Querier недоступен на $THANOS_URL: серверные ряды не выгружены"
+fi
 
 log "готово: $OUT (k6 exit $K6_RC)"
 exit "$K6_RC"

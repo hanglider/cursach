@@ -1,0 +1,13 @@
+# Ряды, выгружаемые из Thanos после прогона (ADR 0002). Формат: имя<TAB>PromQL.
+# Сырые счётчики и гистограммы — чтобы пересчитать любой SLI позже;
+# recording rules — чтобы сверить с тем, что видели каталог и DR.
+http_requests_total	http_requests_total{job="test-service"}
+http_request_duration_seconds_bucket	http_request_duration_seconds_bucket{job="test-service",tier="frontend"}
+up_test_service	up{job="test-service"}
+cluster_sli	{__name__=~"cluster:.*"}
+federation_slo	{__name__=~"federation:.*"}
+alerts	ALERTS
+node_cpu_usage	container_cpu_usage_seconds_total{job="kubelet-cadvisor",id="/"}
+node_memory_working_set	container_memory_working_set_bytes{job="kubelet-cadvisor",id="/"}
+k6	{__name__=~"k6_http_.*"}
+envoy_upstream_rq	{__name__=~"envoy_cluster_upstream_rq_(total|xx)"}

@@ -1,0 +1,74 @@
+# Thanos Querier: единый PromQL-endpoint над sidecar'ами федерации, sidecar'ом
+# control и Ruler'ом (architecture §2.1). Список store'ов — ConfigMap
+# thanos-query-sd, который stand/scripts/render-thanos-sd.sh собирает по IP
+# узлов (ADR 0021, 0022). Флаг --store.sd-files помечен deprecated, но
+# работает в v0.42; формат нового --endpoint.sd-config не задокументирован.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-query
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: thanos-query
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thanos-query
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: thanos-query
+    spec:
+      containers:
+        - name: thanos-query
+          image: quay.io/thanos/thanos:v0.42.4
+          args:
+            - query
+            - --http-address=0.0.0.0:10902
+            - --grpc-address=0.0.0.0:10901
+            - --store.sd-files=/etc/thanos/sd/endpoints.yaml
+            - --store.sd-interval=30s
+            - --query.auto-downsampling
+            - --query.timeout=1m
+          ports:
+            - name: http
+              containerPort: 10902
+            - name: grpc
+              containerPort: 10901
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            periodSeconds: 5
+          volumeMounts:
+            - name: sd
+              mountPath: /etc/thanos/sd
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      volumes:
+        - name: sd
+          configMap:
+            name: thanos-query-sd
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-query
+  namespace: observability
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: thanos-query
+  ports:
+    - name: http
+      port: 10902
+      targetPort: 10902
+      nodePort: 30902
+    - name: grpc
+      port: 10901
+      targetPort: 10901

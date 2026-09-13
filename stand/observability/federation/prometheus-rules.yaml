@@ -1,0 +1,52 @@
+# yamllint disable rule:line-length
+# PromQL читается лучше в одну строку, поэтому длина строк здесь не проверяется.
+# Recording rules per-cluster (architecture §2.4, ADR 0007, 0016).
+# Без `by (cluster)`: метка cluster — external label, внутри Prometheus её нет;
+# Thanos sidecar добавляет её при отдаче наружу.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: observability
+data:
+  sli.yaml: |
+    groups:
+      - name: sli
+        interval: 5s
+        rules:
+          # --- трафик и ошибки, окно 5 мин: вход scoring-функции через каталог ---
+          - record: cluster:http_requests:rate5m
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend"}[5m]))
+          - record: cluster:http_errors:rate5m
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[5m]))
+          - record: cluster:http_error_rate:ratio5m
+            expr: cluster:http_errors:rate5m / cluster:http_requests:rate5m
+          - record: cluster:http_request_duration_seconds:p95_5m
+            expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job="test-service",tier="frontend"}[5m])))
+          - record: cluster:http_request_duration_seconds:p99_5m
+            expr: histogram_quantile(0.99, sum by (le) (rate(http_request_duration_seconds_bucket{job="test-service",tier="frontend"}[5m])))
+
+          # --- окно 1 мин: сигнал sli_ok DR Controller'а (ADR 0007) ---
+          - record: cluster:http_requests:rate1m
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend"}[1m]))
+          - record: cluster:http_errors:rate1m
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[1m]))
+          - record: cluster:http_error_rate:ratio1m
+            expr: cluster:http_errors:rate1m / cluster:http_requests:rate1m
+          - record: cluster:http_request_duration_seconds:p95_1m
+            expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job="test-service",tier="frontend"}[1m])))
+
+          # --- saturation: корневая cgroup узла к allocatable узла (ADR 0024) ---
+          # node:*_allocatable — константы из объекта Node, ConfigMap prometheus-capacity.
+          - record: cluster:cpu_saturation:ratio
+            expr: sum(rate(container_cpu_usage_seconds_total{job="kubelet-cadvisor",id="/"}[1m])) / sum(node:cpu_allocatable:cores)
+          - record: cluster:memory_saturation:ratio
+            expr: sum(container_memory_working_set_bytes{job="kubelet-cadvisor",id="/"}) / sum(node:memory_allocatable:bytes)
+          - record: cluster:saturation:ratio
+            expr: (cluster:cpu_saturation:ratio > cluster:memory_saturation:ratio) or cluster:memory_saturation:ratio
+
+          # --- сколько frontend'ов живо: app и поток отдельно ---
+          - record: cluster:frontends_ready:count
+            expr: count(up{job="test-service",component="frontend"} == 1) or vector(0)
+          - record: cluster:stream_workloads_ready:count
+            expr: count(up{job="test-service",component="frontend",workload!="app"} == 1) or vector(0)

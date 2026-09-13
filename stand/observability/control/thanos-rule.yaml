@@ -1,0 +1,143 @@
+# yamllint disable rule:line-length
+# PromQL читается лучше в одну строку, поэтому длина строк здесь не проверяется.
+# Thanos Ruler: глобальные SLO-правила и burn-rate алерты поверх Querier'а
+# (ADR 0024). Per-cluster Prometheus не может посчитать availability федерации.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thanos-rules
+  namespace: observability
+data:
+  federation-slo.yaml: |
+    groups:
+      - name: federation-slo
+        interval: 10s
+        rules:
+          - record: federation:slo_target
+            expr: vector(0.99)
+
+          - record: federation:http_requests:rate5m
+            expr: sum(cluster:http_requests:rate5m)
+          - record: federation:http_errors:rate5m
+            expr: sum(cluster:http_errors:rate5m)
+          - record: federation:availability:ratio5m
+            expr: 1 - federation:http_errors:rate5m / federation:http_requests:rate5m
+          - record: federation:http_request_duration_seconds:p95_5m
+            expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job="test-service",tier="frontend"}[5m])))
+
+          # Availability по длинным окнам для burn rate (мультиоконная схема SRE Book).
+          - record: federation:availability:ratio30m
+            expr: 1 - sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[30m])) / sum(rate(http_requests_total{job="test-service",tier="frontend"}[30m]))
+          - record: federation:availability:ratio1h
+            expr: 1 - sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[1h])) / sum(rate(http_requests_total{job="test-service",tier="frontend"}[1h]))
+          - record: federation:availability:ratio6h
+            expr: 1 - sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[6h])) / sum(rate(http_requests_total{job="test-service",tier="frontend"}[6h]))
+
+          # burn rate = доля ошибок / допустимая доля ошибок (1 − SLO).
+          - record: federation:error_budget_burn_rate:5m
+            expr: (1 - federation:availability:ratio5m) / (1 - 0.99)
+          - record: federation:error_budget_burn_rate:30m
+            expr: (1 - federation:availability:ratio30m) / (1 - 0.99)
+          - record: federation:error_budget_burn_rate:1h
+            expr: (1 - federation:availability:ratio1h) / (1 - 0.99)
+          - record: federation:error_budget_burn_rate:6h
+            expr: (1 - federation:availability:ratio6h) / (1 - 0.99)
+
+      - name: federation-slo-alerts
+        interval: 10s
+        rules:
+          # Быстрое сгорание: 2% месячного бюджета за час (spec §1.3, burn rate).
+          - alert: FederationErrorBudgetBurnFast
+            expr: federation:error_budget_burn_rate:1h > 14.4 and federation:error_budget_burn_rate:5m > 14.4
+            for: 2m
+            labels:
+              severity: page
+            annotations:
+              summary: "Error budget федерации сгорает быстро (burn rate 1h > 14.4)"
+          - alert: FederationErrorBudgetBurnSlow
+            expr: federation:error_budget_burn_rate:6h > 6 and federation:error_budget_burn_rate:30m > 6
+            for: 15m
+            labels:
+              severity: ticket
+            annotations:
+              summary: "Error budget федерации сгорает (burn rate 6h > 6)"
+          - alert: FederationLatencyBudgetBreached
+            expr: federation:http_request_duration_seconds:p95_5m > 0.2
+            for: 5m
+            labels:
+              severity: ticket
+            annotations:
+              summary: "p95 федерации выше бюджета 200 мс"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-rule
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: thanos-rule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thanos-rule
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: thanos-rule
+    spec:
+      containers:
+        - name: thanos-rule
+          image: quay.io/thanos/thanos:v0.42.4
+          args:
+            - rule
+            - --grpc-address=0.0.0.0:10901
+            - --http-address=0.0.0.0:10902
+            - --data-dir=/data
+            - --rule-file=/etc/thanos/rules/*.yaml
+            - --eval-interval=10s
+            - --query=thanos-query.observability.svc:10902
+            - --label=source="thanos-rule"
+          ports:
+            - name: grpc
+              containerPort: 10901
+            - name: http
+              containerPort: 10902
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+            periodSeconds: 5
+          volumeMounts:
+            - name: rules
+              mountPath: /etc/thanos/rules
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      volumes:
+        - name: rules
+          configMap:
+            name: thanos-rules
+        - name: data
+          emptyDir: {}  # результаты правил производны, переживать перезапуск не обязаны
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-rule
+  namespace: observability
+spec:
+  selector:
+    app.kubernetes.io/name: thanos-rule
+  ports:
+    - name: grpc
+      port: 10901
+      targetPort: 10901
+    - name: http
+      port: 10902
+      targetPort: 10902

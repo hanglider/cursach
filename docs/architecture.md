@@ -93,17 +93,23 @@
 
 ### 2.1. Топология сбора
 
-Каждый кластер: `Prometheus` (scrape локальных таргетов) + `Thanos sidecar`
-(отдаёт данные наружу по StoreAPI) + `OpenTelemetry Collector` (трейсы).
+Каждый кластер: `Prometheus` (scrape локальных таргетов каждые 5 с, recording
+rules `cluster:*`) + `Thanos sidecar` (отдаёт данные наружу по StoreAPI) +
+`OpenTelemetry Collector` (трейсы, задача 3). Всё — raw-манифесты, без
+оператора (ADR 0024).
 
 `Thanos Querier` вне федерации агрегирует все sidecar'ы и предоставляет единый
-PromQL-endpoint.
+PromQL-endpoint; `Thanos Ruler` считает поверх него глобальные правила
+`federation:*` и burn-rate алерты и отдаёт результат обратно Querier'у.
 
 ```
 cluster-a: Prometheus ──> Thanos sidecar ──┐
 cluster-b: Prometheus ──> Thanos sidecar ──┼──> Thanos Querier ──> PromQL API
-control:   Prometheus ──> Thanos sidecar ──┘           │
-           ▲ k6 remote write, метрики шлюза            └──> Grafana
+control:   Prometheus ──> Thanos sidecar ──┤           │  ▲
+           ▲ k6 remote write, метрики шлюза │           │  │ federation:*, ALERTS
+           Thanos Ruler ────────────────────┘           │  │
+                  └──── query ──────────────────────────┼──┘
+                                                        └──> Grafana
 ```
 
 ### 2.2. Без object storage
@@ -150,6 +156,13 @@ sum(rate(http_requests_total{tier="frontend",status!~"5.."}[5m]))
 ```
 
 Первые две — вход для scoring-функции. Третья — целевой показатель ≥ 99.0%.
+
+На стенде это recording rules: `cluster:http_error_rate:ratio5m`,
+`cluster:http_request_duration_seconds:p95_5m`, `cluster:saturation:ratio`
+(per-cluster, `stand/observability/federation/prometheus-rules.yaml`) и
+`federation:availability:ratio5m`, `federation:error_budget_burn_rate:*`
+(глобальные, Thanos Ruler, `stand/observability/control/thanos-rule.yaml`).
+Окно 1 мин (`cluster:*:ratio1m`) — для DR Controller'а (ADR 0007).
 
 ---
 
@@ -545,7 +558,8 @@ backend'ом на каждый кластер и номинальными вес
 │   ├── dr-controller
 │   ├── envoy-gateway                 шлюз, вход для k6 (ADR 0017)
 │   ├── prometheus + thanos sidecar   k6 remote write, метрики шлюза
-│   ├── thanos-querier
+│   ├── thanos-query                  единый PromQL над всеми sidecar'ами
+│   ├── thanos-rule                   federation:*, burn-rate алерты
 │   └── grafana
 ├── kind cluster "cluster-a"      федерация
 └── kind cluster "cluster-b"
@@ -634,7 +648,7 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 │   ├── kind/                    конфигурации кластеров
 │   ├── federation/              namespace'ы, backend тестового сервиса
 │   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
-│   ├── observability/           Prometheus, Thanos, Grafana, OTel (задача 2)
+│   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
 │   ├── policies/                Kyverno-политики (задача 5)
 │   └── scripts/                 up / down / status / image / render-identity
 ├── test-service/                Go, frontend + backend, один бинарь

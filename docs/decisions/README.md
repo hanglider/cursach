@@ -30,6 +30,7 @@
 | [0021](0021-stand-network-kind-internal-endpoints.md) | Одна docker-сеть kind, внутрисетевые адреса | oq 3.9 |
 | [0022](0022-workload-entry-nodeport.md) | Вход в кластер федерации: NodePort на workload, узел по IP | ADR 0017, 0021 |
 | [0023](0023-cluster-fault-injection.md) | Отказ кластера в сценарии 1: PodChaos на `workloads`; `docker pause` вторым вариантом; инвариант 7 обобщён | oq 2.5 |
+| [0024](0024-observability-stack-on-stand.md) | Наблюдаемость: raw-манифесты, scrape 5 с, Thanos Ruler для `federation:*`, определение saturation, file SD | задача 2 |
 
 `oq` — `docs/open-questions.md` (номера на момент закрытия; закрытые пункты
 из документа удалены).

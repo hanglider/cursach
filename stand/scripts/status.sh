@@ -12,8 +12,13 @@ for c in "$CONTROL" "${FEDERATION[@]}"; do
   if [ "$c" = "$CONTROL" ]; then
     kc "$c" -n "$EG_NAMESPACE" get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
     kc "$c" -n gateway get gateway,httproute --no-headers 2>/dev/null | awk '{print "  " $1 "  " $2}'
+    kc "$c" -n observability get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
+    stores=$(curl -sf http://127.0.0.1:10902/api/v1/stores 2>/dev/null | jq -r '.data[][] | "\(.name) \(.lastError // "ok")"' 2>/dev/null)
+    [ -n "$stores" ] && { echo "  thanos stores:"; echo "$stores" | awk '{print "    " $0}'; }
+    echo "  grafana: http://127.0.0.1:3000  prometheus: http://127.0.0.1:9090  thanos: http://127.0.0.1:10902"
   else
     kc "$c" -n federation-system get configmap cluster-identity -o jsonpath='  identity: {.data}{"\n"}' 2>/dev/null
     kc "$c" -n workloads get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
+    kc "$c" -n observability get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
   fi
 done
