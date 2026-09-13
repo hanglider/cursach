@@ -28,6 +28,7 @@
 | [0019](0019-kyverno-scope-and-violation-reporting.md) | Kyverno: регион и сертификации; ресурсы на каталоге; watcher в каталоге | oq 3.7 |
 | [0020](0020-naive-scheduler-round-robin-flag.md) | Наивный планировщик: round-robin, флаг `--scheduler` | oq 3.8 |
 | [0021](0021-stand-network-kind-internal-endpoints.md) | Одна docker-сеть kind, внутрисетевые адреса | oq 3.9 |
+| [0022](0022-workload-entry-nodeport.md) | Вход в кластер федерации: NodePort на workload, узел по IP | ADR 0017, 0021 |
 
 `oq` — `docs/open-questions.md` (номера на момент закрытия; закрытые пункты
 из документа удалены). Вопрос 2.5 (внесение отказа кластера в сценарии 1)

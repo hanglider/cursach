@@ -21,11 +21,13 @@
 **Топология внутри каждого кластера федерации:** `frontend → backend`.
 
 - `backend` — один долгоживущий Deployment на кластер, часть стенда.
-  `GET /work` возвращает небольшой JSON; `GET /healthz`, `GET /metrics`.
+  `GET /work` возвращает небольшой JSON; `GET /healthz`, `GET /readyz`,
+  `GET /metrics`.
 - `frontend` — по одному Deployment на workload (ADR 0015). `GET /` вызывает
   `backend` по in-cluster Service с таймаутом (по умолчанию 1 с, флаг) и
-  отдаёт результат; ошибка или таймаут backend'а — ответ `502`. `GET /healthz`
-  становится готовым только после успешной пробы backend'а. `GET /metrics`.
+  отдаёт результат; ошибка или таймаут backend'а — ответ `502`. `GET /readyz`
+  (readiness) отвечает 200 только после успешной пробы backend'а; `GET /healthz`
+  (liveness) — всегда. `GET /metrics`.
 
 Именно двухзвенность делает сетевую деградацию видимой в серверных метриках:
 NetworkChaos на подах backend'а превращается в рост длительности и долю `502`

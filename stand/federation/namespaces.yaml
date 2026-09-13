@@ -1,0 +1,12 @@
+# Namespace'ы кластера федерации.
+# federation-system — идентичность кластера (ConfigMap cluster-identity, ADR 0009).
+# workloads — backend и все размещённые frontend'ы (ADR 0014, 0015).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: federation-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workloads

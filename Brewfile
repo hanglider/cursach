@@ -33,4 +33,5 @@ brew "coreutils"           # gtimeout: таймауты линтеров в ху
 
 # ---- Утилиты ----
 brew "jq"                  # разбор JSON в хуках и скриптах
+brew "yq"                  # рендер манифестов из stand/clusters.yaml
 brew "poppler"             # pdftoppm: чтение PDF-отчётов НИР из репозитория

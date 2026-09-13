@@ -152,7 +152,8 @@ case "$FILE" in
   # ---- Shell: скрипты стенда и сами хуки ----
   *.sh)
     if have shellcheck; then
-      SC_OUT=$(run shellcheck -f gcc "$FILE" 2>&1)
+      # -x -P SCRIPTDIR: следовать за source относительно каталога скрипта
+      SC_OUT=$(run shellcheck -x -P SCRIPTDIR -f gcc "$FILE" 2>&1)
       [ $? -ne 0 ] && [ -n "$SC_OUT" ] && add_problem "shellcheck:"$'\n'"$SC_OUT"
     fi
     # Скрипт без бита исполнения - частая причина молча неработающих хуков.

@@ -1,0 +1,64 @@
+# Долгоживущий backend тестового сервиса, один на кластер (ADR 0014).
+# Именно его поды — цель NetworkChaos в сценарии 2 (ADR 0016).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: workloads
+  labels:
+    app.kubernetes.io/name: test-service
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: test-service
+      app.kubernetes.io/component: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: test-service
+        app.kubernetes.io/component: backend
+    spec:
+      containers:
+        - name: backend
+          image: federation/test-service:dev
+          imagePullPolicy: Never  # образ загружен через kind load, registry нет
+          args: ["--role=backend"]
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 500m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: workloads
+  labels:
+    app.kubernetes.io/name: test-service
+    app.kubernetes.io/component: backend
+spec:
+  selector:
+    app.kubernetes.io/name: test-service
+    app.kubernetes.io/component: backend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

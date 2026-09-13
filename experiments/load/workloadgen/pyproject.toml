@@ -1,0 +1,30 @@
+[project]
+name = "workloadgen"
+version = "0.1.0"
+description = "Генератор потока workload'ов для стенда (ADR 0015)"
+requires-python = ">=3.12"
+dependencies = [
+  "kubernetes>=31",
+  "pyyaml>=6",
+  "requests>=2.32",
+]
+
+[project.scripts]
+workloadgen = "workloadgen.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["workloadgen"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]

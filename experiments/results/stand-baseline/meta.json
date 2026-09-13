@@ -1,0 +1,17 @@
+{
+  "run_id": "stand-baseline",
+  "started_at": "2026-09-13T16:29:18Z",
+  "finished_at": "2026-09-13T16:32:18Z",
+  "k6": {
+    "duration": "3m",
+    "rps": 50,
+    "exit_code": 0
+  },
+  "workloads": {
+    "interval_s": 30,
+    "ttl_s": 180
+  },
+  "scenario": "none",
+  "scheduler": "generator-round-robin",
+  "git_rev": "24e2074"
+}

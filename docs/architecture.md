@@ -574,7 +574,9 @@ round-robin продолжает отправлять половину разм�
 
 Все кластеры живут в docker-сети `kind`; `api_endpoint` в каталоге и
 kubeconfig'и компонентов контура — внутрисетевые адреса из
-`kind get kubeconfig --internal`, а не `localhost:port` (ADR 0021).
+`kind get kubeconfig --internal`, а не `localhost:port` (ADR 0021). Узлы
+федерации из control адресуются по IP из `docker inspect`: имена контейнеров
+из подов резолвятся на OrbStack, но это свойство рантайма (ADR 0022).
 
 ### 7.3. Генератор нагрузки
 
@@ -599,9 +601,9 @@ frontend'а, которые и читает каталог (ADR 0016).
 
 ### 7.5. Поток workload'ов
 
-Workload — экземпляр `frontend` с именем `w-<n>`: Deployment + Service в
-выбранном кластере + `HTTPRoute` для хоста `w-<n>.fed.local` на шлюзе
-(ADR 0015). Генератор на хосте каждые `N = 30 с` подаёт новый workload и
+Workload — экземпляр `frontend` с именем `w-<n>`: Deployment + Service
+NodePort `30000 + n mod 2000` в выбранном кластере + `Backend` и `HTTPRoute`
+для хоста `w-<n>.fed.local` на шлюзе (ADR 0015, 0022). Генератор на хосте каждые `N = 30 с` подаёт новый workload и
 удаляет старше `TTL = 180 с`; живых около шести. k6 распределяет 50 RPS
 равномерно по живым workload'ам заголовком `Host`. Error rate сценария 2 —
 доля неуспешных запросов по всем живым workload'ам, в двух рядах: серверном
@@ -621,13 +623,15 @@ Workload — экземпляр `frontend` с именем `w-<n>`: Deployment +
 │   ├── architecture.md          (этот файл)
 │   ├── open-questions.md        вопросы без ответа
 │   └── decisions/               ADR, индекс в README.md
-├── stand/                       развёртывание стенда
+├── Makefile                     make stand-up / stand-down / load / lint / test
+├── stand/                       развёртывание стенда, см. stand/README.md
 │   ├── clusters.yaml            атрибуты кластеров: источник для ConfigMap и каталога
 │   ├── kind/                    конфигурации кластеров
-│   ├── observability/           Prometheus, Thanos, Grafana, OTel
-│   ├── gateway/                 Envoy Gateway, Gateway, backend'ы кластеров
-│   ├── policies/                Kyverno-политики
-│   └── Makefile                 make stand-up / stand-down
+│   ├── federation/              namespace'ы, backend тестового сервиса
+│   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
+│   ├── observability/           Prometheus, Thanos, Grafana, OTel (задача 2)
+│   ├── policies/                Kyverno-политики (задача 5)
+│   └── scripts/                 up / down / status / image / render-identity
 ├── test-service/                Go, frontend + backend, один бинарь
 ├── registry/                    FastAPI + PostgreSQL
 │   ├── app/
@@ -642,7 +646,7 @@ Workload — экземпляр `frontend` с именем `w-<n>`: Deployment +
 │   └── internal/
 ├── experiments/
 │   ├── chaos/                   манифесты Chaos Mesh
-│   ├── load/                    k6-сценарии, генератор workload'ов
+│   ├── load/                    steady.js, run.sh, workloadgen/
 │   └── results/                 сырые данные прогонов
 └── analysis/                    обработка результатов, графики
 ```

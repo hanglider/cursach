@@ -1,0 +1,12 @@
+# Манифесты Kubernetes и конфиги стенда: образы с digest и длинные аргументы
+# не помещаются в 80 символов, а `---` в начале одиночного документа лишний.
+extends: default
+rules:
+  line-length:
+    max: 120
+    allow-non-breakable-inline-mappings: true
+  document-start: disable
+  comments:
+    min-spaces-from-content: 1
+  truthy:
+    check-keys: false

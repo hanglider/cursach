@@ -1,0 +1,64 @@
+# L7-шлюз control-кластера: Gateway API + Envoy Gateway (ADR 0017).
+# Envoy Gateway ставится helm-чартом в stand/scripts/up.sh; здесь — его
+# настройка и сам Gateway. HTTPRoute и Backend на каждый workload создаёт
+# генератор (experiments/load/workloadgen), с задачи 6 — планировщик.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gateway
+---
+# Прокси Envoy публикуется NodePort'ом 30080, который kind пробрасывает на
+# хост как 8080 (stand/kind/control.yaml). LoadBalancer в kind не работает.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: stand
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: NodePort
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - port: 80
+                  nodePort: 30080
+      envoyDeployment:
+        replicas: 1
+        container:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: stand
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: stand
+    namespace: envoy-gateway-system
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: stand
+  namespace: gateway
+spec:
+  gatewayClassName: stand
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.fed.local"
+      allowedRoutes:
+        namespaces:
+          from: Same

@@ -1,0 +1,28 @@
+{"event":"start","interval":30.0,"ttl":180.0,"clusters":"cluster-a,cluster-b"}
+{"ts": 1789316895.302795, "event": "placed", "workload": "w-1", "cluster": "cluster-a", "node_port": 30001}
+{"ts": 1789316896.3399801, "event": "ready", "workload": "w-1", "cluster": "cluster-a"}
+{"ts": 1789316925.748524, "event": "placed", "workload": "w-2", "cluster": "cluster-b", "node_port": 30002}
+{"ts": 1789316926.7817159, "event": "ready", "workload": "w-2", "cluster": "cluster-b"}
+{"ts": 1789316955.759785, "event": "placed", "workload": "w-3", "cluster": "cluster-a", "node_port": 30003}
+{"ts": 1789316956.7959611, "event": "ready", "workload": "w-3", "cluster": "cluster-a"}
+{"ts": 1789316985.768141, "event": "placed", "workload": "w-4", "cluster": "cluster-b", "node_port": 30004}
+{"ts": 1789316986.7847629, "event": "ready", "workload": "w-4", "cluster": "cluster-b"}
+{"ts": 1789317015.754714, "event": "placed", "workload": "w-5", "cluster": "cluster-a", "node_port": 30005}
+{"ts": 1789317016.773395, "event": "ready", "workload": "w-5", "cluster": "cluster-a"}
+{"ts": 1789317045.668731, "event": "placed", "workload": "w-6", "cluster": "cluster-b", "node_port": 30006}
+{"ts": 1789317047.707413, "event": "ready", "workload": "w-6", "cluster": "cluster-b"}
+{"ts": 1789317075.6484532, "event": "placed", "workload": "w-7", "cluster": "cluster-a", "node_port": 30007}
+{"ts": 1789317077.6803892, "event": "ready", "workload": "w-7", "cluster": "cluster-a"}
+{"ts": 1789317083.739743, "event": "removed", "workload": "w-1", "cluster": "cluster-a"}
+{"ts": 1789317105.561208, "event": "placed", "workload": "w-8", "cluster": "cluster-b", "node_port": 30008}
+{"ts": 1789317106.593611, "event": "ready", "workload": "w-8", "cluster": "cluster-b"}
+{"ts": 1789317112.647239, "event": "removed", "workload": "w-2", "cluster": "cluster-b"}
+{"ts": 1789317135.53102, "event": "placed", "workload": "w-9", "cluster": "cluster-a", "node_port": 30009}
+{"ts": 1789317136.576517, "event": "ready", "workload": "w-9", "cluster": "cluster-a"}
+{"ts": 1789317142.669923, "event": "removed", "workload": "w-3", "cluster": "cluster-a"}
+{"ts": 1789317143.4712582, "event": "removed", "workload": "w-4", "cluster": "cluster-b"}
+{"ts": 1789317143.523523, "event": "removed", "workload": "w-5", "cluster": "cluster-a"}
+{"ts": 1789317143.566922, "event": "removed", "workload": "w-6", "cluster": "cluster-b"}
+{"ts": 1789317143.621472, "event": "removed", "workload": "w-7", "cluster": "cluster-a"}
+{"ts": 1789317143.6595368, "event": "removed", "workload": "w-8", "cluster": "cluster-b"}
+{"ts": 1789317143.713619, "event": "removed", "workload": "w-9", "cluster": "cluster-a"}

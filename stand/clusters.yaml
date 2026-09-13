@@ -1,0 +1,13 @@
+# Атрибуты кластеров федерации — единственный источник истины (ADR 0009).
+# Из этого файла `make stand-up` создаёт ConfigMap federation-system/cluster-identity
+# в каждом кластере и (с задачи 4) регистрирует кластеры в каталоге.
+# Control-кластер здесь не описан: он не входит в федерацию.
+clusters:
+  - id: cluster-a
+    region: eu-west
+    provider: local
+    certifications: [pci-dss, iso-27001]
+  - id: cluster-b
+    region: eu-central
+    provider: local
+    certifications: [iso-27001]

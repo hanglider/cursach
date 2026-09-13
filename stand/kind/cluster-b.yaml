@@ -1,0 +1,9 @@
+# Кластер федерации cluster-b. Атрибуты — в stand/clusters.yaml (ADR 0009).
+# Один узел: экономит память docker-VM (ADR 0013); сценария «отказ узла» в работе нет.
+# Порты на хост не пробрасываются: control-кластер ходит сюда по docker-сети kind (ADR 0021).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: cluster-b
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
