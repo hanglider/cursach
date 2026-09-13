@@ -1,0 +1,92 @@
+# Каталог кластеров (spec §4.3, ADR 0018, 0025). Secret'ы registry-db, registry-tokens и
+# federation-kubeconfigs создаёт stand/scripts/up.sh из .env и stand/kubeconfig/.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+  namespace: federation
+  labels:
+    app.kubernetes.io/name: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: registry
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: registry
+    spec:
+      containers:
+        - name: registry
+          image: federation/registry:dev
+          imagePullPolicy: Never  # образ загружен через kind load, registry нет
+          env:
+            - name: REGISTRY_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: registry-db
+                  key: database_url
+            - name: REGISTRY_TOKEN_SCHEDULER
+              valueFrom:
+                secretKeyRef:
+                  name: registry-tokens
+                  key: scheduler
+            - name: REGISTRY_TOKEN_DR_CONTROLLER
+              valueFrom:
+                secretKeyRef:
+                  name: registry-tokens
+                  key: dr-controller
+            - name: REGISTRY_TOKEN_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: registry-tokens
+                  key: admin
+            - name: REGISTRY_THANOS_URL
+              value: http://thanos-query.observability.svc:10902
+            - name: REGISTRY_KUBECONFIG_DIR
+              value: /etc/registry/kubeconfig
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /etc/registry/kubeconfig
+              readOnly: true
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: federation-kubeconfigs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry
+  namespace: federation
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: registry
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+      nodePort: 30800  # -> хост 8000 (stand/kind/control.yaml)

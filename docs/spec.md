@@ -267,7 +267,8 @@ REST API-сервис на **FastAPI + PostgreSQL**, реестр кластер
 
 **Обновление статуса:** каталог опрашивает Thanos Querier раз в **30 секунд**
 и обновляет `slo_status` кластеров. Это обеспечивает актуальность данных для
-meta-scheduler'а.
+meta-scheduler'а. Пороги: `degraded` при error rate > 5% или p95 > 200 мс
+за 5 минут, `unknown` при отсутствии метрик (ADR 0025).
 
 **Audit log:** каталог фиксирует принятые решения о размещении (§4.5, шаг 5) и
 зарегистрированные нарушения политик (§6, сценарий 3). Схема и API — ADR 0004
@@ -365,7 +366,7 @@ control-кластера (ADR 0017).
 | 2 | Prometheus + Thanos sidecar в каждом кластере, Thanos Querier + Grafana в control | 2–3 | Глобальный дашборд метрик, агрегированный SLO |
 | 3 | Интеграция OpenTelemetry для трассировки между кластерами | 3–4 | Распределённые трейсы в Jaeger / Grafana Tempo |
 | 4 | Федеративный каталог (FastAPI + PostgreSQL) | 4–6 | REST API с регистрацией кластеров, SLO-статусом, audit log |
-| 5 | Набор Kyverno-политик для enforcement hard constraints | 5–6 | Политики: регион, сертификация; ресурсы — на каталоге (ADR 0019) |
+| 5 | Набор Kyverno-политик для enforcement hard constraints | 5–6 | Политики: регион, сертификация; ресурсы — на каталоге (ADR 0019); watcher нарушений в каталоге (ADR 0025) |
 | 6 | Прототип meta-scheduler'а (Go, controller-runtime) | 6–9 | Планировщик со scoring-функцией + наивная версия |
 | 7 | DR-контроллер: обнаружение → failover → recovery | 8–10 | Автоматизированный DR-цикл с замером TTD/RTO и потерянных запросов |
 | 8 | Серия экспериментов: 3 сценария отказов (Chaos Mesh) | 10–12 | Таблицы «до/после», графики деградации и восстановления |
@@ -433,7 +434,7 @@ Kyverno-политику — например, запуск на кластер�
 | Трассировка | OpenTelemetry + Jaeger | Vendor-neutral, CNCF, поддержка Go и Python |
 | Chaos Engineering | Chaos Mesh | CNCF-проект, k8s-native сценарии |
 | Policy Enforcement | Kyverno | YAML-native, не требует Rego — проще для старта |
-| Каталог | FastAPI + PostgreSQL | Лёгкий REST API, надёжная СУБД, простой деплой в k8s |
+| Каталог | FastAPI + PostgreSQL | Лёгкий REST API, надёжная СУБД, простой деплой в k8s (ADR 0025) |
 | Meta-Scheduler | Go + controller-runtime | Официальный SDK для k8s-операторов |
 | DR-автоматизация | Go + controller-runtime | Единый язык для всех контроллеров |
 | Traffic switching | Gateway API + Envoy Gateway в control-кластере | Веса маршрутов меняются через Kubernetes API; ExternalDNS на kind неприменим (ADR 0017) |

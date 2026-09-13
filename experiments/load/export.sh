@@ -5,7 +5,8 @@
 #
 # Окно: [started_at − 60 с, finished_at + 60 с] из meta.json, шаг 5 с.
 # Результат: experiments/results/<run-id>/series/<имя>.json (формат
-# Prometheus matrix) и series/index.json со списком запросов.
+# Prometheus matrix) и series/index.json со списком запросов; registry/*.csv —
+# что за окно видел каталог: снимки метрик, решения, нарушения (ADR 0025).
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
@@ -47,4 +48,24 @@ done <"$QUERIES"
 
 jq -n --argjson q "$index" --argjson s "$start" --argjson e "$end" --arg step "$STEP" \
   '{start:$s, end:$e, step:$step, queries:$q}' >"$OUT/series/index.json"
-log "готово: $OUT/series"
+
+# Каталог: таблицы за то же окно, CSV через psql в поде control. Сверка того,
+# что видели планировщик и DR, с рядами Thanos — задача 9.
+KC_CONTROL=(kubectl --kubeconfig "$ROOT/stand/kubeconfig/control.kubeconfig" -n federation)
+if "${KC_CONTROL[@]}" get deployment/postgres >/dev/null 2>&1; then
+  mkdir -p "$OUT/registry"
+  dump() {  # dump <имя> <SQL>
+    "${KC_CONTROL[@]}" exec deploy/postgres -- psql -q -U registry -d registry \
+      -c "COPY ($2) TO STDOUT WITH (FORMAT csv, HEADER)" >"$OUT/registry/$1.csv" \
+      || { log "выгрузка $1 не удалась"; exit 1; }
+    log "registry/$1: $(( $(wc -l <"$OUT/registry/$1.csv") - 1 )) строк"
+  }
+  window="BETWEEN to_timestamp($start) AND to_timestamp($end)"
+  dump clusters "SELECT * FROM clusters ORDER BY id"
+  dump cluster_metrics "SELECT * FROM cluster_metrics WHERE observed_at $window ORDER BY observed_at, cluster_id"
+  dump placement_decisions "SELECT * FROM placement_decisions WHERE decided_at $window ORDER BY id"
+  dump policy_violations "SELECT * FROM policy_violations WHERE occurred_at $window ORDER BY id"
+else
+  log "каталог в control не найден: registry/*.csv не выгружены"
+fi
+log "готово: $OUT/series, $OUT/registry"

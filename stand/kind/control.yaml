@@ -24,3 +24,11 @@ nodes:
       - containerPort: 30300
         hostPort: 3000
         protocol: TCP
+      # Каталог кластеров: регистрация из up.sh, экспорт решений, ручные запросы (ADR 0025).
+      - containerPort: 30800
+        hostPort: 8000
+        protocol: TCP
+      # Jaeger UI (задача 3): порт зарезервирован, чтобы не пересоздавать кластер второй раз.
+      - containerPort: 30686
+        hostPort: 16686
+        protocol: TCP

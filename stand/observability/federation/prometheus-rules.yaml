@@ -18,7 +18,9 @@ data:
           - record: cluster:http_requests:rate5m
             expr: sum(rate(http_requests_total{job="test-service",tier="frontend"}[5m]))
           - record: cluster:http_errors:rate5m
-            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[5m]))
+            # Без единого 5xx рядов нет: `or vector(0)` даёт 0, а не пустоту,
+            # иначе error rate отсутствует при идеальном трафике (ADR 0025).
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[5m])) or vector(0)
           - record: cluster:http_error_rate:ratio5m
             expr: cluster:http_errors:rate5m / cluster:http_requests:rate5m
           - record: cluster:http_request_duration_seconds:p95_5m
@@ -30,7 +32,9 @@ data:
           - record: cluster:http_requests:rate1m
             expr: sum(rate(http_requests_total{job="test-service",tier="frontend"}[1m]))
           - record: cluster:http_errors:rate1m
-            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[1m]))
+            # Без единого 5xx рядов нет: `or vector(0)` даёт 0, а не пустоту,
+            # иначе error rate отсутствует при идеальном трафике (ADR 0025).
+            expr: sum(rate(http_requests_total{job="test-service",tier="frontend",status=~"5.."}[1m])) or vector(0)
           - record: cluster:http_error_rate:ratio1m
             expr: cluster:http_errors:rate1m / cluster:http_requests:rate1m
           - record: cluster:http_request_duration_seconds:p95_1m

@@ -1,0 +1,5 @@
+# Namespace управляющего контура в control: каталог, планировщик, DR-контроллер (ADR 0025).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: federation

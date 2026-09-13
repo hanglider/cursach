@@ -41,6 +41,8 @@ spec:
             - --storage.tsdb.path=/prometheus
             - --storage.tsdb.retention.time=15d
             - --web.enable-lifecycle
+            # Remote write от k6 в control (ADR 0008); в федерации приёмник не используется.
+            - --web.enable-remote-write-receiver
           ports:
             - name: http
               containerPort: 9090

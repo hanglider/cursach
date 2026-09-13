@@ -11,6 +11,11 @@ CONTROL=control
 IMAGE=federation/test-service:dev
 EG_VERSION=1.9.1                             # чарт Envoy Gateway (ADR 0017)
 EG_NAMESPACE=envoy-gateway-system
+REGISTRY_IMAGE=federation/registry:dev
+REGISTRY_NAMESPACE=federation                # ns управляющего контура в control (ADR 0025)
+REGISTRY_URL=${REGISTRY_URL:-http://127.0.0.1:8000}
+ENV_FILE="$ROOT/.env"                        # токены каталога, в .gitignore (ADR 0018)
+ENV_VARS=(REGISTRY_TOKEN_SCHEDULER REGISTRY_TOKEN_DR_CONTROLLER REGISTRY_TOKEN_ADMIN REGISTRY_DB_PASSWORD)
 
 # bash 3.2 на macOS: без mapfile.
 FEDERATION=()
@@ -32,3 +37,27 @@ kc() {  # kc <cluster> <kubectl args...>
 }
 
 cluster_exists() { kind get clusters 2>/dev/null | grep -qx "$1"; }
+
+# .env: токены каталога и пароль БД. load_env — прочитать; ensure_env — создать, если нет.
+load_env() {
+  [ -f "$ENV_FILE" ] || return 1
+  set -a
+  # shellcheck disable=SC1090
+  source "$ENV_FILE"
+  set +a
+}
+
+ensure_env() {
+  if [ ! -f "$ENV_FILE" ]; then
+    log "создаю $ENV_FILE: токены каталога"
+    {
+      echo "# Токены каталога и пароль БД (ADR 0018). Создан stand-up, в git не попадает."
+      for v in "${ENV_VARS[@]}"; do echo "$v=$(openssl rand -hex 24)"; done
+    } >"$ENV_FILE"
+    chmod 600 "$ENV_FILE"
+  fi
+  load_env
+  for v in "${ENV_VARS[@]}"; do
+    [ -n "${!v:-}" ] || die "в $ENV_FILE нет $v; удали файл, stand-up создаст заново"
+  done
+}

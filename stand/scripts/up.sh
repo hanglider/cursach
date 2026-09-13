@@ -4,7 +4,7 @@
 # shellcheck source=lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-need docker kind kubectl helm yq uv curl jq
+need docker kind kubectl helm yq uv curl jq openssl
 docker info >/dev/null 2>&1 || die "docker не отвечает; запусти OrbStack"
 mkdir -p "$KUBECONFIG_DIR"
 
@@ -96,6 +96,40 @@ done
 kc "$CONTROL" -n observability rollout restart deployment/thanos-query >/dev/null
 kc "$CONTROL" -n observability rollout status deployment/thanos-query --timeout=120s >/dev/null
 
+# --- 4c. Control: каталог кластеров (ADR 0004, 0018, 0025) ------------------
+log "$CONTROL: каталог (PostgreSQL + registry)"
+ensure_env
+kc "$CONTROL" apply -f "$STAND/registry/namespace.yaml" >/dev/null
+kc "$CONTROL" create secret generic registry-db -n "$REGISTRY_NAMESPACE" \
+  --from-literal=password="$REGISTRY_DB_PASSWORD" \
+  --from-literal=database_url="postgresql://registry:$REGISTRY_DB_PASSWORD@postgres.$REGISTRY_NAMESPACE.svc:5432/registry" \
+  --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
+kc "$CONTROL" create secret generic registry-tokens -n "$REGISTRY_NAMESPACE" \
+  --from-literal=scheduler="$REGISTRY_TOKEN_SCHEDULER" \
+  --from-literal=dr-controller="$REGISTRY_TOKEN_DR_CONTROLLER" \
+  --from-literal=admin="$REGISTRY_TOKEN_ADMIN" \
+  --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
+# Внутрисетевые kubeconfig'и федерации: проверка идентичности при регистрации
+# и watcher нарушений (ADR 0018, 0019).
+kubeconfigs=()
+for c in "${FEDERATION[@]}"; do
+  kubeconfigs+=(--from-file="$c.kubeconfig=$KUBECONFIG_DIR/$c.internal.kubeconfig")
+done
+kc "$CONTROL" create secret generic federation-kubeconfigs -n "$REGISTRY_NAMESPACE" \
+  "${kubeconfigs[@]}" --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
+kc "$CONTROL" apply -f "$STAND/registry/postgres.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/registry/registry.yaml" >/dev/null
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/postgres --timeout=180s >/dev/null
+# Secret'ы и образ могли смениться: перечитать через новый под.
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout restart deployment/registry >/dev/null
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/registry --timeout=180s >/dev/null
+for _ in $(seq 1 30); do
+  curl -sf "$REGISTRY_URL/healthz" >/dev/null 2>&1 && break
+  sleep 2
+done
+curl -sf "$REGISTRY_URL/healthz" >/dev/null || die "каталог не отвечает на $REGISTRY_URL"
+"$STAND/scripts/register-clusters.sh"
+
 # --- 5. Дымовой тест: workload в первом кластере федерации через шлюз -------
 log "дымовой тест: smoke.fed.local -> ${FEDERATION[0]}"
 GEN="uv run --quiet --project $ROOT/experiments/load/workloadgen workloadgen"
@@ -117,6 +151,18 @@ for _ in $(seq 1 30); do
 done
 [ "$stores" -ge "$expected" ] || die "Thanos Querier видит $stores store'ов из $expected"
 curl -sf http://127.0.0.1:3000/api/health | jq -e '.database == "ok"' >/dev/null || die "Grafana не отвечает"
+
+# Каталог: все кластеры федерации зарегистрированы и получили метрики из Thanos
+# (первый цикл опроса — при старте, далее раз в 30 с).
+log "дымовой тест: каталог видит метрики кластеров"
+for _ in $(seq 1 45); do
+  with_metrics=$(curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" "$REGISTRY_URL/api/v1/clusters" \
+    | jq '[.[] | select(.metrics.saturation != null)] | length' 2>/dev/null || echo 0)
+  [ "$with_metrics" -ge "${#FEDERATION[@]}" ] && break
+  sleep 2
+done
+[ "$with_metrics" -ge "${#FEDERATION[@]}" ] \
+  || die "каталог: метрики есть у $with_metrics кластеров из ${#FEDERATION[@]}"
 
 log "стенд готов"
 "$STAND/scripts/status.sh"

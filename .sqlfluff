@@ -1,0 +1,7 @@
+[sqlfluff]
+dialect = postgres
+max_line_length = 100
+
+[sqlfluff:rules:references.keywords]
+# provider — нерезервированное ключевое слово Postgres; имя колонки задано architecture §3.2
+ignore_words = provider

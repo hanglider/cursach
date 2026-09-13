@@ -21,12 +21,13 @@ observability занимает около 2.5 GB.
 |---|---|---|
 | `control` | Envoy Gateway + Gateway `stand` (ns `gateway`), NodePort 30080 → хост 8080 | 1 |
 | `control` | ns `observability`: Prometheus (remote write от k6, метрики Envoy) + sidecar, Thanos Querier, Thanos Ruler, Grafana | 2 |
+| `control` | ns `federation`: PostgreSQL + каталог `registry`, NodePort 30800 → хост 8000 | 4 |
 | `cluster-a`, `cluster-b` | ns `federation-system` с ConfigMap `cluster-identity`; ns `workloads` с `backend`, долгоживущим `app` и frontend'ами потока | 1 |
 | `cluster-a`, `cluster-b` | ns `observability`: Prometheus + Thanos sidecar (StoreAPI на NodePort 30901) | 2 |
 | хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`) | 1, 2 |
 
-Kyverno — задача 5; Chaos Mesh — задача 8. Каталог, планировщик и
-DR-контроллер появятся в `control` по мере задач 4, 6, 7.
+Kyverno — задача 5; Chaos Mesh — задача 8. Планировщик и DR-контроллер
+появятся в `control/federation` по мере задач 6, 7.
 
 ## Порты на хосте
 
@@ -36,6 +37,8 @@ DR-контроллер появятся в `control` по мере задач 4
 | 9090 | Prometheus control | remote write из k6, ручные запросы |
 | 10902 | Thanos Querier | единый PromQL, `experiments/load/export.sh` |
 | 3000 | Grafana | дашборд «Federation SLO», anonymous Viewer, admin/admin |
+| 8000 | Каталог | регистрация из `up.sh`, `export.sh`, ручные запросы с токеном из `.env` |
+| 16686 | зарезервирован под Jaeger (задача 3) | порт проброшен заранее, чтобы не пересоздавать `control` |
 
 ## Наблюдаемость
 
@@ -62,8 +65,30 @@ open http://127.0.0.1:3000/d/federation-slo
 
 Атрибуты кластеров федерации — `stand/clusters.yaml` (ADR 0009). Файл —
 единственный источник: из него `up.sh` рендерит ConfigMap идентичности
-(`scripts/render-identity.sh`), а с задачи 4 — регистрирует кластеры в
-каталоге.
+(`scripts/render-identity.sh`) и регистрирует кластеры в каталоге
+(`scripts/register-clusters.sh`).
+
+## Каталог
+
+Каталог (`registry/`, ADR 0018, 0025) живёт в `control`, ns `federation`,
+вместе со своим PostgreSQL. Токены ролей и пароль БД `up.sh` генерирует в
+`.env` в корне репозитория (формат — `.env.example`, файл в `.gitignore`) и
+кладёт в Secret'ы; внутрисетевые kubeconfig'и федерации — в Secret
+`federation-kubeconfigs`, по ним каталог сверяет ConfigMap идентичности при
+регистрации. Раз в 30 с каталог опрашивает Thanos Querier и пишет снимок в
+`cluster_metrics`; `down` ставит только DR-контроллер (ADR 0003).
+
+```bash
+source .env
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" http://127.0.0.1:8000/api/v1/clusters | jq
+curl -sG -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" http://127.0.0.1:8000/api/v1/clusters/eligible \
+  --data-urlencode certification=pci-dss | jq
+open http://127.0.0.1:8000/docs
+```
+
+Потерян `.env` — удали Secret'ы `registry-tokens` и `registry-db` в
+`control/federation` вместе с PVC `postgres-data` и повтори `make stand-up`:
+пароль БД нельзя сменить без пересоздания данных.
 
 ## Как устроен путь запроса
 
@@ -108,6 +133,8 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | Prometheus | v3.14.0 | `stand/observability/federation/prometheus.yaml` |
 | Thanos | v0.42.4 | там же, `control/thanos-query.yaml`, `control/thanos-rule.yaml` |
 | Grafana | 13.2.1 | `stand/observability/control/grafana.yaml` |
+| PostgreSQL | 17.11-alpine | `stand/registry/postgres.yaml` |
+| registry | образ `federation/registry:dev`, собирается локально | `registry/` |
 | test-service | образ `federation/test-service:dev`, собирается локально | `test-service/` |
 
 ## Если что-то не так
@@ -125,3 +152,11 @@ DR-контроллера и цель его пробы; сценарий 1 из
   маршрут `app`.
 - Grafana долго в `0/1`: она стартует около минуты и на старте ест до
   500 MB; лимит 768 Mi.
+- Регистрация кластера отвергнута с 409: `stand/clusters.yaml` разошёлся с
+  ConfigMap `cluster-identity` в кластере; повторный `make stand-up`
+  перерендерит ConfigMap. 422 — у каталога нет kubeconfig для
+  `api_endpoint`: Secret `federation-kubeconfigs` устарел, тоже лечится
+  `stand-up`.
+- Кластеры в каталоге `unknown`: `kubectl -n federation logs deploy/registry`
+  в `control`, событие `metrics_fetch_failed` означает, что Querier не
+  отвечает или не видит store'ы федерации.

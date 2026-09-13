@@ -31,6 +31,7 @@
 | [0022](0022-workload-entry-nodeport.md) | Вход в кластер федерации: NodePort на workload, узел по IP | ADR 0017, 0021 |
 | [0023](0023-cluster-fault-injection.md) | Отказ кластера в сценарии 1: PodChaos на `workloads`; `docker pause` вторым вариантом; инвариант 7 обобщён | oq 2.5 |
 | [0024](0024-observability-stack-on-stand.md) | Наблюдаемость: raw-манифесты, scrape 5 с, Thanos Ruler для `federation:*`, определение saturation, file SD | задача 2 |
+| [0025](0025-registry-implementation.md) | Каталог: asyncpg и SQL-миграции в сервисе, пороги `degraded`, `PATCH /decisions/{id}`, ns `federation`, порт 8000; watcher — в задаче 5 | задача 4 |
 
 `oq` — `docs/open-questions.md` (номера на момент закрытия; закрытые пункты
 из документа удалены).

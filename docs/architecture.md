@@ -218,7 +218,8 @@ CREATE TABLE placement_decisions (
     workload_ref    TEXT NOT NULL,        -- namespace/name
     scheduler_kind  TEXT NOT NULL,        -- meta | naive
     chosen_cluster  TEXT REFERENCES clusters(id),
-    candidates      JSONB NOT NULL,       -- [{cluster, score, filtered_by}]
+    candidates      JSONB NOT NULL,       -- [{cluster, score, metrics, filtered_by}]
+    scoring         JSONB,                -- параметры scoring (§5.2); null у наивного
     outcome         TEXT NOT NULL         -- placed | rejected | no_candidates
 );
 
@@ -256,6 +257,7 @@ GET    /api/v1/clusters/eligible         кандидаты под hard constrai
                                          ?region=&certification=&min_cpu=&min_memory_gi=
 
 POST   /api/v1/decisions                 запись решения о размещении
+PATCH  /api/v1/decisions/{id}            outcome после admission (ADR 0025)
 GET    /api/v1/decisions                 выборка для анализа, ?from=&to=&scheduler_kind=
 
 POST   /api/v1/violations                фиксация нарушения политики
@@ -271,6 +273,9 @@ constraints на стороне каталога, а не планировщик
 кандидатов с последним снимком метрик, и отсеянных с причиной; `down`
 отсеивается, `unknown` и `degraded` остаются (ADR 0018).
 
+`POST /violations` принимает `requirements` workload'а; каталог дописывает в
+`details.eligible_clusters` допустимые кластеры (ADR 0019, 0025).
+
 **Аутентификация** (ADR 0018): статические bearer-токены на компонент.
 Полноценный mTLS для стенда — избыточная сложность; «базовые проверки доверия»
 из vision покрываются токенами и проверкой при регистрации, что ConfigMap
@@ -283,7 +288,8 @@ constraints на стороне каталога, а не планировщик
 1. Для каждого зарегистрированного кластера выполнить PromQL-запросы (§2.4)
    к Thanos Querier
 2. Записать результат в `cluster_metrics`
-3. Пересчитать `slo_status` по порогам
+3. Пересчитать `slo_status` по порогам: `degraded` при error rate за 5 мин
+   > 0.05 или p95 > 200 мс (ADR 0025)
 4. Кластер, не ответивший на запрос — `unknown`, не `down`
 5. Статус `down` не трогать: его ставит и снимает только DR Controller
    (ADR 0003)
@@ -553,9 +559,9 @@ backend'ом на каждый кластер и номинальными вес
 хост-машина
 ├── k6 + генератор workload'ов    вне федерации (ADR 0008, 0015)
 ├── kind cluster "control"        управляющий контур
-│   ├── registry-service + postgres
-│   ├── meta-scheduler
-│   ├── dr-controller
+│   ├── registry + postgres           ns federation, каталог (ADR 0025), хост 8000
+│   ├── meta-scheduler                ns federation
+│   ├── dr-controller                 ns federation
 │   ├── envoy-gateway                 шлюз, вход для k6 (ADR 0017)
 │   ├── prometheus + thanos sidecar   k6 remote write, метрики шлюза
 │   ├── thanos-query                  единый PromQL над всеми sidecar'ами
@@ -636,6 +642,7 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 .
 ├── CLAUDE.md
 ├── Brewfile                     зависимости хоста
+├── .env.example                 формат .env с токенами каталога (ADR 0018)
 ├── docs/
 │   ├── vision.md
 │   ├── spec.md
@@ -649,6 +656,7 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 │   ├── federation/              namespace'ы, backend тестового сервиса
 │   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
 │   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
+│   ├── registry/                ns federation, PostgreSQL, каталог (задача 4)
 │   ├── policies/                Kyverno-политики (задача 5)
 │   └── scripts/                 up / down / status / image / render-identity
 ├── test-service/                Go, frontend + backend, один бинарь
@@ -665,8 +673,8 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 │   └── internal/
 ├── experiments/
 │   ├── chaos/                   манифесты Chaos Mesh
-│   ├── load/                    steady.js, run.sh, workloadgen/
-│   └── results/                 сырые данные прогонов
+│   ├── load/                    steady.js, run.sh, export.sh, workloadgen/
+│   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
 └── analysis/                    обработка результатов, графики
 ```
 
