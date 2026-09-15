@@ -3,9 +3,11 @@
 #
 #   experiments/load/run.sh <run-id> [k6 duration] [интервал N, с] [TTL, с]
 #
-# Результат: experiments/results/<run-id>/{meta.json,k6-summary.json,workloadgen.log}.
+# Результат: experiments/results/<run-id>/{meta.json,k6-summary.json,workloadgen.log},
+# series/ из Thanos и registry/ из каталога (export.sh).
 # RESULTS_ROOT=<dir> переопределяет каталог результатов (для пробных прогонов).
-# Задача 1: только клиентский ряд k6. Экспорт серверных рядов из Thanos — задача 2.
+# MODE=scheduler|direct — кто размещает workload'ы (ADR 0027); режим планировщика
+# meta|naive переключается заранее: make scheduler-mode MODE=naive.
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
@@ -17,6 +19,8 @@ RPS=${RPS:-50}
 GATEWAY_URL=${GATEWAY_URL:-http://127.0.0.1:8080}
 LIVE_LISTEN=${LIVE_LISTEN:-127.0.0.1:9797}
 WARMUP_HOSTS=${WARMUP_HOSTS:-3}   # сколько живых workload'ов ждать до старта k6
+
+MODE=${MODE:-scheduler}           # scheduler — через планировщик (ADR 0027); direct — генератор сам по кругу
 
 RESULTS_ROOT=${RESULTS_ROOT:-$ROOT/experiments/results}   # пробные прогоны — в другой каталог
 OUT="$RESULTS_ROOT/$RUN_ID"
@@ -33,8 +37,18 @@ log() { printf '%s run.sh: %s\n' "$(date -u +%FT%TZ)" "$*" >&2; }
 # Ничего от прошлых прогонов не должно остаться.
 $GEN cleanup
 
-log "старт генератора: interval=${INTERVAL}s ttl=${TTL}s"
-$GEN run --interval "$INTERVAL" --ttl "$TTL" --listen "$LIVE_LISTEN" >"$OUT/workloadgen.log" 2>&1 &
+# Режим планировщика (meta | naive) — фактический, из Deployment в control; в meta.json он
+# и есть значение поля scheduler. В режиме direct планировщик не участвует.
+if [ -z "${SCHEDULER:-}" ]; then
+  if [ "$MODE" = scheduler ]; then
+    SCHEDULER=$("$ROOT/stand/scripts/scheduler-mode.sh" 2>/dev/null) || { log "планировщик не развёрнут; MODE=direct для обхода"; exit 1; }
+  else
+    SCHEDULER=generator-round-robin
+  fi
+fi
+
+log "старт генератора: mode=$MODE scheduler=$SCHEDULER interval=${INTERVAL}s ttl=${TTL}s"
+$GEN --mode "$MODE" run --interval "$INTERVAL" --ttl "$TTL" --listen "$LIVE_LISTEN" >"$OUT/workloadgen.log" 2>&1 &
 GEN_PID=$!
 trap 'kill -INT $GEN_PID 2>/dev/null || true; wait $GEN_PID 2>/dev/null || true' EXIT
 
@@ -75,10 +89,10 @@ jq -n \
   --arg run_id "$RUN_ID" --arg started "$STARTED" --arg finished "$FINISHED" \
   --arg duration "$DURATION" --argjson rps "$RPS" --argjson interval "$INTERVAL" --argjson ttl "$TTL" \
   --arg git "$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)" \
-  --arg scenario "${SCENARIO:-none}" --arg scheduler "${SCHEDULER:-generator-round-robin}" \
+  --arg scenario "${SCENARIO:-none}" --arg scheduler "$SCHEDULER" --arg mode "$MODE" \
   --argjson k6_rc "$K6_RC" \
   '{run_id:$run_id, started_at:$started, finished_at:$finished, k6:{duration:$duration, rps:$rps, exit_code:$k6_rc},
-    workloads:{interval_s:$interval, ttl_s:$ttl}, scenario:$scenario, scheduler:$scheduler, git_rev:$git}' \
+    workloads:{interval_s:$interval, ttl_s:$ttl, placed_by:$mode}, scenario:$scenario, scheduler:$scheduler, git_rev:$git}' \
   >"$OUT/meta.json"
 
 # Серверные ряды из Thanos (ADR 0002): ждём последний scrape и выгружаем.

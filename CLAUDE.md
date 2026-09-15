@@ -49,15 +49,17 @@ analysis/     обработка результатов, графики
 make stand-up        # поднять 3 kind-кластера (control + 2 федерации), шлюз, сервис
 make stand-status    # состояние стенда
 make stand-down      # снести стенд (только вручную)
-make image           # пересобрать образ тестового сервиса и загрузить в кластеры
-make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6
+make image           # пересобрать образы (тестовый сервис, каталог, планировщик) и загрузить в кластеры
+make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6 (MODE=direct — в обход планировщика)
 make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения политики в обход планировщика
+make scheduler-mode [MODE=meta|naive]  # режим планировщика на стенде
+make generate        # deepcopy и CRD планировщика (controller-gen)
 make lint            # линт всего проекта
 make test            # тесты
 ```
 
 Go-модули: `go test ./...`, `go vet ./...` в `scheduler/`, `dr-controller/`,
-`test-service/`.
+`test-service/`; `dr-controller/` появится в задаче 7.
 Python: `pytest`, `ruff check` в `registry/`.
 
 ## Правила

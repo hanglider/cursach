@@ -12,6 +12,7 @@ IMAGE=federation/test-service:dev
 EG_VERSION=1.9.1                             # чарт Envoy Gateway (ADR 0017)
 EG_NAMESPACE=envoy-gateway-system
 REGISTRY_IMAGE=federation/registry:dev
+SCHEDULER_IMAGE=federation/scheduler:dev      # планировщик в control (ADR 0027)
 REGISTRY_NAMESPACE=federation                # ns управляющего контура в control (ADR 0025)
 REGISTRY_URL=${REGISTRY_URL:-http://127.0.0.1:8000}
 KYVERNO_CHART_VERSION=3.9.1                  # Kyverno v1.19.1 в кластерах федерации (ADR 0019, 0026)

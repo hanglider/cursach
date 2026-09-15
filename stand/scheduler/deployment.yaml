@@ -1,0 +1,69 @@
+# Meta-scheduler (spec §4.5, ADR 0020, 0027): один бинарь, режим — SCHEDULER_MODE.
+# Режим меняет stand/scripts/scheduler-mode.sh (kubectl set env + rollout);
+# make stand-up возвращает meta. Один экземпляр, Recreate: два планировщика с
+# независимыми round-robin счётчиками одновременно работать не должны.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler
+  namespace: federation
+  labels:
+    app.kubernetes.io/name: scheduler
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: scheduler
+    spec:
+      serviceAccountName: scheduler
+      containers:
+        - name: scheduler
+          image: federation/scheduler:dev
+          imagePullPolicy: Never  # образ загружен через kind load
+          env:
+            - name: SCHEDULER_MODE
+              value: meta
+            - name: REGISTRY_URL
+              value: http://registry.federation.svc:8000
+            - name: REGISTRY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: registry-tokens
+                  key: scheduler
+            - name: SCHEDULER_KUBECONFIG_DIR
+              value: /etc/scheduler/kubeconfig
+          ports:
+            - name: health
+              containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 192Mi
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /etc/scheduler/kubeconfig
+              readOnly: true
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: federation-kubeconfigs

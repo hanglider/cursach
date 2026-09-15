@@ -421,26 +421,39 @@ Kyverno-политики нет.
 
 ### 5.1. Цикл reconcile
 
+Вход планировщика — CR `Workload` (`federation.spbu/v1alpha1`) в control,
+ns `federation` (ADR 0027): `spec.port`, `spec.image`, `spec.replicas`,
+требования — аннотации `federation.spbu/require-*` на CR. Контроллер
+реагирует на изменение `generation`, статус — в `status.phase`.
+
 ```
-watch (Kubernetes API)
-   │
-   ▼
-[workload ожидает размещения]
+watch Workload (control, ns federation)
    │
    ▼
 GET /clusters/eligible?<hard constraints из аннотаций>
    │
-   ├── пусто ──> записать decision(outcome=no_candidates), событие, выход
+   ├── каталог недоступен ──> phase=Error, повтор с backoff (решение не пишется)
+   ├── пусто ──> POST /decisions(outcome=no_candidates, все отсеянные), phase=NoCandidates,
+   │             повтор через 30 с (каждый повтор — новое решение)
+   ▼
+meta: score = f(error_rate, latency_p95, saturation), ничья → round-robin
+naive: round-robin по id
    │
    ▼
-для каждого кандидата: score = f(error_rate, latency_p95, saturation)
+POST /decisions (все кандидаты + скоры + выбор) ──> id ──> status.cluster, status.decisionId
    │
    ▼
-argmax(score) ──> создать Deployment/Job в выбранном кластере + HTTPRoute на шлюзе
+Deployment + Service в выбранном кластере (метки workload/scheduler/decision-id,
+аннотации require-* скопированы), Backend + HTTPRoute на шлюзе ──> phase=Placed
    │
-   ▼
-POST /decisions (все кандидаты + скоры + выбор)
+   └── admission отклонил (400 «denied the request») ──> PATCH /decisions/{id} rejected,
+       POST /violations (reported_via=scheduler), phase=Rejected (терминально)
 ```
+
+Финализатор `federation.spbu/placement` убирает все четыре объекта при удалении
+CR; недоступный кластер держит удаление не дольше 2 минут. `Placed` и
+`Rejected` терминальны: CR не перепланируется. Адрес узла для Backend —
+`InternalIP` из API кластера федерации (ADR 0022, 0027).
 
 ### 5.2. Scoring-функция
 
@@ -482,6 +495,13 @@ Round-robin по кандидатам из `/clusters/eligible`.
 эксперименты прогоняются одним бинарём (ADR 0020). Наивный планировщик пишет
 кандидатов в `placement_decisions` со `score: null` и снимком метрик, чтобы
 офлайн-анализ мог посчитать, что выбрал бы умный.
+
+На стенде режим — env `SCHEDULER_MODE` Deployment'а `scheduler` в
+`control/federation`; `make scheduler-mode MODE=naive` меняет его и ждёт
+rollout, `make stand-up` возвращает `meta`. Генератор (`--mode scheduler`)
+создаёт CR `Workload` и ждёт `status.phase == Placed`; прямой режим
+`--mode direct` размещает сам, в обход планировщика — для дымового теста
+Kyverno и сценария 3 (ADR 0027).
 
 ---
 
@@ -588,7 +608,7 @@ backend'ом на каждый кластер и номинальными вес
 ├── k6 + генератор workload'ов    вне федерации (ADR 0008, 0015)
 ├── kind cluster "control"        управляющий контур
 │   ├── registry + postgres           ns federation, каталог (ADR 0025), хост 8000
-│   ├── meta-scheduler                ns federation
+│   ├── scheduler                     ns federation, CR Workload, режим meta|naive (ADR 0027)
 │   ├── dr-controller                 ns federation
 │   ├── envoy-gateway                 шлюз, вход для k6 (ADR 0017)
 │   ├── prometheus + thanos sidecar   k6 remote write, метрики шлюза
@@ -648,9 +668,10 @@ frontend'а, которые и читает каталог (ADR 0016).
 
 ### 7.5. Поток workload'ов
 
-Workload — экземпляр `frontend` с именем `w-<n>`: Deployment + Service
-NodePort `30000 + n mod 2000` в выбранном кластере + `Backend` и `HTTPRoute`
-для хоста `w-<n>.fed.local` на шлюзе (ADR 0015, 0022).
+Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload` в control
+(запрос на размещение, ADR 0027) → Deployment + Service NodePort
+`30000 + n mod 2000` в выбранном кластере + `Backend` и `HTTPRoute` для
+хоста `w-<n>.fed.local` на шлюзе (ADR 0015, 0022).
 
 Отдельно от потока в каждом кластере федерации живёт `app` — тот же
 `frontend` с двумя репликами и фиксированным NodePort 31998, а на шлюзе —
@@ -685,17 +706,18 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 │   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
 │   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
 │   ├── registry/                ns federation, PostgreSQL, каталог (задача 4)
+│   ├── scheduler/               CRD Workload (generate), RBAC, Deployment планировщика
 │   ├── policies/                Kyverno: values чарта, ClusterPolicy, tests/ для kyverno test
-│   └── scripts/                 up / down / status / image / render-identity
+│   └── scripts/                 up / down / status / image / scheduler-mode / render-*
 ├── test-service/                Go, frontend + backend, один бинарь
 ├── registry/                    FastAPI + PostgreSQL
 │   ├── app/
 │   ├── migrations/
 │   └── tests/
-├── scheduler/                   Go, meta + naive
-│   ├── cmd/
-│   ├── internal/scoring/
-│   └── internal/client/         клиент каталога
+├── scheduler/                   Go, meta + naive (ADR 0027)
+│   ├── main.go                  флаги/env, manager
+│   ├── api/v1alpha1/            CRD Workload
+│   └── internal/                scoring, registry (клиент каталога), placement, clusters, controller
 ├── dr-controller/               Go
 │   ├── cmd/
 │   └── internal/

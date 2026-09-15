@@ -60,3 +60,16 @@ def test_parse_annotation() -> None:
         except ValueError:
             continue
         raise AssertionError(bad)
+
+
+def test_workload_cr_shape() -> None:
+    w = spec.Workload(
+        "w-3", "", 30003, annotations={"federation.spbu/require-certification": "pci-dss"}
+    )
+    cr = spec.workload_cr(w)
+    assert cr["apiVersion"] == "federation.spbu/v1alpha1" and cr["kind"] == "Workload"
+    assert cr["metadata"]["namespace"] == "federation"
+    assert cr["metadata"]["labels"][spec.MANAGED_BY_LABEL] == spec.MANAGED_BY
+    assert cr["metadata"]["annotations"] == {"federation.spbu/require-certification": "pci-dss"}
+    assert cr["spec"] == {"port": 30003, "image": spec.IMAGE, "replicas": 1}
+    assert "annotations" not in spec.workload_cr(spec.Workload("w-4", "", 30004))["metadata"]

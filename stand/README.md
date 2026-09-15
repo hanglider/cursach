@@ -22,13 +22,13 @@ observability занимает около 2.5 GB.
 | `control` | Envoy Gateway + Gateway `stand` (ns `gateway`), NodePort 30080 → хост 8080 | 1 |
 | `control` | ns `observability`: Prometheus (remote write от k6, метрики Envoy) + sidecar, Thanos Querier, Thanos Ruler, Grafana | 2 |
 | `control` | ns `federation`: PostgreSQL + каталог `registry`, NodePort 30800 → хост 8000 | 4 |
+| `control` | ns `federation`: планировщик `scheduler` (CRD `Workload`, режим meta или naive) | 6 |
 | `cluster-a`, `cluster-b` | ns `federation-system` с ConfigMap `cluster-identity`; ns `workloads` с `backend`, долгоживущим `app` и frontend'ами потока | 1 |
 | `cluster-a`, `cluster-b` | ns `observability`: Prometheus + Thanos sidecar (StoreAPI на NodePort 30901) | 2 |
 | `cluster-a`, `cluster-b` | ns `kyverno`: Kyverno (admission, background, reports); ClusterPolicy `require-region-match`, `require-certification` | 5 |
 | хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннер сценария 3 (`experiments/policy/`) | 1, 2, 5 |
 
-Chaos Mesh — задача 8. Планировщик и DR-контроллер появятся в
-`control/federation` по мере задач 6, 7.
+Chaos Mesh — задача 8, DR-контроллер — задача 7 (в `control/federation`).
 
 ## Порты на хосте
 
@@ -114,9 +114,30 @@ make policy-run RUN=<id> ATTEMPTS=5      # сценарий 3 целиком, su
 kyverno test policies/tests              # политики без кластера
 ```
 
+## Планировщик
+
+Планировщик (`scheduler/`, ADR 0020, 0027) живёт в `control`, ns `federation`.
+Вход — CR `Workload`: `kubectl -n federation get workloads` показывает фазу,
+кластер, режим и id решения в каталоге. Режим один на стенд:
+
+```bash
+make scheduler-mode              # текущий: meta | naive
+make scheduler-mode MODE=naive   # переключить (rollout, счётчик round-robin сбрасывается)
+make load RUN=<id>               # генератор создаёт CR, планировщик размещает
+MODE=direct make load RUN=<id>   # генератор размещает сам, в обход планировщика
+kubectl --kubeconfig stand/kubeconfig/control.kubeconfig -n federation logs deploy/scheduler
+source .env
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
+  'http://127.0.0.1:8000/api/v1/decisions?workload_ref=workloads/w-1' | jq
+```
+
+`make generate` пересобирает deepcopy и CRD (`stand/scheduler/federation.spbu_workloads.yaml`)
+после правки `scheduler/api/v1alpha1/`.
+
 ## Как устроен путь запроса
 
 ```
+генератор (хост) ──> control: Workload w-7 (ns federation) ──> планировщик: решение → cluster-b
 k6 (хост) ──Host: w-7.fed.local──> 127.0.0.1:8080
    └─ kind extraPortMapping ──> control: NodePort 30080 ──> Envoy
         └─ HTTPRoute w-7 ──> Backend w-7 = <IP узла cluster-b>:30007
@@ -124,11 +145,12 @@ k6 (хост) ──Host: w-7.fed.local──> 127.0.0.1:8080
                   └─ http://backend.workloads.svc:8080/work
 ```
 
-Workload `w-<n>` — четыре объекта (ADR 0015, 0022): Deployment + Service
-NodePort в кластере федерации, Backend + HTTPRoute в `control/gateway`. Порт
-`30000 + n mod 2000`. Все четыре помечены
-`federation.spbu/managed-by=workloadgen`, чтобы `workloadgen cleanup` находил
-остатки.
+Workload `w-<n>` — CR в control плюс четыре объекта (ADR 0015, 0022, 0027):
+Deployment + Service NodePort в кластере федерации, Backend + HTTPRoute в
+`control/gateway`. Порт `30000 + n mod 2000`. Объекты планировщика помечены
+`federation.spbu/managed-by=scheduler` и убираются финализатором CR; объекты
+прямого режима — `managed-by=workloadgen`, их находит `workloadgen cleanup`
+(он удаляет и CR).
 
 Долгоживущий `app` (ADR 0011) — тот же frontend с двумя репликами в каждом
 кластере федерации, NodePort 31998, и один маршрут `app.fed.local` с весами
@@ -160,6 +182,7 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | Kyverno | v1.19.1, чарт 3.9.1 | `stand/scripts/lib.sh`, values — `stand/policies/kyverno-values.yaml` |
 | PostgreSQL | 17.11-alpine | `stand/registry/postgres.yaml` |
 | registry | образ `federation/registry:dev`, собирается локально | `registry/` |
+| scheduler | образ `federation/scheduler:dev`, собирается локально; controller-runtime v0.25.1 | `scheduler/go.mod` |
 | test-service | образ `federation/test-service:dev`, собирается локально | `test-service/` |
 
 ## Если что-то не так
@@ -194,3 +217,13 @@ DR-контроллера и цель его пробы; сценарий 1 из
   watcher выключен переменной `REGISTRY_WATCH_ENABLED`.
 - Создание Deployment падает с `failed calling webhook`: Kyverno в кластере
   не отвечает, это не нарушение политики; `kubectl -n kyverno get pods`.
+  У планировщика это `phase: Error` с тем же текстом в `status.message` и
+  повтор с backoff.
+- Workload висит в `Pending` или `Error`: `kubectl -n federation describe
+  workload <name>` в `control` (события Placed / Rejected / NoCandidates /
+  Error) и логи `deploy/scheduler`. `NoCandidates` — каталог не отдал ни
+  одного допустимого кластера (`down` или hard constraints), повтор раз в 30 с.
+- Остатки после падения планировщика: `kubectl -n workloads delete
+  deploy,svc -l federation.spbu/managed-by=scheduler` в кластерах федерации и
+  `kubectl -n gateway delete httproute,backend -l federation.spbu/managed-by=scheduler`
+  в `control`.

@@ -1,6 +1,9 @@
 # Манифесты Kubernetes и конфиги стенда: образы с digest и длинные аргументы
 # не помещаются в 80 символов, а `---` в начале одиночного документа лишний.
 extends: default
+# Сгенерированное controller-gen (make generate) руками не форматируется.
+ignore: |
+  stand/scheduler/federation.spbu_workloads.yaml
 rules:
   line-length:
     max: 120

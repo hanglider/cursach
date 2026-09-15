@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Поднять стенд с нуля: control + федерация, образ, backend'ы, Kyverno, шлюз, наблюдаемость,
-# каталог, дымовые тесты.
+# Поднять стенд с нуля: control + федерация, образы, backend'ы, Kyverno, шлюз, наблюдаемость,
+# каталог, планировщик, дымовые тесты.
 # Идемпотентен: уже существующие кластеры не пересоздаются, манифесты применяются повторно.
 # shellcheck source=lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -148,21 +148,65 @@ kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/postgres --time
 # Secret'ы и образ могли смениться: перечитать через новый под.
 kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout restart deployment/registry >/dev/null
 kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/registry --timeout=180s >/dev/null
-for _ in $(seq 1 30); do
-  curl -sf "$REGISTRY_URL/healthz" >/dev/null 2>&1 && break
+# После rollout NodePort ещё немного отдаёт запросы старому (Terminating) поду —
+# конкретный ответ то есть, то нет; ждём до 3 минут и трёх подряд успехов, чтобы не
+# поймать именно момент перехода.
+ok=0
+for _ in $(seq 1 90); do
+  if curl -sf "$REGISTRY_URL/healthz" >/dev/null 2>&1; then
+    ok=$((ok + 1))
+    [ "$ok" -ge 3 ] && break
+  else
+    ok=0
+  fi
   sleep 2
 done
-curl -sf "$REGISTRY_URL/healthz" >/dev/null || die "каталог не отвечает на $REGISTRY_URL"
+[ "$ok" -ge 3 ] \
+  || die "каталог не отвечает на $REGISTRY_URL: $(curl -s -m 5 "$REGISTRY_URL/healthz" 2>&1 | head -c 200); поды: $(kc "$CONTROL" -n "$REGISTRY_NAMESPACE" get pods --no-headers 2>/dev/null | tr '\n' ';')"
 "$STAND/scripts/register-clusters.sh"
 
-# --- 5. Дымовой тест: workload в первом кластере федерации через шлюз -------
-log "дымовой тест: smoke.fed.local -> ${FEDERATION[0]}"
+# --- 4d. Control: планировщик (ADR 0020, 0027) -------------------------------
+log "$CONTROL: планировщик (CRD Workload, режим meta)"
+kc "$CONTROL" apply -f "$STAND/scheduler/federation.spbu_workloads.yaml" >/dev/null
+kc "$CONTROL" apply -f "$STAND/scheduler/rbac.yaml" -f "$STAND/scheduler/deployment.yaml" >/dev/null
+# Образ и Secret'ы могли смениться: перечитать через новый под.
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout restart deployment/scheduler >/dev/null
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/scheduler --timeout=180s >/dev/null
+
+# --- 5. Дымовой тест: workload через планировщик и шлюз ---------------------
 GEN="uv run --quiet --project $ROOT/experiments/load/workloadgen workloadgen"
-$GEN --timeout 120 place --name smoke --cluster "${FEDERATION[0]}" --port 31999 --wait >/dev/null
+registry_get() { curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" "$REGISTRY_URL$1"; }
+pci_clusters=$(yq -o=json -I=0 '[.clusters[] | select((.certifications // []) | contains(["pci-dss"])) | .id] | sort' \
+  "$STAND/clusters.yaml")
+deny_cluster=$(yq -r '.clusters[] | select((.certifications // []) | contains(["pci-dss"]) | not) | .id' \
+  "$STAND/clusters.yaml" | head -1)
+
+log "дымовой тест: smoke.fed.local через планировщик"
+$GEN --mode scheduler --timeout 120 place --name smoke --port 31999 --wait >/dev/null
 body=$(curl -sf -H 'Host: smoke.fed.local' http://127.0.0.1:8080/)
-$GEN remove --name smoke >/dev/null
+smoke_cluster=$(kc "$CONTROL" -n "$REGISTRY_NAMESPACE" get workload smoke -o jsonpath='{.status.cluster}')
+decision=$(registry_get "/api/v1/decisions?workload_ref=workloads/smoke" | jq -c 'last')
+$GEN --mode scheduler remove --name smoke >/dev/null
 echo "$body" | jq -e '.tier == "frontend" and .backend.tier == "backend"' >/dev/null \
   || die "дымовой тест: неожиданный ответ: $body"
+jq -e --arg c "$smoke_cluster" --argjson n "${#FEDERATION[@]}" \
+  '.outcome == "placed" and .chosen_cluster == $c and (.candidates | length) == $n and .scoring.formula == "adr-0005"' \
+  <<<"$decision" >/dev/null || die "дымовой тест: решение планировщика неполное: $decision"
+
+# Hard constraint на рубеже 1: pci-dss workload попадает только в кластер с сертификацией,
+# остальные отсеяны в решении с причиной.
+log "дымовой тест: планировщик соблюдает require-certification=pci-dss"
+$GEN --mode scheduler --timeout 120 place --name smoke-pci --port 31996 \
+  --annotate federation.spbu/require-certification=pci-dss --wait >/dev/null
+pci_cluster=$(kc "$CONTROL" -n "$REGISTRY_NAMESPACE" get workload smoke-pci -o jsonpath='{.status.cluster}')
+decision=$(registry_get "/api/v1/decisions?workload_ref=workloads/smoke-pci" | jq -c 'last')
+$GEN --mode scheduler remove --name smoke-pci >/dev/null
+jq -e --arg c "$pci_cluster" 'index($c) != null' <<<"$pci_clusters" >/dev/null \
+  || die "дымовой тест: smoke-pci размещён в $pci_cluster, допустимы $pci_clusters"
+if [ -n "$deny_cluster" ]; then
+  jq -e --arg c "$deny_cluster" '[.candidates[] | select(.cluster == $c and (.filtered_by // "" | contains("certification:pci-dss")))] | length == 1' \
+    <<<"$decision" >/dev/null || die "дымовой тест: в решении нет отсева $deny_cluster по сертификации: $decision"
+fi
 app=$(curl -sf -H 'Host: app.fed.local' http://127.0.0.1:8080/ | jq -r .workload)
 [ "$app" = "app" ] || die "дымовой тест: app.fed.local не отвечает"
 
@@ -189,10 +233,9 @@ done
 [ "$with_metrics" -ge "${#FEDERATION[@]}" ] \
   || die "каталог: метрики есть у $with_metrics кластеров из ${#FEDERATION[@]}"
 
-# Kyverno: workload с требованием сертификации, которой нет у кластера, отклоняется
-# (код 3 у генератора) и попадает в audit log каталога через watcher (ADR 0019, 0026).
-deny_cluster=$(yq -r '.clusters[] | select((.certifications // []) | contains(["pci-dss"]) | not) | .id' \
-  "$STAND/clusters.yaml" | head -1)
+# Kyverno (рубеж 2, в обход планировщика): workload с требованием сертификации, которой
+# нет у кластера, отклоняется (код 3 у генератора) и попадает в audit log через watcher
+# (ADR 0019, 0026).
 if [ -n "$deny_cluster" ]; then
   log "дымовой тест: Kyverno отклоняет pci-dss workload в $deny_cluster, каталог фиксирует"
   set +e
@@ -204,12 +247,10 @@ if [ -n "$deny_cluster" ]; then
   if kc "$deny_cluster" -n workloads get deployment smoke-deny >/dev/null 2>&1; then
     die "дымовой тест: Deployment smoke-deny существует в $deny_cluster"
   fi
-  expected_eligible=$(yq -o=json -I=0 '[.clusters[] | select((.certifications // []) | contains(["pci-dss"])) | .id] | sort' \
-    "$STAND/clusters.yaml")
+  expected_eligible=$pci_clusters
   eligible=null
   for _ in $(seq 1 30); do
-    eligible=$(curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
-      "$REGISTRY_URL/api/v1/violations?workload_ref=workloads/smoke-deny&cluster_id=$deny_cluster" \
+    eligible=$(registry_get "/api/v1/violations?workload_ref=workloads/smoke-deny&cluster_id=$deny_cluster" \
       | jq -c 'last | .details.eligible_clusters | sort' 2>/dev/null || echo null)
     [ "$eligible" = "$expected_eligible" ] && break
     sleep 2

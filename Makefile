@@ -2,12 +2,13 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-GO_MODULES := test-service
+GO_MODULES := test-service scheduler
 PY_PROJECTS := experiments/load/workloadgen registry
+CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run scheduler-mode generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -30,15 +31,23 @@ load:  ## прогон нагрузки: make load RUN=<id> [DURATION=3m] [INTER
 policy-run:  ## сценарий 3, нарушение политики в обход планировщика: make policy-run RUN=<id> [ATTEMPTS=5]
 	experiments/policy/run.sh $(RUN) $(ATTEMPTS)
 
+scheduler-mode:  ## режим планировщика: make scheduler-mode [MODE=meta|naive]
+	stand/scripts/scheduler-mode.sh $(MODE)
+
+generate:  ## сгенерировать deepcopy и CRD планировщика (controller-gen)
+	cd scheduler && go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_GEN_VERSION) object paths=./api/...
+	cd scheduler && go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_GEN_VERSION) crd paths=./api/... output:crd:dir=../stand/scheduler
+
 lint:  ## линт всего проекта
 	@for m in $(GO_MODULES); do (cd $$m && test -z "$$(gofmt -l .)" && go vet ./... && golangci-lint run ./...) || exit 1; done
 	@for p in $(PY_PROJECTS); do (cd $$p && uv run --quiet ruff check . && uv run --quiet ruff format --check .) || exit 1; done
 	@yamllint -f parsable .yamllint stand experiments/load experiments/policy
 	@kubeconform -summary -ignore-missing-schemas -schema-location default \
 	  -schema-location '$(CRD_SCHEMAS)' \
-	  stand/federation/*.yaml stand/gateway/*.yaml stand/registry/*.yaml stand/policies/require-*.yaml
+	  stand/federation/*.yaml stand/gateway/*.yaml stand/registry/*.yaml stand/policies/require-*.yaml \
+	  stand/scheduler/*.yaml
 	@shellcheck -x -P SCRIPTDIR -f gcc stand/scripts/*.sh experiments/load/*.sh experiments/policy/*.sh
-	@hadolint test-service/Dockerfile registry/Dockerfile
+	@hadolint test-service/Dockerfile registry/Dockerfile scheduler/Dockerfile
 	@sqlfluff lint registry/migrations
 
 test:  ## тесты

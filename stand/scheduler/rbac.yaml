@@ -1,0 +1,42 @@
+# Права планировщика в control (ADR 0027): объекты Workload и их статус, события,
+# HTTPRoute и Backend на шлюзе. В кластеры федерации он ходит по kubeconfig'ам
+# Secret'а federation-kubeconfigs, RBAC там не нужен (kind даёт admin).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: scheduler
+  namespace: federation
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: federation-scheduler
+rules:
+  - apiGroups: [federation.spbu]
+    resources: [workloads]
+    verbs: [get, list, watch, update, patch]
+  - apiGroups: [federation.spbu]
+    resources: [workloads/status, workloads/finalizers]
+    verbs: [get, update, patch]
+  - apiGroups: ["", events.k8s.io]
+    resources: [events]
+    verbs: [create, patch]
+  - apiGroups: [gateway.networking.k8s.io]
+    resources: [httproutes]
+    verbs: [get, list, create, update, delete]
+  - apiGroups: [gateway.envoyproxy.io]
+    resources: [backends]
+    verbs: [get, list, create, update, delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: federation-scheduler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: federation-scheduler
+subjects:
+  - kind: ServiceAccount
+    name: scheduler
+    namespace: federation

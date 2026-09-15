@@ -1,0 +1,119 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.22.0
+  name: workloads.federation.spbu
+spec:
+  group: federation.spbu
+  names:
+    kind: Workload
+    listKind: WorkloadList
+    plural: workloads
+    shortNames:
+    - wl
+    singular: workload
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    - jsonPath: .status.cluster
+      name: Cluster
+      type: string
+    - jsonPath: .status.scheduler
+      name: Scheduler
+      type: string
+    - jsonPath: .status.decisionId
+      name: Decision
+      type: integer
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Workload — запрос на размещение экземпляра frontend'а (ADR 0015).
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              WorkloadSpec — что разместить. Hard constraints задаются аннотациями
+              federation.spbu/require-* на самом CR (ADR 0009) и копируются на Deployment.
+            properties:
+              image:
+                description: Образ frontend'а тестового сервиса; по умолчанию — образ
+                  стенда.
+                type: string
+              port:
+                description: NodePort Service'а в кластере федерации; вход шлюза (ADR
+                  0022).
+                format: int32
+                maximum: 32767
+                minimum: 30000
+                type: integer
+              replicas:
+                default: 1
+                description: Число реплик frontend'а.
+                format: int32
+                minimum: 1
+                type: integer
+            required:
+            - port
+            type: object
+          status:
+            description: WorkloadStatus — решение планировщика и состояние размещения.
+            properties:
+              cluster:
+                description: Выбранный кластер (id в каталоге).
+                type: string
+              decisionId:
+                description: id строки placement_decisions в каталоге.
+                format: int64
+                type: integer
+              host:
+                description: Хост маршрута на шлюзе.
+                type: string
+              message:
+                description: 'Причина текущей фазы: текст отказа, ошибка, «нет кандидатов».'
+                type: string
+              nodeAddress:
+                description: Адрес узла кластера, куда указывает Backend шлюза.
+                type: string
+              observedGeneration:
+                format: int64
+                type: integer
+              phase:
+                type: string
+              placedAt:
+                format: date-time
+                type: string
+              scheduler:
+                description: 'Режим планировщика, принявшего решение: meta | naive.'
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

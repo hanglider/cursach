@@ -14,6 +14,9 @@ for c in "$CONTROL" "${FEDERATION[@]}"; do
     kc "$c" -n gateway get gateway,httproute --no-headers 2>/dev/null | awk '{print "  " $1 "  " $2}'
     kc "$c" -n observability get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
     kc "$c" -n "$REGISTRY_NAMESPACE" get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
+    mode=$("$STAND/scripts/scheduler-mode.sh" 2>/dev/null || true)
+    [ -n "$mode" ] && echo "  scheduler mode: $mode"
+    kc "$c" -n "$REGISTRY_NAMESPACE" get workloads --no-headers 2>/dev/null | awk '{print "  workload/" $1 "  " $2 "  " $3}'
     if load_env 2>/dev/null; then
       registry=$(curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" "$REGISTRY_URL/api/v1/clusters" 2>/dev/null \
         | jq -r '.[] | "\(.id) \(.slo_status) err=\(.metrics.error_rate // "-") p95ms=\(.metrics.latency_p95_ms // "-") sat=\(.metrics.saturation // "-") at=\(.metrics.observed_at // "-")"' 2>/dev/null)

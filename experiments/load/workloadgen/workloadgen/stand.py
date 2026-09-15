@@ -6,6 +6,7 @@ import json
 import logging
 import subprocess
 import time
+from dataclasses import replace
 from pathlib import Path
 
 import requests
@@ -16,6 +17,12 @@ from kubernetes.client.exceptions import ApiException
 from . import spec
 
 log = logging.getLogger("workloadgen")
+
+# Режимы размещения (ADR 0027): через планировщик (CR Workload в control) или напрямую
+# в кластер — обход планировщика для дымовых тестов и сценария 3.
+MODE_SCHEDULER = "scheduler"
+MODE_DIRECT = "direct"
+MODES = (MODE_SCHEDULER, MODE_DIRECT)
 
 
 class PlacementRejected(Exception):
@@ -168,6 +175,46 @@ class Cluster:
         )["items"]
         return [i["metadata"]["name"] for i in items]
 
+    # --- CR Workload планировщика (control, ADR 0027) --------------------------
+
+    _WORKLOAD = (spec.WORKLOAD_GROUP, spec.WORKLOAD_VERSION, spec.WORKLOAD_PLURAL)
+
+    def apply_workload_cr(self, body: dict) -> None:
+        self.apply_custom(self._WORKLOAD, body)
+
+    def workload_status(self, name: str) -> dict | None:
+        group, version, plural = self._WORKLOAD
+        try:
+            obj = self.custom.get_namespaced_custom_object(
+                group, version, spec.CONTROL_NAMESPACE, plural, name
+            )
+        except ApiException as e:
+            if e.status == 404:
+                return None
+            raise
+        return obj.get("status") or {}
+
+    def delete_workload_cr(self, name: str) -> None:
+        group, version, plural = self._WORKLOAD
+        _ignore_404(
+            lambda: self.custom.delete_namespaced_custom_object(
+                group, version, spec.CONTROL_NAMESPACE, plural, name
+            )
+        )
+
+    def managed_workload_crs(self) -> list[str]:
+        sel = f"{spec.MANAGED_BY_LABEL}={spec.MANAGED_BY}"
+        group, version, plural = self._WORKLOAD
+        try:
+            items = self.custom.list_namespaced_custom_object(
+                group, version, spec.CONTROL_NAMESPACE, plural, label_selector=sel
+            )["items"]
+        except ApiException as e:
+            if e.status == 404:  # CRD не установлен: планировщика на стенде нет
+                return []
+            raise
+        return [i["metadata"]["name"] for i in items]
+
 
 def _ignore_404(fn) -> None:
     try:
@@ -193,13 +240,27 @@ def _wait_gone(fn, timeout: float = 60) -> None:
 class Stand:
     """Control-кластер + кластеры федерации."""
 
-    def __init__(self, kubeconfig_dir: Path, clusters: list[str], gateway_url: str):
+    def __init__(
+        self,
+        kubeconfig_dir: Path,
+        clusters: list[str],
+        gateway_url: str,
+        mode: str = MODE_DIRECT,
+    ):
+        if mode not in MODES:
+            raise ValueError(f"mode must be one of {MODES}, got {mode!r}")
+        self.mode = mode
         self.control = Cluster("control", kubeconfig_dir / "control.kubeconfig")
         self.federation = {c: Cluster(c, kubeconfig_dir / f"{c}.kubeconfig") for c in clusters}
         self.node_addr = {c: node_address(c) for c in clusters}
         self.gateway_url = gateway_url.rstrip("/")
 
     def place(self, w: spec.Workload, image: str = spec.IMAGE) -> None:
+        if self.mode == MODE_SCHEDULER:
+            # Кластер выбирает планировщик; исход — в status CR (wait_ready).
+            self.control.apply_workload_cr(spec.workload_cr(w, image))
+            _event("requested", workload=w.name, node_port=w.node_port)
+            return
         cl = self.federation[w.cluster]
         try:
             cl.apply_deployment(spec.deployment(w, image))
@@ -215,23 +276,66 @@ class Stand:
         _event("placed", workload=w.name, cluster=w.cluster, node_port=w.node_port)
 
     def remove(self, name: str, cluster: str | None = None) -> None:
+        if self.mode == MODE_SCHEDULER:
+            # Финализатор планировщика убирает Deployment, Service и маршрут.
+            self.control.delete_workload_cr(name)
+            _event("removed", workload=name, cluster=cluster, via="scheduler")
+            return
         self.control.delete_route(name)
         targets = [self.federation[cluster]] if cluster else self.federation.values()
         for cl in targets:
             cl.delete_workload(name)
         _event("removed", workload=name, cluster=cluster)
 
-    def wait_ready(self, w: spec.Workload, timeout: float = 90) -> bool:
-        """Готов = Deployment доступен и шлюз отдаёт 200 по хосту workload'а."""
-        cl = self.federation[w.cluster]
+    def wait_placed(self, w: spec.Workload, deadline: float) -> spec.Workload | None:
+        """Ждать решения планировщика: Placed → workload с кластером; Rejected → исключение;
+        иначе (Pending, NoCandidates, Error) — до дедлайна, затем None."""
+        last = None
+        while time.monotonic() < deadline:
+            st = self.control.workload_status(w.name) or {}
+            phase = st.get("phase")
+            if phase == "Placed":
+                _event(
+                    "placed",
+                    workload=w.name,
+                    cluster=st.get("cluster"),
+                    scheduler=st.get("scheduler"),
+                    decision_id=st.get("decisionId"),
+                    node_port=w.node_port,
+                )
+                return replace(w, cluster=st.get("cluster", ""), scheduler=st.get("scheduler", ""))
+            if phase == "Rejected":
+                _event(
+                    "rejected",
+                    workload=w.name,
+                    cluster=st.get("cluster"),
+                    message=st.get("message"),
+                )
+                raise PlacementRejected(w.name, st.get("cluster", ""), st.get("message", ""))
+            if (phase, st.get("message")) != last:
+                last = (phase, st.get("message"))
+                _event("pending", workload=w.name, phase=phase, message=st.get("message"))
+            time.sleep(1)
+        _event("not_placed", workload=w.name, phase=last[0] if last else None)
+        return None
+
+    def wait_ready(self, w: spec.Workload, timeout: float = 90) -> spec.Workload | None:
+        """Готов = Deployment доступен и шлюз отдаёт 200 по хосту workload'а.
+        В режиме scheduler сначала ждёт решения; возвращает workload с кластером."""
         deadline = time.monotonic() + timeout
+        if self.mode == MODE_SCHEDULER:
+            placed = self.wait_placed(w, deadline)
+            if placed is None:
+                return None
+            w = placed
+        cl = self.federation[w.cluster]
         while time.monotonic() < deadline:
             if cl.deployment_available(w.name) and self.probe(w.host):
                 _event("ready", workload=w.name, cluster=w.cluster)
-                return True
+                return w
             time.sleep(1)
         _event("not_ready", workload=w.name, cluster=w.cluster, timeout=timeout)
-        return False
+        return None
 
     def probe(self, host: str) -> bool:
         try:
@@ -241,10 +345,19 @@ class Stand:
         return r.status_code == 200
 
     def cleanup(self) -> list[str]:
-        """Удалить всё, что помечено как созданное генератором."""
+        """Удалить всё, что помечено как созданное генератором: CR планировщика и
+        объекты прямого режима, независимо от текущего режима."""
+        crs = set(self.control.managed_workload_crs())
+        for name in sorted(crs):
+            self.control.delete_workload_cr(name)
         names: set[str] = set(self.control.managed_routes())
         for cl in self.federation.values():
             names.update(cl.managed_workloads())
         for name in sorted(names):
-            self.remove(name)
-        return sorted(names)
+            self.control.delete_route(name)
+            for cl in self.federation.values():
+                cl.delete_workload(name)
+        removed = sorted(crs | names)
+        if removed:
+            _event("cleanup", workloads=removed)
+        return removed

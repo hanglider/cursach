@@ -7,6 +7,11 @@ from dataclasses import dataclass, field
 
 NAMESPACE = "workloads"
 GATEWAY_NAMESPACE = "gateway"
+# CR Workload планировщика в control (ADR 0027).
+CONTROL_NAMESPACE = "federation"
+WORKLOAD_GROUP = "federation.spbu"
+WORKLOAD_VERSION = "v1alpha1"
+WORKLOAD_PLURAL = "workloads"
 GATEWAY_NAME = "stand"
 DOMAIN = "fed.local"
 IMAGE = "federation/test-service:dev"
@@ -160,4 +165,21 @@ def http_route(w: Workload) -> dict:
                 }
             ],
         },
+    }
+
+
+def workload_cr(w: Workload, image: str = IMAGE) -> dict:
+    """CR Workload для планировщика (ADR 0027): требования — аннотации на CR."""
+    metadata: dict = {
+        "name": w.name,
+        "namespace": CONTROL_NAMESPACE,
+        "labels": {"federation.spbu/workload": w.name, MANAGED_BY_LABEL: MANAGED_BY},
+    }
+    if w.annotations:
+        metadata["annotations"] = dict(w.annotations)
+    return {
+        "apiVersion": f"{WORKLOAD_GROUP}/{WORKLOAD_VERSION}",
+        "kind": "Workload",
+        "metadata": metadata,
+        "spec": {"port": w.node_port, "image": image, "replicas": 1},
     }
