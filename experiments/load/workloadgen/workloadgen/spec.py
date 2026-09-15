@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 NAMESPACE = "workloads"
 GATEWAY_NAMESPACE = "gateway"
@@ -25,6 +25,9 @@ class Workload:
     cluster: str
     node_port: int
     scheduler: str = "generator"
+    # Требования federation.spbu/require-* (ADR 0009): аннотации самого Deployment'а,
+    # их проверяет Kyverno в кластере (ADR 0019).
+    annotations: dict[str, str] = field(default_factory=dict)
 
     @property
     def host(self) -> str:
@@ -54,12 +57,23 @@ def labels(w: Workload) -> dict[str, str]:
     }
 
 
+def parse_annotation(raw: str) -> tuple[str, str]:
+    """`KEY=VALUE` из командной строки."""
+    key, sep, value = raw.partition("=")
+    if not sep or not key.strip():
+        raise ValueError(f"bad annotation {raw!r}, expected KEY=VALUE")
+    return key.strip(), value.strip()
+
+
 def deployment(w: Workload, image: str = IMAGE) -> dict:
     lbl = labels(w)
+    metadata: dict = {"name": w.name, "namespace": NAMESPACE, "labels": lbl}
+    if w.annotations:
+        metadata["annotations"] = dict(w.annotations)
     return {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
-        "metadata": {"name": w.name, "namespace": NAMESPACE, "labels": lbl},
+        "metadata": metadata,
         "spec": {
             "replicas": 1,
             "selector": {"matchLabels": {"federation.spbu/workload": w.name}},

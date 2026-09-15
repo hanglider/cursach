@@ -65,6 +65,20 @@ class StaticIdentityReader:
             raise IdentityError(f"no kubeconfig for {api_endpoint}") from None
 
 
+def kubeconfig_for(directory: Path, api_endpoint: str) -> Path:
+    """kubeconfig из каталога, у которого сервер кластера — api_endpoint (ADR 0018, 0021).
+    Общий для проверки идентичности и watcher'а нарушений."""
+    wanted = api_endpoint.rstrip("/")
+    for path in sorted(directory.glob("*.kubeconfig")):
+        doc = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        servers = {
+            str(c.get("cluster", {}).get("server", "")).rstrip("/") for c in doc.get("clusters", [])
+        }
+        if wanted in servers:
+            return path
+    raise IdentityError(f"no kubeconfig for {api_endpoint} in {directory}")
+
+
 class KubeconfigIdentityReader:
     """Ищет в каталоге kubeconfig с сервером api_endpoint и читает ConfigMap через него."""
 
@@ -74,24 +88,12 @@ class KubeconfigIdentityReader:
     async def read(self, api_endpoint: str) -> Identity:
         return await asyncio.to_thread(self._read, api_endpoint)
 
-    def _kubeconfig_for(self, api_endpoint: str) -> Path:
-        wanted = api_endpoint.rstrip("/")
-        for path in sorted(self.directory.glob("*.kubeconfig")):
-            doc = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-            servers = {
-                str(c.get("cluster", {}).get("server", "")).rstrip("/")
-                for c in doc.get("clusters", [])
-            }
-            if wanted in servers:
-                return path
-        raise IdentityError(f"no kubeconfig for {api_endpoint} in {self.directory}")
-
     def _read(self, api_endpoint: str) -> Identity:
         # Импорт здесь: клиент kubernetes тяжёлый и не нужен в тестах правил.
         from kubernetes import client, config
         from kubernetes.client.exceptions import ApiException
 
-        path = self._kubeconfig_for(api_endpoint)
+        path = kubeconfig_for(self.directory, api_endpoint)
         try:
             api = config.new_client_from_config(config_file=str(path))
             cm = client.CoreV1Api(api).read_namespaced_config_map(

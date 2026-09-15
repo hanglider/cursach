@@ -1,0 +1,18 @@
+# Данные ConfigMap cluster-identity для офлайн-теста: cluster-a из stand/clusters.yaml.
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+policies:
+  - name: require-region-match
+    rules:
+      - name: region-matches-cluster
+        values:
+          identity.data.cluster-id: cluster-a
+          identity.data.region: eu-west
+          identity.data.certifications: pci-dss,iso-27001
+  - name: require-certification
+    rules:
+      - name: certifications-present
+        values:
+          identity.data.cluster-id: cluster-a
+          identity.data.region: eu-west
+          identity.data.certifications: pci-dss,iso-27001

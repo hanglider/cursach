@@ -366,7 +366,7 @@ control-кластера (ADR 0017).
 | 2 | Prometheus + Thanos sidecar в каждом кластере, Thanos Querier + Grafana в control | 2–3 | Глобальный дашборд метрик, агрегированный SLO |
 | 3 | Интеграция OpenTelemetry для трассировки между кластерами | 3–4 | Распределённые трейсы в Jaeger / Grafana Tempo |
 | 4 | Федеративный каталог (FastAPI + PostgreSQL) | 4–6 | REST API с регистрацией кластеров, SLO-статусом, audit log |
-| 5 | Набор Kyverno-политик для enforcement hard constraints | 5–6 | Политики: регион, сертификация; ресурсы — на каталоге (ADR 0019); watcher нарушений в каталоге (ADR 0025) |
+| 5 | Набор Kyverno-политик для enforcement hard constraints | 5–6 | Политики: регион, сертификация; ресурсы — на каталоге (ADR 0019); watcher нарушений в каталоге и замер сценария 3 (ADR 0026) |
 | 6 | Прототип meta-scheduler'а (Go, controller-runtime) | 6–9 | Планировщик со scoring-функцией + наивная версия |
 | 7 | DR-контроллер: обнаружение → failover → recovery | 8–10 | Автоматизированный DR-цикл с замером TTD/RTO и потерянных запросов |
 | 8 | Серия экспериментов: 3 сценария отказов (Chaos Mesh) | 10–12 | Таблицы «до/после», графики деградации и восстановления |
@@ -422,6 +422,11 @@ Kyverno-политику — например, запуск на кластер�
 - Предлагает ли корректный кластер
 - Фиксируется ли нарушение в audit log
 
+Замер (ADR 0026, раннер `experiments/policy/run.sh`): доля отклонённых
+попыток, число размещённых нарушителей (цель — 0), число записей в audit log
+и доля с корректным `eligible_clusters`, задержка фиксации нарушения от
+события Kyverno до записи в каталоге.
+
 ---
 
 ## 7. Технологический стек
@@ -433,7 +438,7 @@ Kyverno-политику — например, запуск на кластер�
 | Визуализация | Grafana | Де-факто стандарт, готовые дашборды для k8s |
 | Трассировка | OpenTelemetry + Jaeger | Vendor-neutral, CNCF, поддержка Go и Python |
 | Chaos Engineering | Chaos Mesh | CNCF-проект, k8s-native сценарии |
-| Policy Enforcement | Kyverno | YAML-native, не требует Rego — проще для старта |
+| Policy Enforcement | Kyverno 1.19, ClusterPolicy | YAML-native, не требует Rego — проще для старта; тип политик устаревший, версия закреплена (ADR 0026) |
 | Каталог | FastAPI + PostgreSQL | Лёгкий REST API, надёжная СУБД, простой деплой в k8s (ADR 0025) |
 | Meta-Scheduler | Go + controller-runtime | Официальный SDK для k8s-операторов |
 | DR-автоматизация | Go + controller-runtime | Единый язык для всех контроллеров |

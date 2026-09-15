@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 import httpx
 from fastapi import FastAPI, HTTPException, status
 
-from . import db, poller
+from . import db, poller, watcher
 from .api import clusters, decisions, violations
 from .auth import Auth
 from .config import Settings
@@ -34,7 +34,13 @@ def create_app(
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         pool = await db.create_pool(settings.database_url)
         applied = await db.migrate(pool)
-        event(log, "started", migrations_applied=applied, poll=settings.poll_enabled)
+        event(
+            log,
+            "started",
+            migrations_applied=applied,
+            poll=settings.poll_enabled,
+            watch=settings.watch_enabled,
+        )
         http = httpx.AsyncClient()
         app.state.settings = settings
         app.state.pool = pool
@@ -43,15 +49,16 @@ def create_app(
             KubeconfigIdentityReader(settings.kubeconfig_dir) if settings.identity_check else None
         )
         app.state.source = source or ThanosSource(settings.thanos_url, http)
-        task = (
-            asyncio.create_task(poller.run(pool, app.state.source, settings))
-            if settings.poll_enabled
-            else None
-        )
+        tasks: list[asyncio.Task] = []
+        if settings.poll_enabled:
+            tasks.append(asyncio.create_task(poller.run(pool, app.state.source, settings)))
+        if settings.watch_enabled:
+            violations = watcher.KubeViolationSource(settings.kubeconfig_dir)
+            tasks.append(asyncio.create_task(watcher.run(pool, violations, settings)))
         try:
             yield
         finally:
-            if task is not None:
+            for task in tasks:
                 task.cancel()
                 with contextlib.suppress(asyncio.CancelledError):
                     await task

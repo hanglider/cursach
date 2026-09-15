@@ -1,0 +1,56 @@
+# Hard constraint «сертификации» (ADR 0009, 0019, 0026): каждая сертификация из
+# аннотации federation.spbu/require-certification (список через запятую) должна
+# быть в certifications кластера из ConfigMap federation-system/cluster-identity.
+# Ресурсы без аннотации проходят. Одинаково применяется во всех кластерах федерации.
+#
+# Контракт сообщения (его разбирают watcher каталога и планировщик):
+#   federation.spbu/require-certification=<v> not satisfied: cluster <id> has certifications <c>
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-certification
+  annotations:
+    policies.kyverno.io/title: Require certification
+    policies.kyverno.io/subject: Deployment, Job
+    policies.kyverno.io/description: >-
+      Workload с аннотацией federation.spbu/require-certification размещается
+      только в кластере, у которого есть все перечисленные сертификации.
+spec:
+  background: true
+  rules:
+    - name: certifications-present
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+                - Job
+      context:
+        - name: identity
+          configMap:
+            name: cluster-identity
+            namespace: federation-system
+      preconditions:
+        all:
+          - key: '{{ request.object.metadata.annotations."federation.spbu/require-certification" || '''' }}'
+            operator: NotEquals
+            value: ""
+      validate:
+        failureAction: Enforce
+        message: >-
+          federation.spbu/require-certification={{
+          request.object.metadata.annotations."federation.spbu/require-certification" }}
+          not satisfied: cluster {{ identity.data."cluster-id" }}
+          has certifications {{ identity.data.certifications }}
+        deny:
+          conditions:
+            all:
+              # Число запрошенных сертификаций, которых нет у кластера.
+              # Внутри фильтра [?...] имена разрешаются относительно элемента, а не корня, поэтому
+              # сертификации кластера подставляются вложенным {{ }} как строковый литерал.
+              # Строки складываются через пробел (folded scalar с равным отступом): одно выражение JMESPath.
+              - key: >-
+                  {{ length(split(request.object.metadata.annotations."federation.spbu/require-certification", ',')
+                  [?!contains(split('{{ identity.data.certifications }}', ','), @)]) }}
+                operator: GreaterThan
+                value: 0

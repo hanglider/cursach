@@ -1,0 +1,42 @@
+# Kyverno в кластерах федерации (ADR 0019, 0026); ставится helm'ом из scripts/up.sh.
+# Нужны admission (Enforce), background (background: true у политик и PolicyReport
+# для существующих ресурсов) и reports; cleanup-контроллер не используется.
+# Requests урезаны под kind на одной машине; версия чарта — scripts/lib.sh.
+cleanupController:
+  enabled: false
+
+admissionController:
+  replicas: 1
+  container:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 384Mi
+
+backgroundController:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 192Mi
+
+reportsController:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 192Mi
+
+# omitEvents по умолчанию: PolicyApplied и PolicySkipped не пишутся, PolicyViolation
+# остаётся — это источник watcher'а каталога.
+features:
+  backgroundScan:
+    # Повторный скан существующих ресурсов: нарушители, созданные при недоступном
+    # Kyverno, попадают в PolicyReport (и в audit log каталога) не позже 5 минут.
+    backgroundScanInterval: 5m

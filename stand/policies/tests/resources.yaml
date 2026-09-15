@@ -1,0 +1,156 @@
+# Ресурсы для офлайн-теста политик (kyverno test). Идентичность кластера — values.yaml
+# (cluster-a: eu-west, pci-dss + iso-27001). Имена говорят об ожидаемом исходе.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plain
+  namespace: workloads
+spec:
+  selector:
+    matchLabels: {app: plain}
+  template:
+    metadata:
+      labels: {app: plain}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: region-ok
+  namespace: workloads
+  annotations:
+    federation.spbu/require-region: eu-west
+spec:
+  selector:
+    matchLabels: {app: region-ok}
+  template:
+    metadata:
+      labels: {app: region-ok}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: region-bad
+  namespace: workloads
+  annotations:
+    federation.spbu/require-region: eu-central
+spec:
+  selector:
+    matchLabels: {app: region-bad}
+  template:
+    metadata:
+      labels: {app: region-bad}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-ok
+  namespace: workloads
+  annotations:
+    federation.spbu/require-certification: pci-dss
+spec:
+  selector:
+    matchLabels: {app: cert-ok}
+  template:
+    metadata:
+      labels: {app: cert-ok}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-ok-both
+  namespace: workloads
+  annotations:
+    federation.spbu/require-certification: iso-27001,pci-dss
+spec:
+  selector:
+    matchLabels: {app: cert-ok-both}
+  template:
+    metadata:
+      labels: {app: cert-ok-both}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-bad
+  namespace: workloads
+  annotations:
+    federation.spbu/require-certification: gdpr
+spec:
+  selector:
+    matchLabels: {app: cert-bad}
+  template:
+    metadata:
+      labels: {app: cert-bad}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: both-bad
+  namespace: workloads
+  annotations:
+    federation.spbu/require-region: eu-central
+    federation.spbu/require-certification: pci-dss,gdpr
+spec:
+  selector:
+    matchLabels: {app: both-bad}
+  template:
+    metadata:
+      labels: {app: both-bad}
+    spec:
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-cert-bad
+  namespace: workloads
+  annotations:
+    federation.spbu/require-certification: pci-dss,gdpr
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: c
+          image: federation/test-service:dev
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-region-ok
+  namespace: workloads
+  annotations:
+    federation.spbu/require-region: eu-west
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: c
+          image: federation/test-service:dev

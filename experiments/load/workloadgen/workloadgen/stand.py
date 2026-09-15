@@ -18,6 +18,28 @@ from . import spec
 log = logging.getLogger("workloadgen")
 
 
+class PlacementRejected(Exception):
+    """Admission webhook кластера (Kyverno, ADR 0019) отклонил Deployment."""
+
+    def __init__(self, workload: str, cluster: str, message: str):
+        super().__init__(message)
+        self.workload = workload
+        self.cluster = cluster
+        self.message = message
+
+
+def _denial_message(e: ApiException) -> str | None:
+    """Текст отказа admission из тела ответа API-сервера; None, если это другая ошибка."""
+    if e.status not in (400, 403):
+        return None
+    try:
+        body = json.loads(e.body or "")
+        message = body.get("message", "")
+    except (TypeError, ValueError):
+        message = str(e.body or "")
+    return message if "denied the request" in message else None
+
+
 def _event(event: str, **fields: object) -> None:
     """Структурированный лог: одна JSON-строка на событие, для последующего анализа."""
     log.info(json.dumps({"ts": time.time(), "event": event, **fields}, ensure_ascii=False))
@@ -179,7 +201,15 @@ class Stand:
 
     def place(self, w: spec.Workload, image: str = spec.IMAGE) -> None:
         cl = self.federation[w.cluster]
-        cl.apply_deployment(spec.deployment(w, image))
+        try:
+            cl.apply_deployment(spec.deployment(w, image))
+        except ApiException as e:
+            denial = _denial_message(e)
+            if denial is None:
+                raise
+            # Отклонённый ресурс не существует: Service и маршрут не создаём.
+            _event("rejected", workload=w.name, cluster=w.cluster, message=denial)
+            raise PlacementRejected(w.name, w.cluster, denial) from e
         cl.apply_service(spec.service(w))
         self.control.apply_route(w, self.node_addr[w.cluster])
         _event("placed", workload=w.name, cluster=w.cluster, node_port=w.node_port)

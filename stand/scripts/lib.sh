@@ -14,6 +14,8 @@ EG_NAMESPACE=envoy-gateway-system
 REGISTRY_IMAGE=federation/registry:dev
 REGISTRY_NAMESPACE=federation                # ns управляющего контура в control (ADR 0025)
 REGISTRY_URL=${REGISTRY_URL:-http://127.0.0.1:8000}
+KYVERNO_CHART_VERSION=3.9.1                  # Kyverno v1.19.1 в кластерах федерации (ADR 0019, 0026)
+KYVERNO_NAMESPACE=kyverno
 ENV_FILE="$ROOT/.env"                        # токены каталога, в .gitignore (ADR 0018)
 ENV_VARS=(REGISTRY_TOKEN_SCHEDULER REGISTRY_TOKEN_DR_CONTROLLER REGISTRY_TOKEN_ADMIN REGISTRY_DB_PASSWORD)
 

@@ -299,6 +299,26 @@ constraints на стороне каталога, а не планировщик
 смог получить метрики. Смешение этих состояний даст ложные срабатывания
 failover при проблемах с самим Querier'ом.
 
+### 3.5. Watcher нарушений
+
+Вторая фоновая задача каталога, период **10 секунд** (ADR 0019, 0026): ловит
+размещения в обход планировщика (§4.3, сценарий 3).
+
+1. Для каждого кластера из `clusters` — через kubeconfig по `api_endpoint` —
+   прочитать события `events.k8s.io/v1` с `reason=PolicyViolation` и
+   PolicyReport'ы с `result: fail`; учитываются только Deployment и Job
+2. Отбросить уже записанное по `source_key` (`event/<cluster>/<uid>`,
+   `policyreport/<cluster>/<uid ресурса>/<policy>/<rule>`)
+3. Из сообщения политики (контракт §4.3) восстановить требования workload'а
+   и посчитать `eligible_clusters` тем же кодом, что у `POST /violations`
+4. Записать в `policy_violations` с `detected_by = kyverno`,
+   `occurred_at` — время события в Kyverno, `details.detected_at` — момент
+   записи; их разница — задержка фиксации нарушения
+
+Недоступный кластер даёт предупреждение в логе, остальные обрабатываются.
+Периодическое чтение выбрано вместо watch-потока: переподключений нет, а
+дедупликация нужна в любом случае.
+
 ---
 
 ## 4. Политики размещения
@@ -378,6 +398,14 @@ metadata:
 проверяет: реализация через `apiCall` к узлам хрупкая, а in-cluster backstop
 для ресурсов уже есть — kube-scheduler оставляет под без ресурсов в `Pending`.
 Ресурсы фильтрует только рубеж 1.
+
+Обе политики — `kyverno.io/v1` ClusterPolicy с `validate.failureAction:
+Enforce` (`stand/policies/`); Kyverno 1.19 объявил этот тип устаревшим,
+версия закреплена (ADR 0026). Сообщение об отказе машиночитаемо —
+`federation.spbu/require-<region|certification>=<v> not satisfied: cluster
+<id> ...` — по нему watcher каталога и планировщик восстанавливают
+требования отклонённого workload'а. Политики проверяются без кластера:
+`kyverno test stand/policies/tests` в `make test`.
 
 Фиксация нарушения в audit log каталога — два пути. Планировщик, получив отказ
 admission, сам пишет `POST /api/v1/violations`. Размещения в обход
@@ -567,8 +595,8 @@ backend'ом на каждый кластер и номинальными вес
 │   ├── thanos-query                  единый PromQL над всеми sidecar'ами
 │   ├── thanos-rule                   federation:*, burn-rate алерты
 │   └── grafana
-├── kind cluster "cluster-a"      федерация
-└── kind cluster "cluster-b"
+├── kind cluster "cluster-a"      федерация: workloads, Prometheus + sidecar,
+└── kind cluster "cluster-b"      Kyverno (ns kyverno) с двумя ClusterPolicy
     (cluster-c — позже, при наличии ресурсов)
 ```
 
@@ -657,7 +685,7 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 │   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
 │   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
 │   ├── registry/                ns federation, PostgreSQL, каталог (задача 4)
-│   ├── policies/                Kyverno-политики (задача 5)
+│   ├── policies/                Kyverno: values чарта, ClusterPolicy, tests/ для kyverno test
 │   └── scripts/                 up / down / status / image / render-identity
 ├── test-service/                Go, frontend + backend, один бинарь
 ├── registry/                    FastAPI + PostgreSQL
@@ -674,6 +702,7 @@ NodePort `30000 + n mod 2000` в выбранном кластере + `Backend`
 ├── experiments/
 │   ├── chaos/                   манифесты Chaos Mesh
 │   ├── load/                    steady.js, run.sh, export.sh, workloadgen/
+│   ├── policy/                  run.sh: сценарий 3, нарушение политики в обход планировщика
 │   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
 └── analysis/                    обработка результатов, графики
 ```

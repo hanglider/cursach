@@ -8,7 +8,7 @@ from typing import Any
 import asyncpg
 
 from .models import ClusterOut, DecisionOut, MetricsOut, ViolationOut
-from .rules import Candidate, Metrics
+from .rules import Candidate, Constraints, Metrics, rejection_reasons
 
 _CLUSTER_WITH_METRICS = """
 SELECT c.id, c.region, c.provider, c.api_endpoint, c.labels, c.certifications,
@@ -163,6 +163,18 @@ async def cluster_statuses(conn: asyncpg.Connection) -> dict[str, str]:
     return {r["id"]: r["slo_status"] for r in rows}
 
 
+async def cluster_endpoints(conn: asyncpg.Connection) -> dict[str, str]:
+    rows = await conn.fetch("SELECT id, api_endpoint FROM clusters ORDER BY id")
+    return {r["id"]: r["api_endpoint"] for r in rows}
+
+
+async def eligible_cluster_ids(conn: asyncpg.Connection, req: Constraints) -> list[str]:
+    """Кластеры, допустимые под hard constraints: ответ на «предлагает ли система
+    корректный кластер» из сценария 3 (ADR 0019). Та же логика, что у /clusters/eligible."""
+    rows = await list_clusters(conn)
+    return [r["id"] for r in rows if not rejection_reasons(candidate(r), req)]
+
+
 async def insert_metrics(conn: asyncpg.Connection, cluster_id: str, m: Metrics) -> None:
     await conn.execute(
         """
@@ -267,11 +279,17 @@ async def insert_violation(
     policy_name: str,
     detected_by: str,
     details: dict[str, Any] | None,
-) -> asyncpg.Record:
+    occurred_at: datetime | None = None,
+    source_key: str | None = None,
+) -> asyncpg.Record | None:
+    """occurred_at по умолчанию — now(); watcher передаёт время из Kyverno (ADR 0026).
+    Возвращает None, если запись с таким source_key уже есть (дедупликация)."""
     return await conn.fetchrow(
         """
-        INSERT INTO policy_violations (workload_ref, cluster_id, policy_name, detected_by, details)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO policy_violations
+            (occurred_at, workload_ref, cluster_id, policy_name, detected_by, details, source_key)
+        VALUES (COALESCE($6::timestamptz, now()), $1, $2, $3, $4, $5, $7)
+        ON CONFLICT (source_key) WHERE source_key IS NOT NULL DO NOTHING
         RETURNING *
         """,
         workload_ref,
@@ -279,7 +297,16 @@ async def insert_violation(
         policy_name,
         detected_by,
         details,
+        occurred_at,
+        source_key,
     )
+
+
+async def known_source_keys(conn: asyncpg.Connection, keys: list[str]) -> set[str]:
+    rows = await conn.fetch(
+        "SELECT source_key FROM policy_violations WHERE source_key = ANY($1::text[])", keys
+    )
+    return {r["source_key"] for r in rows}
 
 
 async def list_violations(
@@ -288,6 +315,7 @@ async def list_violations(
     since: datetime | None,
     until: datetime | None,
     cluster_id: str | None,
+    workload_ref: str | None = None,
     limit: int,
 ) -> list[asyncpg.Record]:
     return await conn.fetch(
@@ -296,11 +324,13 @@ async def list_violations(
         WHERE ($1::timestamptz IS NULL OR occurred_at >= $1)
           AND ($2::timestamptz IS NULL OR occurred_at <= $2)
           AND ($3::text IS NULL OR cluster_id = $3)
+          AND ($4::text IS NULL OR workload_ref = $4)
         ORDER BY occurred_at, id
-        LIMIT $4
+        LIMIT $5
         """,
         since,
         until,
         cluster_id,
+        workload_ref,
         limit,
     )

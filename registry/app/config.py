@@ -24,6 +24,9 @@ class Settings:
     poll_enabled: bool = True
     identity_check: bool = True  # проверка ConfigMap cluster-identity при регистрации
     kubeconfig_dir: Path = Path("/etc/registry/kubeconfig")
+    # Watcher нарушений Kyverno (ADR 0019, 0026): период чтения событий и PolicyReport'ов.
+    watch_enabled: bool = True
+    watch_interval_s: float = 10.0
     # Пороги статуса degraded (ADR 0025): error rate из ADR 0007, latency budget из spec §1.3.
     error_rate_threshold: float = 0.05
     latency_budget_ms: float = 200.0
@@ -45,6 +48,8 @@ class Settings:
             poll_enabled=_bool(env.get("REGISTRY_POLL_ENABLED", "true")),
             identity_check=_bool(env.get("REGISTRY_IDENTITY_CHECK", "true")),
             kubeconfig_dir=Path(env.get("REGISTRY_KUBECONFIG_DIR", str(cls.kubeconfig_dir))),
+            watch_enabled=_bool(env.get("REGISTRY_WATCH_ENABLED", "true")),
+            watch_interval_s=float(env.get("REGISTRY_WATCH_INTERVAL_S", cls.watch_interval_s)),
             error_rate_threshold=float(
                 env.get("REGISTRY_ERROR_RATE_THRESHOLD", cls.error_rate_threshold)
             ),

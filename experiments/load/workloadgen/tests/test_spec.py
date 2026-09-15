@@ -36,3 +36,27 @@ def test_objects_are_consistent():
     env = {e["name"]: e["value"] for e in d["spec"]["template"]["spec"]["containers"][0]["env"]}
     assert env["WORKLOAD"] == "w-3"
     assert env["BACKEND_URL"] == "http://backend.workloads.svc:8080"
+
+
+def test_annotations_land_on_deployment_metadata() -> None:
+    w = spec.Workload(
+        "pv-1", "cluster-b", 30001, annotations={"federation.spbu/require-region": "eu-west"}
+    )
+    d = spec.deployment(w)
+    assert d["metadata"]["annotations"] == {"federation.spbu/require-region": "eu-west"}
+    # Аннотации — на ресурсе, не на шаблоне пода (ADR 0009).
+    assert "annotations" not in d["spec"]["template"]["metadata"]
+    assert (
+        "annotations" not in spec.deployment(spec.Workload("w-1", "cluster-a", 30001))["metadata"]
+    )
+
+
+def test_parse_annotation() -> None:
+    assert spec.parse_annotation("a/b=c,d") == ("a/b", "c,d")
+    assert spec.parse_annotation(" k = v ") == ("k", "v")
+    for bad in ("novalue", "=v"):
+        try:
+            spec.parse_annotation(bad)
+        except ValueError:
+            continue
+        raise AssertionError(bad)

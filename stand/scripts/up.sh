@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Поднять стенд с нуля: control + федерация, образ, backend'ы, шлюз, дымовой тест.
+# Поднять стенд с нуля: control + федерация, образ, backend'ы, Kyverno, шлюз, наблюдаемость,
+# каталог, дымовые тесты.
 # Идемпотентен: уже существующие кластеры не пересоздаются, манифесты применяются повторно.
 # shellcheck source=lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -58,6 +59,30 @@ for c in "${FEDERATION[@]}"; do
   kc "$c" -n observability rollout status deployment/prometheus --timeout=180s >/dev/null
   kc "$c" -n observability exec deploy/prometheus -c prometheus -- \
     wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
+done
+
+# --- 3c. Федерация: Kyverno + политики hard constraints (ADR 0019, 0026) ----
+pids=()
+for c in "${FEDERATION[@]}"; do
+  log "$c: Kyverno (чарт $KYVERNO_CHART_VERSION)"
+  helm upgrade --install kyverno oci://ghcr.io/kyverno/charts/kyverno --version "$KYVERNO_CHART_VERSION" \
+    --kubeconfig "$KUBECONFIG_DIR/$c.kubeconfig" -n "$KYVERNO_NAMESPACE" --create-namespace \
+    -f "$STAND/policies/kyverno-values.yaml" --wait --timeout 5m >"$KUBECONFIG_DIR/$c.kyverno.log" 2>&1 &
+  pids+=($!)
+done
+for p in "${pids[@]:-}"; do
+  [ -z "$p" ] && continue
+  wait "$p" || { cat "$KUBECONFIG_DIR"/*.kyverno.log >&2; die "helm install kyverno не удался"; }
+done
+for c in "${FEDERATION[@]}"; do
+  # Webhook валидации политик поднимается позже подов: apply с повтором.
+  for i in $(seq 1 15); do
+    kc "$c" apply -f "$STAND/policies/require-region-match.yaml" \
+      -f "$STAND/policies/require-certification.yaml" >/dev/null 2>&1 && break
+    [ "$i" -eq 15 ] && die "$c: не удалось применить политики Kyverno"
+    sleep 2
+  done
+  kc "$c" wait --for=condition=Ready clusterpolicy --all --timeout=120s >/dev/null
 done
 
 # --- 4. Control: Envoy Gateway + Gateway -----------------------------------
@@ -163,6 +188,37 @@ for _ in $(seq 1 45); do
 done
 [ "$with_metrics" -ge "${#FEDERATION[@]}" ] \
   || die "каталог: метрики есть у $with_metrics кластеров из ${#FEDERATION[@]}"
+
+# Kyverno: workload с требованием сертификации, которой нет у кластера, отклоняется
+# (код 3 у генератора) и попадает в audit log каталога через watcher (ADR 0019, 0026).
+deny_cluster=$(yq -r '.clusters[] | select((.certifications // []) | contains(["pci-dss"]) | not) | .id' \
+  "$STAND/clusters.yaml" | head -1)
+if [ -n "$deny_cluster" ]; then
+  log "дымовой тест: Kyverno отклоняет pci-dss workload в $deny_cluster, каталог фиксирует"
+  set +e
+  $GEN place --name smoke-deny --cluster "$deny_cluster" --port 31997 \
+    --annotate federation.spbu/require-certification=pci-dss >"$KUBECONFIG_DIR/smoke-deny.log" 2>&1
+  rc=$?
+  set -e
+  [ "$rc" -eq 3 ] || { cat "$KUBECONFIG_DIR/smoke-deny.log" >&2; die "дымовой тест: ожидался отказ Kyverno (код 3), код $rc"; }
+  if kc "$deny_cluster" -n workloads get deployment smoke-deny >/dev/null 2>&1; then
+    die "дымовой тест: Deployment smoke-deny существует в $deny_cluster"
+  fi
+  expected_eligible=$(yq -o=json -I=0 '[.clusters[] | select((.certifications // []) | contains(["pci-dss"])) | .id] | sort' \
+    "$STAND/clusters.yaml")
+  eligible=null
+  for _ in $(seq 1 30); do
+    eligible=$(curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
+      "$REGISTRY_URL/api/v1/violations?workload_ref=workloads/smoke-deny&cluster_id=$deny_cluster" \
+      | jq -c 'last | .details.eligible_clusters | sort' 2>/dev/null || echo null)
+    [ "$eligible" = "$expected_eligible" ] && break
+    sleep 2
+  done
+  [ "$eligible" = "$expected_eligible" ] \
+    || die "дымовой тест: нарушение smoke-deny не в каталоге (eligible_clusters=$eligible, ожидалось $expected_eligible)"
+else
+  warn "в clusters.yaml нет кластера без pci-dss: проверка отказа Kyverno пропущена"
+fi
 
 log "стенд готов"
 "$STAND/scripts/status.sh"

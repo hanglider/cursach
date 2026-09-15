@@ -26,5 +26,9 @@ for c in "$CONTROL" "${FEDERATION[@]}"; do
     kc "$c" -n federation-system get configmap cluster-identity -o jsonpath='  identity: {.data}{"\n"}' 2>/dev/null
     kc "$c" -n workloads get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
     kc "$c" -n observability get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
+    kc "$c" -n "$KYVERNO_NAMESPACE" get pods --no-headers 2>/dev/null | awk '{print "  " $1 "  " $3}'
+    kc "$c" get clusterpolicy --no-headers \
+      -o custom-columns='NAME:.metadata.name,READY:.status.conditions[?(@.type=="Ready")].status' 2>/dev/null \
+      | awk '{print "  clusterpolicy/" $1 "  ready=" $2}'
   fi
 done

@@ -12,8 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from .. import repo
 from ..auth import ADMIN, SCHEDULER, require
 from ..log import event
-from ..models import Requirements, ViolationIn, ViolationOut
-from ..rules import Constraints, rejection_reasons
+from ..models import ViolationIn, ViolationOut
 
 log = logging.getLogger("registry.api")
 router = APIRouter(prefix="/api/v1/violations", tags=["violations"])
@@ -22,26 +21,15 @@ Scheduler = Annotated[str, Depends(require(SCHEDULER))]
 Admin = Annotated[str, Depends(require(ADMIN))]
 
 
-async def eligible_for(conn: asyncpg.Connection, req: Requirements) -> list[str]:
-    """Допустимые кластеры для требований отклонённого workload'а: ответ на
-    «предлагает ли система корректный кластер» из сценария 3."""
-    constraints = Constraints(
-        region=req.region or None,
-        certifications=tuple(req.certifications),
-        min_cpu=req.min_cpu,
-        min_memory_gi=req.min_memory_gi,
-    )
-    rows = await repo.list_clusters(conn)
-    return [r["id"] for r in rows if not rejection_reasons(repo.candidate(r), constraints)]
-
-
 @router.post("", response_model=ViolationOut, status_code=status.HTTP_201_CREATED)
 async def record_violation(body: ViolationIn, request: Request, _: Scheduler) -> ViolationOut:
     details = dict(body.details or {})
     async with request.app.state.pool.acquire() as conn:
         if body.requirements is not None:
             details["requirements"] = body.requirements.model_dump()
-            details["eligible_clusters"] = await eligible_for(conn, body.requirements)
+            details["eligible_clusters"] = await repo.eligible_cluster_ids(
+                conn, body.requirements.to_constraints()
+            )
         try:
             row = await repo.insert_violation(
                 conn,
@@ -75,10 +63,16 @@ async def list_violations(
     since: Annotated[datetime | None, Query(alias="from")] = None,
     until: Annotated[datetime | None, Query(alias="to")] = None,
     cluster_id: str | None = None,
+    workload_ref: str | None = None,
     limit: Annotated[int, Query(ge=1, le=10000)] = 1000,
 ) -> list[ViolationOut]:
     async with request.app.state.pool.acquire() as conn:
         rows = await repo.list_violations(
-            conn, since=since, until=until, cluster_id=cluster_id, limit=limit
+            conn,
+            since=since,
+            until=until,
+            cluster_id=cluster_id,
+            workload_ref=workload_ref,
+            limit=limit,
         )
     return [repo.violation_out(r) for r in rows]

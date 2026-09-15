@@ -24,10 +24,11 @@ observability занимает около 2.5 GB.
 | `control` | ns `federation`: PostgreSQL + каталог `registry`, NodePort 30800 → хост 8000 | 4 |
 | `cluster-a`, `cluster-b` | ns `federation-system` с ConfigMap `cluster-identity`; ns `workloads` с `backend`, долгоживущим `app` и frontend'ами потока | 1 |
 | `cluster-a`, `cluster-b` | ns `observability`: Prometheus + Thanos sidecar (StoreAPI на NodePort 30901) | 2 |
-| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`) | 1, 2 |
+| `cluster-a`, `cluster-b` | ns `kyverno`: Kyverno (admission, background, reports); ClusterPolicy `require-region-match`, `require-certification` | 5 |
+| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннер сценария 3 (`experiments/policy/`) | 1, 2, 5 |
 
-Kyverno — задача 5; Chaos Mesh — задача 8. Планировщик и DR-контроллер
-появятся в `control/federation` по мере задач 6, 7.
+Chaos Mesh — задача 8. Планировщик и DR-контроллер появятся в
+`control/federation` по мере задач 6, 7.
 
 ## Порты на хосте
 
@@ -90,6 +91,29 @@ open http://127.0.0.1:8000/docs
 `control/federation` вместе с PVC `postgres-data` и повтори `make stand-up`:
 пароль БД нельзя сменить без пересоздания данных.
 
+## Политики
+
+Kyverno (`policies/`, ADR 0019, 0026) стоит в каждом кластере федерации;
+две ClusterPolicy сравнивают аннотации `federation.spbu/require-region` и
+`federation.spbu/require-certification` на Deployment и Job с ConfigMap
+`cluster-identity`. Ресурсы без аннотаций проходят. Отказ admission виден
+как событие `PolicyViolation` в ns `default` кластера; каталог читает такие
+события и PolicyReport'ы раз в 10 с и пишет их в `policy_violations` с
+подсказкой допустимых кластеров.
+
+```bash
+GEN="uv run --quiet --project experiments/load/workloadgen workloadgen"
+$GEN place --name pv-demo --cluster cluster-b --port 31950 \
+  --annotate federation.spbu/require-certification=pci-dss   # код 3: отклонено
+kubectl --kubeconfig stand/kubeconfig/cluster-b.kubeconfig get events.events.k8s.io -A \
+  --field-selector reason=PolicyViolation
+source .env
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
+  'http://127.0.0.1:8000/api/v1/violations?workload_ref=workloads/pv-demo' | jq
+make policy-run RUN=<id> ATTEMPTS=5      # сценарий 3 целиком, summary.json в результатах
+kyverno test policies/tests              # политики без кластера
+```
+
 ## Как устроен путь запроса
 
 ```
@@ -133,6 +157,7 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | Prometheus | v3.14.0 | `stand/observability/federation/prometheus.yaml` |
 | Thanos | v0.42.4 | там же, `control/thanos-query.yaml`, `control/thanos-rule.yaml` |
 | Grafana | 13.2.1 | `stand/observability/control/grafana.yaml` |
+| Kyverno | v1.19.1, чарт 3.9.1 | `stand/scripts/lib.sh`, values — `stand/policies/kyverno-values.yaml` |
 | PostgreSQL | 17.11-alpine | `stand/registry/postgres.yaml` |
 | registry | образ `federation/registry:dev`, собирается локально | `registry/` |
 | test-service | образ `federation/test-service:dev`, собирается локально | `test-service/` |
@@ -160,3 +185,12 @@ DR-контроллера и цель его пробы; сценарий 1 из
 - Кластеры в каталоге `unknown`: `kubectl -n federation logs deploy/registry`
   в `control`, событие `metrics_fetch_failed` означает, что Querier не
   отвечает или не видит store'ы федерации.
+- Политика не `Ready` (`kubectl get clusterpolicy`): смотри
+  `kubectl -n kyverno logs deploy/kyverno-admission-controller`; ConfigMap
+  `cluster-identity` должен существовать до применения политик.
+- Отказ есть, а записи в каталоге нет: в логах каталога
+  `violations_fetch_failed` — kubeconfig в Secret `federation-kubeconfigs`
+  устарел (лечится `stand-up`); `watch=false` в событии `started` —
+  watcher выключен переменной `REGISTRY_WATCH_ENABLED`.
+- Создание Deployment падает с `failed calling webhook`: Kyverno в кластере
+  не отвечает, это не нарушение политики; `kubectl -n kyverno get pods`.

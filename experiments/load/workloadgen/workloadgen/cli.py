@@ -1,6 +1,7 @@
 """CLI генератора.
 
-workloadgen place  --name smoke --cluster cluster-a --port 31999 [--wait]
+workloadgen place  --name smoke --cluster cluster-a --port 31999 [--wait] [--annotate K=V ...]
+                   код выхода 3 — размещение отклонил admission webhook кластера (Kyverno)
 workloadgen remove --name smoke
 workloadgen run    [--interval 30] [--ttl 180] [--duration 0] [--listen 127.0.0.1:9797]
 workloadgen cleanup
@@ -18,7 +19,9 @@ from pathlib import Path
 
 from . import spec
 from .live import LiveSet, serve
-from .stand import Stand, federation_clusters
+from .stand import PlacementRejected, Stand, federation_clusters
+
+EXIT_REJECTED = 3
 
 
 def _root() -> Path:
@@ -37,8 +40,15 @@ def _stand(args: argparse.Namespace) -> Stand:
 
 def cmd_place(args: argparse.Namespace) -> int:
     st = _stand(args)
-    w = spec.Workload(spec.validate_name(args.name), args.cluster, args.port, args.scheduler)
-    st.place(w, args.image)
+    annotations = dict(spec.parse_annotation(a) for a in args.annotate)
+    w = spec.Workload(
+        spec.validate_name(args.name), args.cluster, args.port, args.scheduler, annotations
+    )
+    try:
+        st.place(w, args.image)
+    except PlacementRejected as e:
+        print(f"rejected by {e.cluster}: {e.message}", file=sys.stderr)
+        return EXIT_REJECTED
     if args.wait and not st.wait_ready(w, args.timeout):
         return 1
     return 0
@@ -89,9 +99,12 @@ def cmd_run(args: argparse.Namespace) -> int:
                 n += 1
                 cluster = clusters[(n - 1) % len(clusters)]
                 w = spec.Workload(f"w-{n}", cluster, spec.node_port_for(n))
-                st.place(w, args.image)
-                placed[w.name] = (w, time.monotonic())
                 next_place += args.interval
+                try:
+                    st.place(w, args.image)
+                except PlacementRejected:
+                    continue  # событие rejected уже в логе; поток не останавливается
+                placed[w.name] = (w, time.monotonic())
                 if st.wait_ready(w, min(args.timeout, args.interval)):
                     live.add(w.host)
             for name, (w, t0) in list(placed.items()):
@@ -124,6 +137,13 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument("--cluster", required=True)
     sp.add_argument("--port", type=int, required=True)
     sp.add_argument("--scheduler", default="manual")
+    sp.add_argument(
+        "--annotate",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="аннотация Deployment'а, например federation.spbu/require-certification=pci-dss",
+    )
     sp.add_argument("--wait", action="store_true")
     sp.set_defaults(fn=cmd_place)
 

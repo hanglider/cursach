@@ -1,0 +1,56 @@
+# Офлайн-тест политик: `kyverno test stand/policies/tests` (make test). Кластер не нужен:
+# ConfigMap идентичности подставляется из values.yaml.
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: federation-hard-constraints
+policies:
+  - ../require-region-match.yaml
+  - ../require-certification.yaml
+resources:
+  - resources.yaml
+variables: values.yaml
+results:
+  # Без аннотации требование отсутствует: правило пропускается.
+  - policy: require-region-match
+    rule: region-matches-cluster
+    kind: Deployment
+    resources: [plain, cert-ok, cert-ok-both, cert-bad]
+    result: skip
+  - policy: require-certification
+    rule: certifications-present
+    kind: Deployment
+    resources: [plain, region-ok, region-bad]
+    result: skip
+  # Регион.
+  - policy: require-region-match
+    rule: region-matches-cluster
+    kind: Deployment
+    resources: [region-ok]
+    result: pass
+  - policy: require-region-match
+    rule: region-matches-cluster
+    kind: Deployment
+    resources: [region-bad, both-bad]
+    result: fail
+  - policy: require-region-match
+    rule: region-matches-cluster
+    kind: Job
+    resources: [job-region-ok]
+    result: pass
+  # Сертификации: требуются все перечисленные.
+  - policy: require-certification
+    rule: certifications-present
+    kind: Deployment
+    resources: [cert-ok, cert-ok-both]
+    result: pass
+  - policy: require-certification
+    rule: certifications-present
+    kind: Deployment
+    resources: [cert-bad, both-bad]
+    result: fail
+  - policy: require-certification
+    rule: certifications-present
+    kind: Job
+    resources: [job-cert-bad]
+    result: fail

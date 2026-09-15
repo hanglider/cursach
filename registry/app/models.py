@@ -7,6 +7,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .rules import Constraints
+
 SloStatus = Literal["healthy", "degraded", "down", "unknown"]
 SchedulerKind = Literal["meta", "naive"]
 Outcome = Literal["placed", "rejected", "no_candidates"]
@@ -115,6 +117,14 @@ class Requirements(BaseModel):
     min_cpu: float | None = None
     min_memory_gi: float | None = None
 
+    def to_constraints(self) -> Constraints:
+        return Constraints(
+            region=self.region or None,
+            certifications=tuple(self.certifications),
+            min_cpu=self.min_cpu,
+            min_memory_gi=self.min_memory_gi,
+        )
+
 
 class ViolationIn(BaseModel):
     workload_ref: str = Field(min_length=1)
@@ -133,3 +143,4 @@ class ViolationOut(BaseModel):
     policy_name: str
     detected_by: DetectedBy
     details: dict[str, Any] | None
+    source_key: str | None = None  # у записей watcher'а (ADR 0026); None у планировщика

@@ -21,6 +21,9 @@ brew "uv"                  # registry/: виртуальное окружени�
 # ---- Нагрузка ----
 brew "k6"                  # генератор нагрузки, experiments/load/
 
+# ---- Политики ----
+brew "kyverno"             # CLI: офлайн-тест политик stand/policies/tests (make test), kyverno jp
+
 # ---- Линтеры: .claude/hooks/lint.sh и make lint ----
 brew "golangci-lint"
 brew "ruff"

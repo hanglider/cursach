@@ -21,8 +21,11 @@ uv run ruff check . && uv run ruff format --check .
 | `REGISTRY_POLL_ENABLED` | `true` | выключить опрос (тесты, отладка) |
 | `REGISTRY_IDENTITY_CHECK` | `true` | проверять ConfigMap `cluster-identity` при регистрации |
 | `REGISTRY_KUBECONFIG_DIR` | `/etc/registry/kubeconfig` | `<id>.kubeconfig` кластеров федерации |
+| `REGISTRY_WATCH_ENABLED`, `REGISTRY_WATCH_INTERVAL_S` | `true`, `10` | watcher нарушений Kyverno (ADR 0026) |
 | `REGISTRY_ERROR_RATE_THRESHOLD`, `REGISTRY_LATENCY_BUDGET_MS` | `0.05`, `200` | пороги `degraded` |
 
 Структура: `app/rules.py` — hard constraints и статус как чистые функции;
-`app/poller.py` — цикл опроса; `app/api/` — эндпоинты; `migrations/` —
-SQL, применяется при старте. OpenAPI: `http://127.0.0.1:8000/docs` на стенде.
+`app/poller.py` — цикл опроса Thanos; `app/watcher.py` — разбор событий и
+PolicyReport'ов Kyverno и запись нарушений; `app/api/` — эндпоинты;
+`migrations/` — SQL, применяется при старте. OpenAPI:
+`http://127.0.0.1:8000/docs` на стенде.

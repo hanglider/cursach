@@ -1,0 +1,50 @@
+# Hard constraint «регион» (ADR 0009, 0019, 0026): Deployment или Job с аннотацией
+# federation.spbu/require-region допускается только в кластере с таким регионом.
+# Регион кластера — ConfigMap federation-system/cluster-identity. Ресурсы без
+# аннотации проходят. Одинаково применяется во всех кластерах федерации.
+#
+# Контракт сообщения (его разбирают watcher каталога и планировщик):
+#   federation.spbu/require-region=<v> not satisfied: cluster <id> is in region <r>
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-region-match
+  annotations:
+    policies.kyverno.io/title: Require region match
+    policies.kyverno.io/subject: Deployment, Job
+    policies.kyverno.io/description: >-
+      Workload с аннотацией federation.spbu/require-region размещается только
+      в кластере, регион которого совпадает с требуемым.
+spec:
+  background: true
+  rules:
+    - name: region-matches-cluster
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+                - Job
+      context:
+        - name: identity
+          configMap:
+            name: cluster-identity
+            namespace: federation-system
+      preconditions:
+        all:
+          - key: '{{ request.object.metadata.annotations."federation.spbu/require-region" || '''' }}'
+            operator: NotEquals
+            value: ""
+      validate:
+        failureAction: Enforce
+        message: >-
+          federation.spbu/require-region={{
+          request.object.metadata.annotations."federation.spbu/require-region" }}
+          not satisfied: cluster {{ identity.data."cluster-id" }}
+          is in region {{ identity.data.region }}
+        deny:
+          conditions:
+            all:
+              - key: '{{ request.object.metadata.annotations."federation.spbu/require-region" }}'
+                operator: NotEquals
+                value: '{{ identity.data.region }}'

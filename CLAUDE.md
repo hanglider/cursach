@@ -51,6 +51,7 @@ make stand-status    # состояние стенда
 make stand-down      # снести стенд (только вручную)
 make image           # пересобрать образ тестового сервиса и загрузить в кластеры
 make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6
+make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения политики в обход планировщика
 make lint            # линт всего проекта
 make test            # тесты
 ```

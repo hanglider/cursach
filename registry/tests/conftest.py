@@ -46,7 +46,9 @@ def database_url() -> Iterator[str]:
 
 @pytest.fixture
 def settings(database_url: str) -> Settings:
-    return Settings(database_url=database_url, tokens=TOKENS, poll_enabled=False)
+    return Settings(
+        database_url=database_url, tokens=TOKENS, poll_enabled=False, watch_enabled=False
+    )
 
 
 @pytest.fixture
