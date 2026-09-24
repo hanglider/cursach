@@ -1,11 +1,18 @@
 // Постоянная нагрузка на стенд (ADR 0008): RPS запросов в секунду, равномерно
 // по живым workload'ам (ADR 0015). Список живых отдаёт генератор по HTTP.
 // TARGET_HOST=app.fed.local — весь трафик в один хост, без генератора: сценарий 1,
-// долгоживущий app (ADR 0011).
+// долгоживущий app (ADR 0011). BACKGROUND_RPS>0 — отдельный сценарий k6 с фоновым
+// трафиком в BACKGROUND_HOST (по умолчанию app.fed.local): у каждого кластера есть SLI
+// независимо от того, куда размещён поток (сценарий 2, ADR 0030).
 //
 //   k6 run experiments/load/steady.js
 //   DURATION=3m RPS=50 GATEWAY_URL=http://127.0.0.1:8080 LIVE_URL=http://127.0.0.1:9797/live
 //   SUMMARY_PATH=experiments/results/<run>/k6-summary.json TARGET_HOST=app.fed.local
+//   BACKGROUND_RPS=5 BACKGROUND_HOST=app.fed.local
+//
+// Запрос в workload потока помечен тегом target_cluster — кластером, куда его
+// разместили (из списка живых генератора): клиентский ряд раскладывается по кластерам
+// без тега на каждый хост (ADR 0031).
 import http from 'k6/http';
 import { sleep } from 'k6';
 
@@ -14,34 +21,55 @@ const LIVE = __ENV.LIVE_URL || 'http://127.0.0.1:9797/live';
 const RPS = Number(__ENV.RPS || 50);
 const TARGET_HOST = __ENV.TARGET_HOST || '';
 const DURATION = __ENV.DURATION || '3m';
+const BACKGROUND_RPS = Number(__ENV.BACKGROUND_RPS || 0);
+const BACKGROUND_HOST = __ENV.BACKGROUND_HOST || 'app.fed.local';
 // Должно быть заметно меньше --drain генератора: иначе VU с устаревшим списком
 // шлёт запросы в уже удалённый маршрут и получает ложные ошибки.
 const LIVE_REFRESH_MS = 2000;
 
+const scenarios = {
+  steady: {
+    executor: 'constant-arrival-rate',
+    rate: RPS,
+    timeUnit: '1s',
+    duration: DURATION,
+    preAllocatedVUs: 20,
+    maxVUs: 200,
+  },
+};
+// Пороги только по трафику в workload'ы: запросы к списку живых и фон помечены
+// другим тегом и в SLI не входят.
+const thresholds = {
+  // Порог на http_reqs нужен только чтобы k6 включил суб-метрику в сводку.
+  'http_reqs{kind:workload}': ['count>0'],
+  'http_req_failed{kind:workload}': ['rate<0.01'],
+  'http_req_duration{kind:workload}': ['p(95)<200'],
+};
+if (BACKGROUND_RPS > 0) {
+  scenarios.background = {
+    executor: 'constant-arrival-rate',
+    exec: 'background',
+    rate: BACKGROUND_RPS,
+    timeUnit: '1s',
+    duration: DURATION,
+    preAllocatedVUs: 5,
+    maxVUs: 50,
+  };
+  // Без порога суб-метрики фона не попадут в сводку; сам порог ни на что не влияет.
+  thresholds['http_reqs{kind:background}'] = ['count>=0'];
+  thresholds['http_req_failed{kind:background}'] = ['rate<=1'];
+  thresholds['http_req_duration{kind:background}'] = ['p(95)>=0'];
+}
+
 export const options = {
-  scenarios: {
-    steady: {
-      executor: 'constant-arrival-rate',
-      rate: RPS,
-      timeUnit: '1s',
-      duration: DURATION,
-      preAllocatedVUs: 20,
-      maxVUs: 200,
-    },
-  },
-  // Пороги только по трафику в workload'ы: запросы к списку живых помечены
-  // другим тегом и в SLI не входят.
-  thresholds: {
-    // Порог на http_reqs нужен только чтобы k6 включил суб-метрику в сводку.
-    'http_reqs{kind:workload}': ['count>0'],
-    'http_req_failed{kind:workload}': ['rate<0.01'],
-    'http_req_duration{kind:workload}': ['p(95)<200'],
-  },
+  scenarios,
+  thresholds,
   summaryTrendStats: ['avg', 'min', 'med', 'p(90)', 'p(95)', 'p(99)', 'max'],
 };
 
 // Состояние на VU: у каждого VU свой рантайм, поэтому кэш списка — на VU.
 let hosts = [];
+let clusters = {};
 let fetchedAt = 0;
 
 function liveHosts() {
@@ -53,7 +81,9 @@ function liveHosts() {
     const r = http.get(LIVE, { tags: { kind: 'live-list' }, timeout: '2s' });
     if (r.status === 200) {
       try {
-        hosts = JSON.parse(r.body).hosts || [];
+        const body = JSON.parse(r.body);
+        hosts = body.hosts || [];
+        clusters = body.clusters || {};
       } catch (e) {
         // список не разобрался — оставляем прежний
       }
@@ -70,15 +100,28 @@ export default function () {
     return;
   }
   const host = h[Math.floor(Math.random() * h.length)];
+  const tags = { kind: 'workload' };
+  if (clusters[host]) {
+    tags.target_cluster = clusters[host];
+  }
   const r = http.get(GATEWAY + '/', {
     headers: { Host: host },
-    tags: { kind: 'workload' },
+    tags,
     timeout: '5s',
   });
   if (r.status !== 200) {
     // В k6.log прогона: когда и какой workload отвечал ошибкой.
     console.warn(`${new Date().toISOString()} ${host} status=${r.status} err=${r.error || ''}`);
   }
+}
+
+// Фон (ADR 0030): кластер выбирает шлюз по весам маршрута, поэтому target_cluster нет.
+export function background() {
+  http.get(GATEWAY + '/', {
+    headers: { Host: BACKGROUND_HOST },
+    tags: { kind: 'background' },
+    timeout: '5s',
+  });
 }
 
 export function handleSummary(data) {
@@ -96,6 +139,8 @@ function textSummary(data) {
   const failed = pick('http_req_failed{kind:workload}');
   const dur = pick('http_req_duration{kind:workload}');
   const reqs = pick('http_reqs{kind:workload}');
+  const bgReqs = pick('http_reqs{kind:background}');
+  const bgFailed = pick('http_req_failed{kind:background}');
   const lines = [
     '',
     `workload requests: ${reqs.count || 0} (${(reqs.rate || 0).toFixed(1)}/s)`,
@@ -105,6 +150,13 @@ function textSummary(data) {
     `dropped iterations: ${(pick('dropped_iterations').count || 0)}`,
     '',
   ];
+  if (bgReqs.count) {
+    lines.splice(
+      lines.length - 1,
+      0,
+      `background:        ${bgReqs.count} requests, error rate ${((bgFailed.rate || 0) * 100).toFixed(3)}%`,
+    );
+  }
   for (const [name, t] of Object.entries(data.metrics)) {
     if (t.thresholds) {
       for (const [expr, res] of Object.entries(t.thresholds)) {

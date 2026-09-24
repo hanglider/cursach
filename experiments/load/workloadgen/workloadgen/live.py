@@ -12,26 +12,31 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
 class LiveSet:
+    """Живые хосты в порядке добавления и кластер каждого: k6 помечает запрос
+    кластером назначения, чтобы клиентский ряд раскладывался по кластерам (ADR 0031)."""
+
     def __init__(self) -> None:
-        self._hosts: list[str] = []
+        self._hosts: dict[str, str] = {}
         self._lock = threading.Lock()
         self.updated = time.time()
 
-    def add(self, host: str) -> None:
+    def add(self, host: str, cluster: str = "") -> None:
         with self._lock:
-            if host not in self._hosts:
-                self._hosts.append(host)
+            self._hosts[host] = cluster
             self.updated = time.time()
 
     def discard(self, host: str) -> None:
         with self._lock:
-            if host in self._hosts:
-                self._hosts.remove(host)
+            self._hosts.pop(host, None)
             self.updated = time.time()
 
     def snapshot(self) -> list[str]:
         with self._lock:
             return list(self._hosts)
+
+    def clusters(self) -> dict[str, str]:
+        with self._lock:
+            return {h: c for h, c in self._hosts.items() if c}
 
 
 def serve(live: LiveSet, listen: str) -> ThreadingHTTPServer:
@@ -42,7 +47,9 @@ def serve(live: LiveSet, listen: str) -> ThreadingHTTPServer:
             if self.path != "/live":
                 self.send_error(404)
                 return
-            body = json.dumps({"hosts": live.snapshot(), "updated": live.updated}).encode()
+            body = json.dumps(
+                {"hosts": live.snapshot(), "clusters": live.clusters(), "updated": live.updated}
+            ).encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(body)))

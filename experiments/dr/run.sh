@@ -19,6 +19,8 @@ set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 # shellcheck source=../../stand/scripts/lib.sh
 source "$ROOT/stand/scripts/lib.sh"
+# shellcheck source=../lib.sh
+source "$ROOT/experiments/lib.sh"
 
 RUN_ID=${1:?run-id}
 CLUSTER=${2:-cluster-b}
@@ -37,7 +39,6 @@ CHAOS_NAME="scenario1-$(printf '%s' "$RUN_ID" | tr -c 'a-z0-9-' '-' | cut -c1-40
 FAULT_REF="podchaos/$CHAOS_NAMESPACE/$CHAOS_NAME@$CLUSTER"
 
 log() { printf '%s dr/run.sh: %s\n' "$(date -u +%FT%TZ)" "$*" >&2; }
-now_iso() { gdate -u +%FT%T.%3NZ 2>/dev/null || date -u +%FT%TZ; }   # gdate — coreutils из Brewfile
 
 need k6 jq yq kubectl curl uv gdate
 [ -e "$OUT" ] && die "$OUT уже существует; результаты не перезаписываются"
@@ -66,20 +67,14 @@ cleanup() {
 trap cleanup EXIT
 
 # --- нагрузка -------------------------------------------------------------------------
-k6_out=(--out "csv=$TMP/k6.csv")
-if curl -sf "$PROM_URL/-/ready" >/dev/null 2>&1; then
-  k6_out+=(-o experimental-prometheus-rw)
-  export K6_PROMETHEUS_RW_SERVER_URL="$PROM_URL/api/v1/write"
-  export K6_PROMETHEUS_RW_TREND_STATS="p(95),p(99),avg,max"
-else
-  log "Prometheus control недоступен на $PROM_URL: без remote write"
-fi
+K6_OUT=(--out "csv=$TMP/k6.csv")
+k6_remote_write "$PROM_URL" || log "Prometheus control недоступен на $PROM_URL: без remote write"
 TOTAL=$((BASELINE + FAULT + RECOVERY))
 STARTED=$(date -u +%FT%TZ)
 log "режим DR: $DR_MODE; k6 ${TOTAL}s при $RPS RPS в $HOST; отказ $CLUSTER через ${BASELINE}s на ${FAULT}s"
 K6_CSV_TIME_FORMAT=unix_milli DURATION="${TOTAL}s" RPS="$RPS" GATEWAY_URL="$GATEWAY_URL" TARGET_HOST="$HOST" \
   SUMMARY_PATH="$OUT/k6-summary.json" \
-  k6 run --quiet --tag "run_id=$RUN_ID" "${k6_out[@]}" "$ROOT/experiments/load/steady.js" >"$OUT/k6.log" 2>&1 &
+  k6 run --quiet --tag "run_id=$RUN_ID" "${K6_OUT[@]}" "$ROOT/experiments/load/steady.js" >"$OUT/k6.log" 2>&1 &
 K6_PID=$!
 T0=$(date +%s)
 
@@ -92,20 +87,8 @@ CHAOS_NAME="$CHAOS_NAME" FAULT="${FAULT}s" \
 log "PodChaos $CHAOS_NAME применён в $CLUSTER"
 
 # Время внесения — самое раннее событие Apply в статусе эксперимента (инвариант 7).
-chaos_times() {  # печатает "<первый Apply> <последний Recover>" или пусто
-  kc "$CLUSTER" -n "$CHAOS_NAMESPACE" get podchaos "$CHAOS_NAME" -o json 2>/dev/null | jq -r '
-    [.status.experiment.containerRecords[]?.events[]? | select(.type == "Succeeded")] as $e
-    | ([$e[] | select(.operation == "Apply") | .timestamp] | min) as $a
-    | ([$e[] | select(.operation == "Recover") | .timestamp] | max) as $r
-    | "\($a // "") \($r // "")"'
-}
-INJECTED_AT=""
-for _ in $(seq 1 60); do
-  read -r INJECTED_AT _ <<<"$(chaos_times)" || true
-  [ -n "$INJECTED_AT" ] && break
-  sleep 1
-done
-[ -n "$INJECTED_AT" ] || die "Chaos Mesh не сообщил о внесении отказа: $(kc "$CLUSTER" -n "$CHAOS_NAMESPACE" get podchaos "$CHAOS_NAME" -o json | jq -c .status)"
+INJECTED_AT=$(wait_chaos_applied "$CLUSTER" podchaos "$CHAOS_NAME") \
+  || die "Chaos Mesh не сообщил о внесении отказа: $(kc "$CLUSTER" -n "$CHAOS_NAMESPACE" get podchaos "$CHAOS_NAME" -o json | jq -c .status)"
 log "отказ внесён: $INJECTED_AT (по Chaos Mesh)"
 
 set +e
@@ -116,12 +99,7 @@ K6_PID=""
 FINISHED=$(date -u +%FT%TZ)
 log "k6 завершён (код $K6_RC) через $(( $(date +%s) - T0 )) с"
 
-RECOVERED_AT=""
-for _ in $(seq 1 30); do
-  read -r _ RECOVERED_AT <<<"$(chaos_times)" || true
-  [ -n "$RECOVERED_AT" ] && break
-  sleep 2
-done
+RECOVERED_AT=$(wait_chaos_recovered "$CLUSTER" podchaos "$CHAOS_NAME")
 [ -n "$RECOVERED_AT" ] || log "Chaos Mesh не сообщил о снятии отказа"
 kc "$CLUSTER" -n "$CHAOS_NAMESPACE" get podchaos "$CHAOS_NAME" -o json >"$OUT/chaos.json"
 
@@ -133,22 +111,13 @@ done
 dr_status >"$OUT/dr-status-after.json" 2>/dev/null || true
 
 # --- инцидент ---------------------------------------------------------------------------
-registry() { curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" "$@"; }
-incidents=$(registry -G "$REGISTRY_URL/api/v1/incidents" --data-urlencode "cluster_id=$CLUSTER" \
-  --data-urlencode "from=$STARTED")
-# Первый инцидент, обнаруженный не раньше внесения (обе отметки — до секунды: у Chaos Mesh
-# точность 1 с, дробную часть каталога отбрасываем).
-linked=$(jq -r --arg a "$INJECTED_AT" '
-  def ts: sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z") | fromdateiso8601;
-  [.[] | select((.detected_at | ts) >= ($a | ts))] | first | .id // empty' <<<"$incidents")
+linked=$(link_incident "$CLUSTER" "$STARTED" "$INJECTED_AT" "$FAULT_REF")
 if [ -n "$linked" ]; then
-  registry -X PATCH -H 'Content-Type: application/json' "$REGISTRY_URL/api/v1/incidents/$linked" \
-    -d "$(jq -n --arg f "$INJECTED_AT" --arg r "$FAULT_REF" '{fault_injected_at:$f, fault_ref:$r}')" >/dev/null
   log "инцидент $linked связан с отказом"
 else
   log "инцидента после отказа нет: DR не обнаружил отказ"
 fi
-registry -G "$REGISTRY_URL/api/v1/incidents" --data-urlencode "cluster_id=$CLUSTER" \
+registry_admin -G "$REGISTRY_URL/api/v1/incidents" --data-urlencode "cluster_id=$CLUSTER" \
   --data-urlencode "from=$STARTED" >"$OUT/incidents.json"
 
 jq -n \

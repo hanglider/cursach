@@ -53,9 +53,11 @@ make image           # пересобрать образы (тестовый с�
 make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6 (MODE=direct — в обход планировщика)
 make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения политики в обход планировщика
 make scheduler-mode [MODE=meta|naive]  # режим планировщика на стенде
-make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR»
+make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR» и сценарий 2
 make dr-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 1: PodChaos на workloads + k6 в app.fed.local
 make dr-check [CLUSTER=cluster-b]      # проверка DR на стенде: инвариант 6 и недостижимый app
+make sched-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 2: NetworkChaos на backend, поток + фон в app; DR в observe
+make sched-series PREFIX=<p> [REPEATS=3]     # серия сценария 2: meta и naive вперемешку, таблица в analysis/scenario2/
 make trace-run RUN=<id> [SAMPLING=10]  # замер трассировки: k6 в app.fed.local, трейсы и разложение задержки
 make generate        # deepcopy и CRD планировщика (controller-gen)
 make lint            # линт всего проекта

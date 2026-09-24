@@ -122,7 +122,7 @@ def cmd_run(args: argparse.Namespace) -> int:
                     ready = None  # CR остаётся до TTL, событие rejected уже в логе
                 if ready is not None:
                     placed[w.name] = (ready, placed[w.name][1])
-                    live.add(ready.host)
+                    live.add(ready.host, ready.cluster)
             for name, (w, t0) in list(placed.items()):
                 if time.monotonic() - t0 >= args.ttl:
                     live.discard(w.host)

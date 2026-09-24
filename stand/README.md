@@ -34,7 +34,7 @@ Jaeger — 50 MiB, OTel Collector — 20 MiB на кластер. Стенд б�
 | `cluster-a`, `cluster-b` | ns `observability`: OTel Collector — трейсы тестового сервиса с меткой кластера → Jaeger control | 3 |
 | `cluster-a`, `cluster-b` | ns `kyverno`: Kyverno (admission, background, reports); ClusterPolicy `require-region-match`, `require-certification` | 5 |
 | `cluster-a`, `cluster-b` | ns `chaos-mesh`: Chaos Mesh (controller-manager + chaos-daemon) — внесение отказов | 7 |
-| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннеры сценария 3 (`experiments/policy/`) и сценария 1 (`experiments/dr/`) | 1, 2, 5, 7 |
+| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннеры сценария 3 (`experiments/policy/`), сценария 1 (`experiments/dr/`) и сценария 2 (`experiments/scheduler/`) | 1, 2, 5, 7, 8 |
 
 ## Порты на хосте
 
@@ -189,6 +189,30 @@ make dr-run RUN=<id>             # сценарий 1: 3 мин baseline, 5 ми
 результатах: `summary.json` (TTD, RTO, потерянные запросы, доступность по окнам),
 `incidents.json`, `chaos.json`, `requests.csv.gz` (каждый запрос k6),
 `per-second.csv`, ряды `dr_*` и таблица `incidents` в экспорте.
+
+## Сценарий 2: деградация сети, meta против naive
+
+NetworkChaos `netem` — задержка 500 мс и потери 10% на исходящем трафике backend'а
+целевого кластера (`experiments/chaos/netem-backend.yaml`, ADR 0016). Нагрузка — поток
+workload'ов через планировщик (50 RPS) и фоновые 5 RPS в `app.fed.local`, чтобы у
+каждого кластера был SLI (ADR 0030). DR — только наблюдатель, режим `observe`
+(ADR 0031): раннер без него не стартует.
+
+```bash
+make dr-mode MODE=observe                 # раннер требует observe
+make scheduler-mode MODE=naive            # режим прогона; meta — после stand-up
+make sched-run RUN=<id>                   # разогрев потока, 3 мин baseline, 5 мин отказа, 5 мин восстановления
+make sched-series PREFIX=<p> REPEATS=3    # серия: meta и naive вперемешку, таблица в analysis/scenario2/
+```
+
+Приёмочный показатель — error rate потока в окне отказа по запросам k6 (от Apply до
+Recover эксперимента Chaos Mesh), `снижение = 1 − mean(ER_meta) / mean(ER_naive)`
+(ADR 0031). В `summary.json` прогона: клиентский ряд по окнам и кластерам, серверный
+ряд из Thanos, размещения в деградировавший кластер, `degraded_s` и `score_loss_s`
+(когда деградация видна в каталоге), `first_avoid_s` (первое решение `meta` в обход),
+инциденты DR и признаки брака (`validity`). Перед стартом раннер ждёт, пока каталог
+увидит оба кластера `healthy`: хвост предыдущего отказа уходит из окна 5 мин.
+Серия возвращает планировщик в `meta`, а DR — в `active`.
 
 ## Как устроен путь запроса
 

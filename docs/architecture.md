@@ -801,13 +801,15 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── main.go                  флаги/env, manager, /metrics и /status
 │   └── internal/                fsm, probe, thanos, registry, gateway, monitor
 ├── experiments/
-│   ├── chaos/                   манифесты Chaos Mesh: сценарий 1, проверки DR
+│   ├── lib.sh                   общее раннеров: времена Chaos Mesh, связь инцидента с отказом
+│   ├── chaos/                   манифесты Chaos Mesh: сценарии 1 и 2, проверки DR
 │   ├── load/                    steady.js, run.sh, export.sh, workloadgen/
 │   ├── policy/                  run.sh: сценарий 3, нарушение политики в обход планировщика
 │   ├── dr/                      run.sh + summary.py: сценарий 1; check.sh: проверка DR
+│   ├── scheduler/               run.sh + summary.py: сценарий 2; series.sh + compare.py: серия
 │   ├── traces/                  export.py: трейсы прогона и разложение задержки; run.sh: замер
 │   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
-└── analysis/                    обработка результатов, графики
+└── analysis/                    обработка результатов, графики; scenario2/: таблицы серий
 ```
 
 Разделение `scheduler` и `dr-controller` на отдельные модули, а не один

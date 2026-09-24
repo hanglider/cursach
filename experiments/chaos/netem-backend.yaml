@@ -1,0 +1,26 @@
+# Сценарий 2, деградация сети (spec §6, ADR 0016, 0031): задержка 500 мс и потери 10%
+# на исходящем трафике подов backend'а целевого кластера. frontend'ы (app и поток)
+# получают ответы backend'а медленно и с потерями: длительность растёт, таймауты
+# frontend → backend (1 с) дают 502 в серверных метриках frontend'а, которые читает
+# каталог. Время внесения — событие Apply в статусе объекта (инвариант 7). Имя и
+# duration подставляет experiments/scheduler/run.sh.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: scenario2-netem-backend
+  namespace: chaos-mesh
+  labels:
+    federation.spbu/scenario: "2"
+spec:
+  action: netem
+  mode: all
+  duration: 300s
+  selector:
+    namespaces: [workloads]
+    labelSelectors:
+      app.kubernetes.io/component: backend
+  delay:
+    latency: 500ms
+  loss:
+    loss: "10"
+  direction: to
