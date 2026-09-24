@@ -1,0 +1,32 @@
+# Chaos Mesh 2.8.4 в кластерах федерации (ADR 0023, 0028): внесение отказов на месте,
+# время внесения — из объекта эксперимента (инвариант 7). Стенд ограничен по памяти
+# (ADR 0013): один controller-manager без leader election, без dashboard и DNS-сервера.
+controllerManager:
+  replicaCount: 1
+  leaderElection:
+    enabled: false
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 256Mi
+  podChaos:
+    podFailure:
+      # Уже есть в узле kind: pod-failure не тянет образ из сети в момент отказа.
+      pauseImage: registry.k8s.io/pause:3.10
+chaosDaemon:
+  # kind: containerd внутри узла
+  runtime: containerd
+  socketPath: /run/containerd/containerd.sock
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+    limits:
+      memory: 256Mi
+dashboard:
+  create: false
+dnsServer:
+  create: false
+enableProfiling: false

@@ -232,6 +232,22 @@ CREATE TABLE policy_violations (
     detected_by     TEXT NOT NULL,        -- kyverno | meta-scheduler
     details         JSONB
 );
+
+-- инциденты DR Controller'а (§6.4, ADR 0028): эпизод DEGRADED → … → HEALTHY
+CREATE TABLE incidents (
+    id                    BIGSERIAL PRIMARY KEY,
+    cluster_id            TEXT NOT NULL REFERENCES clusters(id),
+    dr_mode               TEXT NOT NULL,          -- active | observe
+    peak_state            TEXT NOT NULL,          -- degraded | down
+    detected_at           TIMESTAMPTZ NOT NULL,
+    failover_started_at   TIMESTAMPTZ,
+    failover_completed_at TIMESTAMPTZ,
+    recovery_started_at   TIMESTAMPTZ,
+    recovery_completed_at TIMESTAMPTZ,            -- NULL: инцидент открыт
+    fault_injected_at     TIMESTAMPTZ,            -- пишет раннер сценария (инвариант 7)
+    fault_ref             TEXT,
+    details               JSONB NOT NULL DEFAULT '{}'
+);
 ```
 
 Замечание по `placement_decisions.candidates`: хранится **весь** список
@@ -262,6 +278,10 @@ GET    /api/v1/decisions                 выборка для анализа, ?
 
 POST   /api/v1/violations                фиксация нарушения политики
 GET    /api/v1/violations
+
+POST   /api/v1/incidents                 открытие инцидента (DR Controller, ADR 0028)
+PATCH  /api/v1/incidents/{id}            фазы DR-цикла; fault_injected_at — раннер
+GET    /api/v1/incidents                 ?cluster_id=&open=&from=&to=; ttd/rto в ответе
 
 GET    /healthz                          liveness
 ```
@@ -530,6 +550,14 @@ rate за 1 мин из Thanos ≤ 0.05. Недоступность опреде
 сервиса: PodChaos сценария 1 не трогает API-сервер, а отказ control plane
 при живом сервисе не повод переключать трафик.
 
+Реализация (ADR 0028): адрес пробы — из Backend `app-<cluster>` шлюза, то есть
+ровно туда, куда идёт трафик; SLI без ряда (Thanos недоступен, трафика нет)
+неизвестен и считается нормой — инвариант 6. Автомат — чистая функция
+(`dr-controller/internal/fsm`), действия выводятся из состояний каждый цикл
+(level-triggered): веса маршрута и `down` в каталоге сводятся к желаемым, так что
+неудачная запись и рестарт DR лечатся следующим циклом. При рестарте кластер с
+`down` в каталоге или весом 0 стартует в DOWN с продолжением открытого инцидента.
+
 ### 6.2. Защита от флаппинга
 
 Асимметричные переходы (ADR 0007): период опроса 10 с.
@@ -538,15 +566,20 @@ rate за 1 мин из Thanos ≤ 0.05. Недоступность опреде
 |---|---|
 | HEALTHY → DEGRADED | 1 цикл любого сигнала не в норме |
 | DEGRADED → HEALTHY | 3 чистых цикла подряд |
-| DEGRADED → DOWN | `!svc_ok` 3 цикла подряд (T = 30 с); error rate в DOWN не ведёт |
+| DEGRADED → DOWN | `!svc_ok` 3 цикла подряд в DEGRADED — четвёртая неудачная проба, T = 30 с от первой (ADR 0028); error rate в DOWN не ведёт |
 | DOWN → RECOVERING | `svc_ok` + smoke-тест (10 запросов, все 200) |
 | RECOVERING → HEALTHY | ступени веса 10% → 50% → 100% от номинала, по 2 чистых цикла на ступень |
 | RECOVERING → DOWN | `!svc_ok` 3 цикла подряд |
 
 Асимметрия намеренная: деградация признаётся быстро (TTD < 60 с), возврат
 трафика — медленно. Действия: на DOWN вес кластера на `app.fed.local` → 0 и
-`down` в каталоге (ADR 0003); на RECOVERING `down` снимается сразу, трафик
-возвращается ступенями.
+`down` в каталоге (ADR 0003); на RECOVERING `down` снимается сразу (DR пишет
+`healthy`, опрос каталога уточняет по метрикам), трафик возвращается ступенями.
+Если DOWN все кластеры, веса остаются номинальными (panic, ADR 0028): обнулять
+последний backend бессмысленно, а при ложном DOWN это был бы отказ по вине DR.
+
+Режим `observe` (ADR 0028) — сценарий 1 «без DR»: автомат, обнаружение и
+инциденты те же, но маршрут и каталог DR не трогает.
 
 `TTD = detected_at − fault_injected_at` по переходу в DEGRADED;
 `RTO = failover_completed_at − fault_injected_at` по успешному PATCH
@@ -571,18 +604,24 @@ backend'ом на каждый кластер и номинальными вес
 
 ### 6.4. Измерение TTD / RTO
 
-Контроллер пишет события в структурированном виде для последующего анализа:
+Контроллер пишет инцидент в каталог — таблица `incidents` (§3.2, ADR 0028):
+строка открывается на переходе в DEGRADED и дописывается на каждой фазе.
+Ответ `GET /api/v1/incidents`:
 
 ```json
 {
-  "incident_id": "inc-2026-09-03-001",
-  "cluster": "cluster-b",
+  "id": 7,
+  "cluster_id": "cluster-b",
+  "dr_mode": "active",
+  "peak_state": "down",
   "fault_injected_at": "...",
   "detected_at": "...",
   "failover_started_at": "...",
   "failover_completed_at": "...",
   "recovery_started_at": "...",
   "recovery_completed_at": "...",
+  "fault_ref": "podchaos/chaos-mesh/scenario1-...@cluster-b",
+  "details": {"detected_signals": {"svc": false, "api": true, "sli": "unknown"}, "failovers": 1},
   "ttd_seconds": 0,
   "rto_seconds": 0
 }
@@ -590,12 +629,15 @@ backend'ом на каждый кластер и номинальными вес
 
 `fault_injected_at` берётся из Chaos Mesh, а не из наблюдений контроллера —
 иначе TTD измерялся бы от момента, когда контроллер заметил, что что-то не так,
-то есть был бы тождественно нулевым.
+то есть был бы тождественно нулевым. Пишет его раннер сценария
+(`experiments/dr/run.sh`): самое раннее событие Apply эксперимента, `PATCH` с
+ролью admin. TTD и RTO не хранятся, а выводятся из времён в ответе.
 
 **RPO не включён**: показатель снят (ADR 0010). Число потерянных запросов за
-инцидент считает k6 по окну от `fault_injected_at` до
-`failover_completed_at`; `analysis/` соединяет его с этой записью по
-`incident_id`.
+инцидент считает раннер по запросам k6 (CSV с отметкой каждого запроса) в окне
+от `fault_injected_at` до `failover_completed_at` и кладёт рядом с инцидентом в
+`summary.json` прогона; связь с записью каталога — по `fault_ref` и `id`. Без
+failover (режим `observe`) окно — весь отказ.
 
 ---
 
@@ -609,14 +651,15 @@ backend'ом на каждый кластер и номинальными вес
 ├── kind cluster "control"        управляющий контур
 │   ├── registry + postgres           ns federation, каталог (ADR 0025), хост 8000
 │   ├── scheduler                     ns federation, CR Workload, режим meta|naive (ADR 0027)
-│   ├── dr-controller                 ns federation
+│   ├── dr-controller                 ns federation, режим active|observe (ADR 0028)
 │   ├── envoy-gateway                 шлюз, вход для k6 (ADR 0017)
 │   ├── prometheus + thanos sidecar   k6 remote write, метрики шлюза
 │   ├── thanos-query                  единый PromQL над всеми sidecar'ами
 │   ├── thanos-rule                   federation:*, burn-rate алерты
 │   └── grafana
 ├── kind cluster "cluster-a"      федерация: workloads, Prometheus + sidecar,
-└── kind cluster "cluster-b"      Kyverno (ns kyverno) с двумя ClusterPolicy
+└── kind cluster "cluster-b"      Kyverno (ns kyverno) с двумя ClusterPolicy,
+                                  Chaos Mesh (ns chaos-mesh, ADR 0028)
     (cluster-c — позже, при наличии ресурсов)
 ```
 
@@ -707,8 +750,10 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
 │   ├── registry/                ns federation, PostgreSQL, каталог (задача 4)
 │   ├── scheduler/               CRD Workload (generate), RBAC, Deployment планировщика
+│   ├── dr-controller/           RBAC, Deployment и Service DR Controller'а
+│   ├── chaos/                   values чарта Chaos Mesh
 │   ├── policies/                Kyverno: values чарта, ClusterPolicy, tests/ для kyverno test
-│   └── scripts/                 up / down / status / image / scheduler-mode / render-*
+│   └── scripts/                 up / down / status / image / scheduler-mode / dr-mode / render-*
 ├── test-service/                Go, frontend + backend, один бинарь
 ├── registry/                    FastAPI + PostgreSQL
 │   ├── app/
@@ -718,13 +763,14 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── main.go                  флаги/env, manager
 │   ├── api/v1alpha1/            CRD Workload
 │   └── internal/                scoring, registry (клиент каталога), placement, clusters, controller
-├── dr-controller/               Go
-│   ├── cmd/
-│   └── internal/
+├── dr-controller/               Go (ADR 0028)
+│   ├── main.go                  флаги/env, manager, /metrics и /status
+│   └── internal/                fsm, probe, thanos, registry, gateway, monitor
 ├── experiments/
-│   ├── chaos/                   манифесты Chaos Mesh
+│   ├── chaos/                   манифесты Chaos Mesh: сценарий 1, проверки DR
 │   ├── load/                    steady.js, run.sh, export.sh, workloadgen/
 │   ├── policy/                  run.sh: сценарий 3, нарушение политики в обход планировщика
+│   ├── dr/                      run.sh + summary.py: сценарий 1; check.sh: проверка DR
 │   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
 └── analysis/                    обработка результатов, графики
 ```

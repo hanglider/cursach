@@ -1,0 +1,90 @@
+# DR Controller (spec §4.6, ADR 0007, 0028): один экземпляр, Recreate — два автомата,
+# независимо двигающие веса одного маршрута, работать не должны. Режим — DR_MODE:
+# active переключает трафик, observe только наблюдает (сценарий 1 «без DR»);
+# переключает stand/scripts/dr-mode.sh, make stand-up возвращает active.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dr-controller
+  namespace: federation
+  labels:
+    app.kubernetes.io/name: dr-controller
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dr-controller
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dr-controller
+    spec:
+      serviceAccountName: dr-controller
+      containers:
+        - name: dr-controller
+          image: federation/dr-controller:dev
+          imagePullPolicy: Never  # образ загружен через kind load
+          env:
+            - name: DR_MODE
+              value: active
+            - name: REGISTRY_URL
+              value: http://registry.federation.svc:8000
+            - name: REGISTRY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: registry-tokens
+                  key: dr-controller
+            - name: DR_THANOS_URL
+              value: http://thanos-query.observability.svc:10902
+            - name: DR_KUBECONFIG_DIR
+              value: /etc/dr/kubeconfig
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: health
+              containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /etc/dr/kubeconfig
+              readOnly: true
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: federation-kubeconfigs
+---
+# /metrics (скрейпит Prometheus control) и /status (JSON для скриптов стенда, через
+# прокси API-сервера: kubectl get --raw .../services/dr-controller:http/proxy/status).
+apiVersion: v1
+kind: Service
+metadata:
+  name: dr-controller
+  namespace: federation
+  labels:
+    app.kubernetes.io/name: dr-controller
+spec:
+  selector:
+    app.kubernetes.io/name: dr-controller
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

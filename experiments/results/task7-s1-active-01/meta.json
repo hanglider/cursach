@@ -1,0 +1,29 @@
+{
+  "run_id": "task7-s1-active-01",
+  "scenario": "1-cluster-failure",
+  "variant": "pod-failure",
+  "cluster": "cluster-b",
+  "dr_mode": "active",
+  "started_at": "2026-09-24T15:53:54Z",
+  "finished_at": "2026-09-24T16:06:56Z",
+  "structure": {
+    "baseline_s": 180,
+    "fault_s": 300,
+    "recovery_s": 300
+  },
+  "k6": {
+    "host": "app.fed.local",
+    "rps": 50,
+    "exit_code": 99
+  },
+  "fault": {
+    "ref": "podchaos/chaos-mesh/scenario1-task7-s1-active-01@cluster-b",
+    "tool": "chaos-mesh PodChaos pod-failure, namespace workloads",
+    "injected_at": "2026-09-24T15:56:54Z",
+    "recovered_at": "2026-09-24T16:01:54Z",
+    "runner_applied_at": "2026-09-24T15:56:54.177Z",
+    "note": "injected_at/recovered_at — события Apply/Recover Chaos Mesh, точность 1 с"
+  },
+  "scheduler": "meta",
+  "git_rev": "77f2779"
+}

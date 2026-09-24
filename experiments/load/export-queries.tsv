@@ -11,3 +11,4 @@ node_cpu_usage	container_cpu_usage_seconds_total{job="kubelet-cadvisor",id="/"}
 node_memory_working_set	container_memory_working_set_bytes{job="kubelet-cadvisor",id="/"}
 k6	{__name__=~"k6_http_.*"}
 envoy_upstream_rq	{__name__=~"envoy_cluster_upstream_rq_(total|xx)"}
+dr	{__name__=~"dr_(cluster_state|signal|error_rate|route_weight|route_weight_desired|transitions_total|panic|mode)"}

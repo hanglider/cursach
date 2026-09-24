@@ -1,0 +1,81 @@
+{
+  "run_id": "task7-s1-observe-01",
+  "scenario": "1-cluster-failure",
+  "cluster": "cluster-b",
+  "dr_mode": "observe",
+  "fault": {
+    "ref": "podchaos/chaos-mesh/scenario1-task7-s1-observe-01@cluster-b",
+    "tool": "chaos-mesh PodChaos pod-failure, namespace workloads",
+    "injected_at": "2026-09-24T16:11:01Z",
+    "recovered_at": "2026-09-24T16:16:01Z",
+    "runner_applied_at": "2026-09-24T16:11:01.490Z",
+    "note": "injected_at/recovered_at — события Apply/Recover Chaos Mesh, точность 1 с"
+  },
+  "incident": {
+    "id": 3,
+    "dr_mode": "observe",
+    "peak_state": "down",
+    "detected_at": "2026-09-24T16:11:13.204099Z",
+    "failover_started_at": "2026-09-24T16:11:43.182467Z",
+    "failover_completed_at": null,
+    "recovery_started_at": "2026-09-24T16:16:11.219312Z",
+    "recovery_completed_at": "2026-09-24T16:17:11.198384Z",
+    "ttd_seconds": 12.204099,
+    "rto_seconds": null,
+    "return_seconds": 70.198,
+    "details": {
+      "failovers": 1,
+      "detected_signals": {
+        "api": true,
+        "sli": "ok",
+        "svc": false,
+        "error_rate": 0,
+        "svc_detail": "Get \"http://192.168.117.3:31998/healthz\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+      },
+      "recovery_attempts": 1
+    }
+  },
+  "incidents_in_run": 1,
+  "incidents_before_fault": 0,
+  "requests": {
+    "total": 38935,
+    "failed": 7495
+  },
+  "lost_requests": 7398,
+  "lost_requests_window": "fault_injected..fault_recovered",
+  "windows": {
+    "baseline": {
+      "from_ms": 1790266081659,
+      "to_ms": 1790266261000,
+      "seconds": 179.341,
+      "requests": 8972,
+      "failed": 0,
+      "availability": 1.0,
+      "p95_ms": 2.675
+    },
+    "fault": {
+      "from_ms": 1790266261000,
+      "to_ms": 1790266561000,
+      "seconds": 300.0,
+      "requests": 14887,
+      "failed": 7398,
+      "availability": 0.503056,
+      "p95_ms": 3582.368
+    },
+    "recovery": {
+      "from_ms": 1790266561000,
+      "to_ms": 1790266861577,
+      "seconds": 300.577,
+      "requests": 15076,
+      "failed": 97,
+      "availability": 0.993566,
+      "p95_ms": 2.775
+    },
+    "until_failover": null,
+    "after_failover_in_fault": null
+  },
+  "targets": {
+    "ttd_lt_60s": true,
+    "rto_lt_300s": null
+  }
+}

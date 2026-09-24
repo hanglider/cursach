@@ -1,0 +1,17 @@
+# Сценарий 1, вариант А (ADR 0023): отказ всех подов namespace workloads кластера —
+# app, backend и frontend'ы потока. pod-failure подменяет контейнеры на pause: поды
+# остаются, но не отвечают и не готовы. Время внесения — событие Apply в статусе
+# объекта (инвариант 7). Имя и duration подставляет experiments/dr/run.sh.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: scenario1-pod-failure
+  namespace: chaos-mesh
+  labels:
+    federation.spbu/scenario: "1"
+spec:
+  action: pod-failure
+  mode: all
+  duration: 300s
+  selector:
+    namespaces: [workloads]

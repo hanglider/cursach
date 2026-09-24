@@ -34,6 +34,7 @@
 | [0025](0025-registry-implementation.md) | Каталог: asyncpg и SQL-миграции в сервисе, пороги `degraded`, `PATCH /decisions/{id}`, ns `federation`, порт 8000; watcher — в задаче 5 | задача 4 |
 | [0026](0026-kyverno-and-violation-watcher.md) | Kyverno 1.19 с ClusterPolicy (устаревание принято), контракт сообщения политики, watcher нарушений периодическим чтением с `source_key`, замер сценария 3 | задача 5 |
 | [0027](0027-scheduler-implementation.md) | Планировщик: CR `Workload` в control, reconcile с записью всех кандидатов, режимы meta/naive флагом, отказ admission → `rejected`, адрес узла из Node API | задача 6, oq ADR 0015 |
+| [0028](0028-dr-controller-implementation.md) | DR Controller: level-triggered цикл, DOWN на четвёртой неудачной пробе, SLI без ряда — норма, panic, инциденты в каталоге, режимы active/observe, Chaos Mesh и раннер сценария 1 | задача 7 |
 
 `oq` — `docs/open-questions.md` (номера на момент закрытия; закрытые пункты
 из документа удалены).

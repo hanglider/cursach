@@ -149,6 +149,25 @@ panels = [
         [("sum by (envoy_cluster_name) (rate(envoy_cluster_upstream_rq_total[1m]))", "{{envoy_cluster_name}}")],
         "reqps", 0, 28, w=24, min_=0,
     ),
+    # --- строка 4: DR Controller (ADR 0028); метка кластера — cluster_id ---
+    ts(
+        "DR: состояние (0 healthy, 1 degraded, 2 recovering, 3 down)",
+        [(
+            'max by (cluster_id) (dr_cluster_state{state="degraded"})'
+            ' + 2 * max by (cluster_id) (dr_cluster_state{state="recovering"})'
+            ' + 3 * max by (cluster_id) (dr_cluster_state{state="down"})',
+            "{{cluster_id}}",
+        )],
+        "none", 0, 36, min_=0, max_=3,
+    ),
+    ts(
+        "DR: веса маршрута app.fed.local",
+        [
+            ("dr_route_weight", "{{cluster_id}}"),
+            ("dr_route_weight_desired", "{{cluster_id}} желаемый"),
+        ],
+        "none", 12, 36, min_=0,
+    ),
 ]
 
 for i, p in enumerate(panels, start=1):

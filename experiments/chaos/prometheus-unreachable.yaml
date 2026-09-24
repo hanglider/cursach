@@ -1,0 +1,22 @@
+# Проверка DR, инвариант 6 (experiments/dr/check.sh): метрики кластера пропадают, сервис
+# жив. 100% потерь на исходящем трафике Prometheus кластера: Thanos sidecar не отвечает
+# Querier'у, ряды кластера исчезают из глобального запроса. Данные TSDB не теряются
+# (в отличие от scale 0 с emptyDir). Ожидается: sli_ok неизвестен, каталог ставит
+# unknown, DR не объявляет ни DEGRADED, ни DOWN.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: dr-check-prometheus-unreachable
+  namespace: chaos-mesh
+  labels:
+    federation.spbu/check: dr
+spec:
+  action: loss
+  mode: all
+  selector:
+    namespaces: [observability]
+    labelSelectors:
+      app.kubernetes.io/name: prometheus
+  loss:
+    loss: "100"
+  direction: to

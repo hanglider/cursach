@@ -6,7 +6,7 @@
 # Окно: [started_at − 60 с, finished_at + 60 с] из meta.json, шаг 5 с.
 # Результат: experiments/results/<run-id>/series/<имя>.json (формат
 # Prometheus matrix) и series/index.json со списком запросов; registry/*.csv —
-# что за окно видел каталог: снимки метрик, решения, нарушения (ADR 0025).
+# что за окно видел каталог: снимки метрик, решения, нарушения, инциденты DR (ADR 0025, 0028).
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
@@ -65,6 +65,7 @@ if "${KC_CONTROL[@]}" get deployment/postgres >/dev/null 2>&1; then
   dump cluster_metrics "SELECT * FROM cluster_metrics WHERE observed_at $window ORDER BY observed_at, cluster_id"
   dump placement_decisions "SELECT * FROM placement_decisions WHERE decided_at $window ORDER BY id"
   dump policy_violations "SELECT * FROM policy_violations WHERE occurred_at $window ORDER BY id"
+  dump incidents "SELECT * FROM incidents WHERE detected_at $window ORDER BY id"
 else
   log "каталог в control не найден: registry/*.csv не выгружены"
 fi

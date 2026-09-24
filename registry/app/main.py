@@ -12,7 +12,7 @@ import httpx
 from fastapi import FastAPI, HTTPException, status
 
 from . import db, poller, watcher
-from .api import clusters, decisions, violations
+from .api import clusters, decisions, incidents, violations
 from .auth import Auth
 from .config import Settings
 from .identity import IdentityReader, KubeconfigIdentityReader
@@ -69,6 +69,7 @@ def create_app(
     app.include_router(clusters.router)
     app.include_router(decisions.router)
     app.include_router(violations.router)
+    app.include_router(incidents.router)
 
     @app.get("/healthz", tags=["health"])
     async def healthz() -> dict[str, str]:

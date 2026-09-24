@@ -49,17 +49,20 @@ analysis/     обработка результатов, графики
 make stand-up        # поднять 3 kind-кластера (control + 2 федерации), шлюз, сервис
 make stand-status    # состояние стенда
 make stand-down      # снести стенд (только вручную)
-make image           # пересобрать образы (тестовый сервис, каталог, планировщик) и загрузить в кластеры
+make image           # пересобрать образы (тестовый сервис, каталог, планировщик, DR) и загрузить в кластеры
 make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6 (MODE=direct — в обход планировщика)
 make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения политики в обход планировщика
 make scheduler-mode [MODE=meta|naive]  # режим планировщика на стенде
+make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR»
+make dr-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 1: PodChaos на workloads + k6 в app.fed.local
+make dr-check [CLUSTER=cluster-b]      # проверка DR на стенде: инвариант 6 и недостижимый app
 make generate        # deepcopy и CRD планировщика (controller-gen)
 make lint            # линт всего проекта
 make test            # тесты
 ```
 
 Go-модули: `go test ./...`, `go vet ./...` в `scheduler/`, `dr-controller/`,
-`test-service/`; `dr-controller/` появится в задаче 7.
+`test-service/`.
 Python: `pytest`, `ruff check` в `registry/`.
 
 ## Правила

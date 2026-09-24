@@ -1,0 +1,22 @@
+# Проверка DR, вариант В ADR 0023 (experiments/dr/check.sh): долгоживущий app кластера
+# недостижим по сети, остальное живо — Prometheus кластера работает, API-сервер отвечает.
+# Снаружи это отказ; DOWN должен наступить только по пробе сервиса, а не по метрикам.
+# 100% потерь на исходящем трафике подов app: не уходят ни ответы шлюзу, ни ответы
+# пробам kubelet, поды выпадают из endpoints Service. Снимает скрипт удалением объекта.
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: dr-check-app-unreachable
+  namespace: chaos-mesh
+  labels:
+    federation.spbu/check: dr
+spec:
+  action: loss
+  mode: all
+  selector:
+    namespaces: [workloads]
+    labelSelectors:
+      federation.spbu/workload: app
+  loss:
+    loss: "100"
+  direction: to

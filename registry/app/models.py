@@ -13,6 +13,8 @@ SloStatus = Literal["healthy", "degraded", "down", "unknown"]
 SchedulerKind = Literal["meta", "naive"]
 Outcome = Literal["placed", "rejected", "no_candidates"]
 DetectedBy = Literal["kyverno", "meta-scheduler"]
+DRMode = Literal["active", "observe"]
+PeakState = Literal["degraded", "down"]
 
 _ID_PATTERN = r"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
 
@@ -144,3 +146,51 @@ class ViolationOut(BaseModel):
     detected_by: DetectedBy
     details: dict[str, Any] | None
     source_key: str | None = None  # у записей watcher'а (ADR 0026); None у планировщика
+
+
+class IncidentIn(BaseModel):
+    """Открытие инцидента DR Controller'ом при переходе кластера в DEGRADED (ADR 0028)."""
+
+    cluster_id: str = Field(min_length=1)
+    dr_mode: DRMode
+    detected_at: datetime
+    peak_state: PeakState = "degraded"
+    failover_started_at: datetime | None = None
+    failover_completed_at: datetime | None = None
+    recovery_started_at: datetime | None = None
+    recovery_completed_at: datetime | None = None
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
+class IncidentPatch(BaseModel):
+    """Частичное обновление: переданные поля записываются, details сливается с прежним.
+
+    Времена фаз пишет DR Controller; fault_injected_at и fault_ref — раннер сценария
+    (роль admin) из инструмента внесения отказа, инвариант 7."""
+
+    peak_state: PeakState | None = None
+    failover_started_at: datetime | None = None
+    failover_completed_at: datetime | None = None
+    recovery_started_at: datetime | None = None
+    recovery_completed_at: datetime | None = None
+    fault_injected_at: datetime | None = None
+    fault_ref: str | None = None
+    details: dict[str, Any] | None = None
+
+
+class IncidentOut(BaseModel):
+    id: int
+    cluster_id: str
+    dr_mode: DRMode
+    peak_state: PeakState
+    detected_at: datetime
+    failover_started_at: datetime | None
+    failover_completed_at: datetime | None
+    recovery_started_at: datetime | None
+    recovery_completed_at: datetime | None
+    fault_injected_at: datetime | None
+    fault_ref: str | None
+    details: dict[str, Any]
+    # Производные (architecture §6.2): есть, только когда известно время внесения отказа.
+    ttd_seconds: float | None = None
+    rto_seconds: float | None = None

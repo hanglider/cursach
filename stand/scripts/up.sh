@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Поднять стенд с нуля: control + федерация, образы, backend'ы, Kyverno, шлюз, наблюдаемость,
-# каталог, планировщик, дымовые тесты.
+# Поднять стенд с нуля: control + федерация, образы, backend'ы, Kyverno, Chaos Mesh, шлюз,
+# наблюдаемость, каталог, планировщик, DR Controller, дымовые тесты.
 # Идемпотентен: уже существующие кластеры не пересоздаются, манифесты применяются повторно.
 # shellcheck source=lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -85,6 +85,21 @@ for c in "${FEDERATION[@]}"; do
   kc "$c" wait --for=condition=Ready clusterpolicy --all --timeout=120s >/dev/null
 done
 
+# --- 3d. Федерация: Chaos Mesh — внесение отказов (ADR 0023, 0028) ----------
+pids=()
+for c in "${FEDERATION[@]}"; do
+  log "$c: Chaos Mesh (чарт $CHAOS_CHART_VERSION)"
+  helm upgrade --install chaos-mesh chaos-mesh --repo https://charts.chaos-mesh.org \
+    --version "$CHAOS_CHART_VERSION" --kubeconfig "$KUBECONFIG_DIR/$c.kubeconfig" \
+    -n "$CHAOS_NAMESPACE" --create-namespace -f "$STAND/chaos/chaos-mesh-values.yaml" \
+    --wait --timeout 5m >"$KUBECONFIG_DIR/$c.chaos.log" 2>&1 &
+  pids+=($!)
+done
+for p in "${pids[@]:-}"; do
+  [ -z "$p" ] && continue
+  wait "$p" || { cat "$KUBECONFIG_DIR"/*.chaos.log >&2; die "helm install chaos-mesh не удался"; }
+done
+
 # --- 4. Control: Envoy Gateway + Gateway -----------------------------------
 log "$CONTROL: Envoy Gateway $EG_VERSION"
 helm upgrade --install eg oci://docker.io/envoyproxy/gateway-helm --version "$EG_VERSION" \
@@ -116,6 +131,17 @@ kc "$CONTROL" apply -f "$STAND/observability/control/grafana.yaml" >/dev/null
 for d in prometheus thanos-query thanos-rule grafana; do
   kc "$CONTROL" -n observability rollout status "deployment/$d" --timeout=180s >/dev/null
 done
+# Конфиг scrape мог измениться (новый job): ConfigMap доходит до пода с задержкой kubelet
+# до минуты — ждём совпадения смонтированного файла и перечитываем без пересоздания пода.
+want=$(kc "$CONTROL" -n observability get configmap prometheus-config -o jsonpath='{.data.prometheus\.yml}')
+for _ in $(seq 1 45); do
+  have=$(kc "$CONTROL" -n observability exec deploy/prometheus -c prometheus -- \
+    cat /etc/prometheus/prometheus.yml 2>/dev/null || true)
+  [ "$have" = "$want" ] && break
+  sleep 2
+done
+kc "$CONTROL" -n observability exec deploy/prometheus -c prometheus -- \
+  wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
 # Список store'ов мог измениться (IP узлов): Querier перечитывает файл сам,
 # но после stand-up с нуля ждать 30 с незачем.
 kc "$CONTROL" -n observability rollout restart deployment/thanos-query >/dev/null
@@ -172,6 +198,13 @@ kc "$CONTROL" apply -f "$STAND/scheduler/rbac.yaml" -f "$STAND/scheduler/deploym
 # Образ и Secret'ы могли смениться: перечитать через новый под.
 kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout restart deployment/scheduler >/dev/null
 kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/scheduler --timeout=180s >/dev/null
+
+# --- 4e. Control: DR Controller (ADR 0007, 0028) -----------------------------
+log "$CONTROL: DR Controller (режим active)"
+kc "$CONTROL" apply -f "$STAND/dr-controller/rbac.yaml" -f "$STAND/dr-controller/deployment.yaml" >/dev/null
+# Образ и Secret'ы могли смениться: перечитать через новый под.
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout restart deployment/dr-controller >/dev/null
+kc "$CONTROL" -n "$REGISTRY_NAMESPACE" rollout status deployment/dr-controller --timeout=180s >/dev/null
 
 # --- 5. Дымовой тест: workload через планировщик и шлюз ---------------------
 GEN="uv run --quiet --project $ROOT/experiments/load/workloadgen workloadgen"
@@ -232,6 +265,22 @@ for _ in $(seq 1 45); do
 done
 [ "$with_metrics" -ge "${#FEDERATION[@]}" ] \
   || die "каталог: метрики есть у $with_metrics кластеров из ${#FEDERATION[@]}"
+
+# DR Controller: все кластеры федерации HEALTHY, веса маршрута app номинальные, режим active.
+log "дымовой тест: DR Controller видит кластеры здоровыми"
+dr=""
+for _ in $(seq 1 30); do
+  dr=$(dr_status 2>/dev/null || true)
+  if jq -e --argjson n "${#FEDERATION[@]}" \
+    '.mode == "active" and (.clusters | length) == $n
+     and all(.clusters[]; .state == "healthy" and .weight == .desired_weight and .registry_status != "down")' \
+    <<<"$dr" >/dev/null 2>&1; then
+    break
+  fi
+  dr=""
+  sleep 3
+done
+[ -n "$dr" ] || die "DR Controller: кластеры не HEALTHY или веса не номинальные: $(dr_status 2>&1 | head -c 600)"
 
 # Kyverno (рубеж 2, в обход планировщика): workload с требованием сертификации, которой
 # нет у кластера, отклоняется (код 3 у генератора) и попадает в audit log через watcher

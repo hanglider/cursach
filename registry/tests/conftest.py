@@ -65,7 +65,7 @@ async def app(settings: Settings, source: StaticSource) -> AsyncIterator:
         finally:
             async with app.state.pool.acquire() as conn:
                 await conn.execute(
-                    "TRUNCATE clusters, placement_decisions, policy_violations "
+                    "TRUNCATE clusters, placement_decisions, policy_violations, incidents "
                     "RESTART IDENTITY CASCADE"
                 )
 

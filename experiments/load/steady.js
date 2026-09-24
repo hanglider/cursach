@@ -1,15 +1,18 @@
 // Постоянная нагрузка на стенд (ADR 0008): RPS запросов в секунду, равномерно
 // по живым workload'ам (ADR 0015). Список живых отдаёт генератор по HTTP.
+// TARGET_HOST=app.fed.local — весь трафик в один хост, без генератора: сценарий 1,
+// долгоживущий app (ADR 0011).
 //
 //   k6 run experiments/load/steady.js
 //   DURATION=3m RPS=50 GATEWAY_URL=http://127.0.0.1:8080 LIVE_URL=http://127.0.0.1:9797/live
-//   SUMMARY_PATH=experiments/results/<run>/k6-summary.json
+//   SUMMARY_PATH=experiments/results/<run>/k6-summary.json TARGET_HOST=app.fed.local
 import http from 'k6/http';
 import { sleep } from 'k6';
 
 const GATEWAY = __ENV.GATEWAY_URL || 'http://127.0.0.1:8080';
 const LIVE = __ENV.LIVE_URL || 'http://127.0.0.1:9797/live';
 const RPS = Number(__ENV.RPS || 50);
+const TARGET_HOST = __ENV.TARGET_HOST || '';
 const DURATION = __ENV.DURATION || '3m';
 // Должно быть заметно меньше --drain генератора: иначе VU с устаревшим списком
 // шлёт запросы в уже удалённый маршрут и получает ложные ошибки.
@@ -42,6 +45,9 @@ let hosts = [];
 let fetchedAt = 0;
 
 function liveHosts() {
+  if (TARGET_HOST) {
+    return [TARGET_HOST];
+  }
   const now = Date.now();
   if (now - fetchedAt > LIVE_REFRESH_MS) {
     const r = http.get(LIVE, { tags: { kind: 'live-list' }, timeout: '2s' });

@@ -7,7 +7,7 @@ from typing import Any
 
 import asyncpg
 
-from .models import ClusterOut, DecisionOut, MetricsOut, ViolationOut
+from .models import ClusterOut, DecisionOut, IncidentOut, MetricsOut, ViolationOut
 from .rules import Candidate, Constraints, Metrics, rejection_reasons
 
 _CLUSTER_WITH_METRICS = """
@@ -332,5 +332,118 @@ async def list_violations(
         until,
         cluster_id,
         workload_ref,
+        limit,
+    )
+
+
+# --- incidents (ADR 0028) -----------------------------------------------------
+
+# Поля, которые можно обновить через PATCH /incidents/{id}; details сливается отдельно.
+INCIDENT_PATCH_FIELDS = (
+    "peak_state",
+    "failover_started_at",
+    "failover_completed_at",
+    "recovery_started_at",
+    "recovery_completed_at",
+    "fault_injected_at",
+    "fault_ref",
+)
+
+
+def _seconds(start: datetime | None, end: datetime | None) -> float | None:
+    return None if start is None or end is None else (end - start).total_seconds()
+
+
+def incident_out(row: asyncpg.Record) -> IncidentOut:
+    """TTD и RTO считаются от времени внесения отказа (architecture §6.2), не хранятся:
+    иначе они расходились бы с временами при позднем PATCH fault_injected_at."""
+    fault = row["fault_injected_at"]
+    return IncidentOut(
+        **dict(row),
+        ttd_seconds=_seconds(fault, row["detected_at"]),
+        rto_seconds=_seconds(fault, row["failover_completed_at"]),
+    )
+
+
+async def insert_incident(
+    conn: asyncpg.Connection,
+    *,
+    cluster_id: str,
+    dr_mode: str,
+    detected_at: datetime,
+    peak_state: str,
+    failover_started_at: datetime | None,
+    failover_completed_at: datetime | None,
+    recovery_started_at: datetime | None,
+    recovery_completed_at: datetime | None,
+    details: dict[str, Any],
+) -> asyncpg.Record:
+    return await conn.fetchrow(
+        """
+        INSERT INTO incidents
+            (cluster_id, dr_mode, detected_at, peak_state, failover_started_at,
+             failover_completed_at, recovery_started_at, recovery_completed_at, details)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING *
+        """,
+        cluster_id,
+        dr_mode,
+        detected_at,
+        peak_state,
+        failover_started_at,
+        failover_completed_at,
+        recovery_started_at,
+        recovery_completed_at,
+        details,
+    )
+
+
+async def update_incident(
+    conn: asyncpg.Connection,
+    incident_id: int,
+    fields: dict[str, Any],
+    details: dict[str, Any] | None,
+) -> asyncpg.Record | None:
+    """Записать переданные поля; details сливается с прежним (jsonb ||)."""
+    sets: list[str] = []
+    args: list[Any] = [incident_id]
+    for name in INCIDENT_PATCH_FIELDS:
+        if name in fields:
+            args.append(fields[name])
+            sets.append(f"{name} = ${len(args)}")
+    if details is not None:
+        args.append(details)
+        sets.append(f"details = details || ${len(args)}::jsonb")
+    if not sets:
+        return await conn.fetchrow("SELECT * FROM incidents WHERE id = $1", incident_id)
+    return await conn.fetchrow(
+        f"UPDATE incidents SET {', '.join(sets)} WHERE id = $1 RETURNING *",  # noqa: S608 — имена из белого списка
+        *args,
+    )
+
+
+async def list_incidents(
+    conn: asyncpg.Connection,
+    *,
+    since: datetime | None,
+    until: datetime | None,
+    cluster_id: str | None,
+    open_only: bool,
+    limit: int,
+) -> list[asyncpg.Record]:
+    return await conn.fetch(
+        """
+        SELECT * FROM incidents
+        WHERE ($1::timestamptz IS NULL OR detected_at >= $1)
+          AND ($2::timestamptz IS NULL OR detected_at <= $2)
+          AND ($3::text IS NULL OR cluster_id = $3)
+          AND (NOT $4 OR recovery_completed_at IS NULL)
+        ORDER BY detected_at, id
+        LIMIT $5
+        """,
+        since,
+        until,
+        cluster_id,
+        open_only,
         limit,
     )

@@ -42,6 +42,11 @@ async def test_token_required(client: httpx.AsyncClient) -> None:
         ("GET", "/api/v1/decisions", "admin", 200),
         ("POST", "/api/v1/violations", "dr-controller", 403),
         ("GET", "/api/v1/violations", "admin", 200),
+        ("POST", "/api/v1/incidents", "scheduler", 403),
+        ("PATCH", "/api/v1/incidents/1", "scheduler", 403),
+        ("GET", "/api/v1/incidents", "scheduler", 403),
+        ("GET", "/api/v1/incidents", "dr-controller", 200),
+        ("GET", "/api/v1/incidents", "admin", 200),
     ],
 )
 async def test_roles(client: httpx.AsyncClient, method: str, path: str, role: str, expected: int):
@@ -390,3 +395,86 @@ async def test_violations_add_eligible_clusters(client: httpx.AsyncClient, regis
         "/api/v1/violations", params={"cluster_id": "cluster-b"}, headers=auth("admin")
     )
     assert [v["id"] for v in r.json()] == [1, 2]
+
+
+# --- incidents (ADR 0028) --------------------------------------------------------
+
+
+async def test_incident_lifecycle(client: httpx.AsyncClient, register) -> None:
+    await register("cluster-b")
+    detected = "2026-09-24T12:00:15Z"
+    r = await client.post(
+        "/api/v1/incidents",
+        json={
+            "cluster_id": "cluster-b",
+            "dr_mode": "active",
+            "detected_at": detected,
+            "details": {"signals": {"svc": False, "api": True, "sli": "unknown"}},
+        },
+        headers=auth("dr-controller"),
+    )
+    assert r.status_code == 201, r.text
+    inc = r.json()
+    assert inc["id"] == 1 and inc["peak_state"] == "degraded"
+    assert inc["ttd_seconds"] is None and inc["rto_seconds"] is None
+
+    # DR: DOWN и переключение трафика; details сливается, а не заменяется.
+    r = await client.patch(
+        "/api/v1/incidents/1",
+        json={
+            "peak_state": "down",
+            "failover_started_at": "2026-09-24T12:00:45Z",
+            "failover_completed_at": "2026-09-24T12:00:45.300Z",
+            "details": {"failovers": 1},
+        },
+        headers=auth("dr-controller"),
+    )
+    assert r.status_code == 200, r.text
+    inc = r.json()
+    assert inc["peak_state"] == "down"
+    assert inc["details"] == {
+        "signals": {"svc": False, "api": True, "sli": "unknown"},
+        "failovers": 1,
+    }
+
+    # Раннер сценария (admin): время внесения отказа из Chaos Mesh (инвариант 7).
+    r = await client.patch(
+        "/api/v1/incidents/1",
+        json={"fault_injected_at": "2026-09-24T12:00:05Z", "fault_ref": "podchaos/workloads/x"},
+        headers=auth("admin"),
+    )
+    inc = r.json()
+    assert inc["ttd_seconds"] == 10.0
+    assert inc["rto_seconds"] == 40.3
+    assert inc["peak_state"] == "down"  # не переданные поля не трогаются
+
+    r = await client.get(
+        "/api/v1/incidents", params={"open": "true"}, headers=auth("dr-controller")
+    )
+    assert [i["id"] for i in r.json()] == [1]
+    await client.patch(
+        "/api/v1/incidents/1",
+        json={"recovery_completed_at": "2026-09-24T12:07:00Z"},
+        headers=auth("dr-controller"),
+    )
+    r = await client.get(
+        "/api/v1/incidents", params={"open": "true"}, headers=auth("dr-controller")
+    )
+    assert r.json() == []
+    r = await client.get(
+        "/api/v1/incidents",
+        params={"cluster_id": "cluster-b", "from": "2026-09-24T12:00:00Z"},
+        headers=auth("admin"),
+    )
+    assert [i["id"] for i in r.json()] == [1]
+
+    assert (
+        await client.patch("/api/v1/incidents/99", json={}, headers=auth("dr-controller"))
+    ).status_code == 404
+    bad = {"cluster_id": "cluster-z", "dr_mode": "active", "detected_at": detected}
+    assert (
+        await client.post("/api/v1/incidents", json=bad, headers=auth("dr-controller"))
+    ).status_code == 422
+    observe = {"cluster_id": "cluster-b", "dr_mode": "observe", "detected_at": detected}
+    r = await client.post("/api/v1/incidents", json=observe, headers=auth("dr-controller"))
+    assert r.status_code == 201 and r.json()["dr_mode"] == "observe"

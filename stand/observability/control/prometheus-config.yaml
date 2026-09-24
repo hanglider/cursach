@@ -1,6 +1,6 @@
 # Prometheus control-кластера (ADR 0008, 0024): принимает remote write от k6,
-# скрейпит метрики Envoy (бонусный клиентский ряд, не источник SLI — ADR 0016)
-# и компоненты Thanos. Через свой sidecar виден Querier'у как cluster=control.
+# скрейпит метрики Envoy (бонусный клиентский ряд, не источник SLI — ADR 0016),
+# компоненты Thanos и DR Controller. Через свой sidecar виден Querier'у как cluster=control.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,6 +28,11 @@ data:
       - job_name: grafana
         static_configs:
           - targets: [grafana.observability.svc:3000]
+
+      # DR Controller (ADR 0028): состояние автомата, сигналы и веса маршрута app.
+      - job_name: dr-controller
+        static_configs:
+          - targets: [dr-controller.federation.svc:8080]
 
       # Прокси Envoy Gateway: per-upstream счётчики и гистограммы.
       - job_name: envoy

@@ -12,8 +12,10 @@ make load RUN=<id> [DURATION=3m] [INTERVAL=30] [TTL=180]
 make stand-down      # только вручную
 ```
 
-Требования: OrbStack (или другой docker) с VM не меньше 4 GB; стенд без
-observability занимает около 2.5 GB.
+Требования: OrbStack (или другой docker) с VM на 8 GB. Полный контур (после
+задачи 7) занимает около 4.5 GB анонимной памяти узлов, из них Chaos Mesh около
+32 MiB на кластер федерации, DR Controller около 13 MiB (замер 2026-09-24);
+стенд без observability — около 2.5 GB.
 
 ## Что где
 
@@ -23,12 +25,12 @@ observability занимает около 2.5 GB.
 | `control` | ns `observability`: Prometheus (remote write от k6, метрики Envoy) + sidecar, Thanos Querier, Thanos Ruler, Grafana | 2 |
 | `control` | ns `federation`: PostgreSQL + каталог `registry`, NodePort 30800 → хост 8000 | 4 |
 | `control` | ns `federation`: планировщик `scheduler` (CRD `Workload`, режим meta или naive) | 6 |
+| `control` | ns `federation`: DR Controller `dr-controller` (режим active или observe), Service с `/metrics` и `/status` | 7 |
 | `cluster-a`, `cluster-b` | ns `federation-system` с ConfigMap `cluster-identity`; ns `workloads` с `backend`, долгоживущим `app` и frontend'ами потока | 1 |
 | `cluster-a`, `cluster-b` | ns `observability`: Prometheus + Thanos sidecar (StoreAPI на NodePort 30901) | 2 |
 | `cluster-a`, `cluster-b` | ns `kyverno`: Kyverno (admission, background, reports); ClusterPolicy `require-region-match`, `require-certification` | 5 |
-| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннер сценария 3 (`experiments/policy/`) | 1, 2, 5 |
-
-Chaos Mesh — задача 8, DR-контроллер — задача 7 (в `control/federation`).
+| `cluster-a`, `cluster-b` | ns `chaos-mesh`: Chaos Mesh (controller-manager + chaos-daemon) — внесение отказов | 7 |
+| хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннеры сценария 3 (`experiments/policy/`) и сценария 1 (`experiments/dr/`) | 1, 2, 5, 7 |
 
 ## Порты на хосте
 
@@ -134,6 +136,33 @@ curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
 `make generate` пересобирает deepcopy и CRD (`stand/scheduler/federation.spbu_workloads.yaml`)
 после правки `scheduler/api/v1alpha1/`.
 
+## DR Controller
+
+DR Controller (`dr-controller/`, ADR 0007, 0011, 0028) живёт в `control`, ns
+`federation`. Раз в 10 с по каждому кластеру: проба `app` по адресу из Backend
+`app-<cluster>` (NodePort 31998), `/readyz` API-сервера, error rate за 1 мин из
+Thanos. Автомат HEALTHY → DEGRADED → DOWN → RECOVERING; на DOWN вес кластера на
+маршруте `app.fed.local` → 0 и `down` в каталоге, на RECOVERING — `down` снят,
+вес 5 → 25 → 50. Каждый эпизод — строка `incidents` в каталоге.
+
+```bash
+make dr-mode                     # текущий: active | observe
+make dr-mode MODE=observe        # «без DR»: только обнаружение и инциденты (со штатного стенда)
+kubectl --kubeconfig stand/kubeconfig/control.kubeconfig get --raw \
+  /api/v1/namespaces/federation/services/dr-controller:http/proxy/status | jq
+kubectl --kubeconfig stand/kubeconfig/control.kubeconfig -n federation logs deploy/dr-controller
+source .env
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" 'http://127.0.0.1:8000/api/v1/incidents?open=true' | jq
+make dr-check                    # инвариант 6 и недостижимый app на живом стенде, ~6 мин
+make dr-run RUN=<id>             # сценарий 1: 3 мин baseline, 5 мин PodChaos, 5 мин восстановления
+```
+
+Сценарий 1 (`experiments/dr/run.sh`): k6 50 RPS в `app.fed.local`, PodChaos
+`pod-failure` на ns `workloads` целевого кластера (`experiments/chaos/`). В
+результатах: `summary.json` (TTD, RTO, потерянные запросы, доступность по окнам),
+`incidents.json`, `chaos.json`, `requests.csv.gz` (каждый запрос k6),
+`per-second.csv`, ряды `dr_*` и таблица `incidents` в экспорте.
+
 ## Как устроен путь запроса
 
 ```
@@ -183,6 +212,8 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | PostgreSQL | 17.11-alpine | `stand/registry/postgres.yaml` |
 | registry | образ `federation/registry:dev`, собирается локально | `registry/` |
 | scheduler | образ `federation/scheduler:dev`, собирается локально; controller-runtime v0.25.1 | `scheduler/go.mod` |
+| dr-controller | образ `federation/dr-controller:dev`, собирается локально; controller-runtime v0.25.1 | `dr-controller/go.mod` |
+| Chaos Mesh | 2.8.4 (чарт), pause-образ `registry.k8s.io/pause:3.10` | `stand/scripts/lib.sh`, values — `stand/chaos/chaos-mesh-values.yaml` |
 | test-service | образ `federation/test-service:dev`, собирается локально | `test-service/` |
 
 ## Если что-то не так
@@ -223,6 +254,15 @@ DR-контроллера и цель его пробы; сценарий 1 из
   workload <name>` в `control` (события Placed / Rejected / NoCandidates /
   Error) и логи `deploy/scheduler`. `NoCandidates` — каталог не отдал ни
   одного допустимого кластера (`down` или hard constraints), повтор раз в 30 с.
+- DR Controller: `make stand-status` показывает состояние, веса и сигналы по
+  кластерам; подробнее — `/status` и логи (события `transition`, `route_updated`,
+  `registry_status`, `cycle_error`). `panic=true` — все кластеры DOWN, веса
+  нарочно оставлены номинальными. Кластера нет в `/status` — у него нет Backend
+  `app-<cluster>` на шлюзе (повторный `make stand-up` перерендерит маршрут).
+- Прерванный сценарий 1 или проверка DR оставили эксперимент Chaos Mesh:
+  `kubectl -n chaos-mesh get podchaos,networkchaos` в кластере федерации и
+  `kubectl -n chaos-mesh delete podchaos,networkchaos --all`; DR сам вернёт трафик
+  после восстановления (ступени, около минуты).
 - Остатки после падения планировщика: `kubectl -n workloads delete
   deploy,svc -l federation.spbu/managed-by=scheduler` в кластерах федерации и
   `kubectl -n gateway delete httproute,backend -l federation.spbu/managed-by=scheduler`
