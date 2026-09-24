@@ -12,10 +12,12 @@ make load RUN=<id> [DURATION=3m] [INTERVAL=30] [TTL=180]
 make stand-down      # только вручную
 ```
 
-Требования: OrbStack (или другой docker) с VM на 8 GB. Полный контур (после
-задачи 7) занимает около 4.5 GB анонимной памяти узлов, из них Chaos Mesh около
-32 MiB на кластер федерации, DR Controller около 13 MiB (замер 2026-09-24);
-стенд без observability — около 2.5 GB.
+Требования: OrbStack (или другой docker) с VM на 8 GB. Полный контур (после задач
+7 и 3) занимает около 5.3 GB анонимной памяти узлов, в VM остаётся около 1.9 GB
+(замер 2026-09-24). Больше всего — kube-apiserver кластеров федерации, около
+1.1 GB каждый; Chaos Mesh — около 32 MiB на кластер, DR Controller — 13 MiB,
+Jaeger — 50 MiB, OTel Collector — 20 MiB на кластер. Стенд без observability —
+около 2.5 GB.
 
 ## Что где
 
@@ -23,11 +25,13 @@ make stand-down      # только вручную
 |---|---|---|
 | `control` | Envoy Gateway + Gateway `stand` (ns `gateway`), NodePort 30080 → хост 8080 | 1 |
 | `control` | ns `observability`: Prometheus (remote write от k6, метрики Envoy) + sidecar, Thanos Querier, Thanos Ruler, Grafana | 2 |
+| `control` | ns `observability`: Jaeger v2 (трейсы, UI и API v3 на хост 16686); шлюз — корень трейса | 3 |
 | `control` | ns `federation`: PostgreSQL + каталог `registry`, NodePort 30800 → хост 8000 | 4 |
 | `control` | ns `federation`: планировщик `scheduler` (CRD `Workload`, режим meta или naive) | 6 |
 | `control` | ns `federation`: DR Controller `dr-controller` (режим active или observe), Service с `/metrics` и `/status` | 7 |
 | `cluster-a`, `cluster-b` | ns `federation-system` с ConfigMap `cluster-identity`; ns `workloads` с `backend`, долгоживущим `app` и frontend'ами потока | 1 |
 | `cluster-a`, `cluster-b` | ns `observability`: Prometheus + Thanos sidecar (StoreAPI на NodePort 30901) | 2 |
+| `cluster-a`, `cluster-b` | ns `observability`: OTel Collector — трейсы тестового сервиса с меткой кластера → Jaeger control | 3 |
 | `cluster-a`, `cluster-b` | ns `kyverno`: Kyverno (admission, background, reports); ClusterPolicy `require-region-match`, `require-certification` | 5 |
 | `cluster-a`, `cluster-b` | ns `chaos-mesh`: Chaos Mesh (controller-manager + chaos-daemon) — внесение отказов | 7 |
 | хост | k6, генератор workload'ов, экспорт результатов (`experiments/load/`), раннеры сценария 3 (`experiments/policy/`) и сценария 1 (`experiments/dr/`) | 1, 2, 5, 7 |
@@ -41,7 +45,7 @@ make stand-down      # только вручную
 | 10902 | Thanos Querier | единый PromQL, `experiments/load/export.sh` |
 | 3000 | Grafana | дашборд «Federation SLO», anonymous Viewer, admin/admin |
 | 8000 | Каталог | регистрация из `up.sh`, `export.sh`, ручные запросы с токеном из `.env` |
-| 16686 | зарезервирован под Jaeger (задача 3) | порт проброшен заранее, чтобы не пересоздавать `control` |
+| 16686 | Jaeger UI и API v3 | трейсы, экспорт трейсов прогона (`experiments/traces/export.py`) |
 
 ## Наблюдаемость
 
@@ -70,6 +74,29 @@ open http://127.0.0.1:3000/d/federation-slo
 единственный источник: из него `up.sh` рендерит ConfigMap идентичности
 (`scripts/render-identity.sh`) и регистрирует кластеры в каталоге
 (`scripts/register-clusters.sh`).
+
+## Трассировка
+
+Корень трейса — Envoy в control (ADR 0029): он сэмплирует 10% запросов без входящего
+`traceparent` и передаёт трейс в кластер; тестовый сервис продолжает только
+сэмплированные трейсы (пробы и DR не трассируются). Спаны frontend и backend идут
+в OTel Collector своего кластера (`observability/otel-collector`), он ставит
+`federation.cluster` и отправляет их в Jaeger control (IP узла control, NodePort 30417).
+Экспорт каждого прогона кладёт трейсы окна в `traces/` результатов.
+
+```bash
+open http://127.0.0.1:16686                               # Jaeger UI (в Grafana трейсов нет, ADR 0029)
+curl -s http://127.0.0.1:16686/api/v3/services | jq       # gateway, frontend, backend
+curl -sG http://127.0.0.1:16686/api/v3/traces --data-urlencode query.service_name=gateway \
+  --data-urlencode "query.start_time_min=$(date -u -v-5M +%FT%TZ)" \
+  --data-urlencode "query.start_time_max=$(date -u +%FT%TZ)" | jq '.result.resourceSpans | length'
+make trace-run RUN=<id> SAMPLING=10                       # замер: 3 мин k6, трейсы, разложение задержки
+```
+
+Решение о сэмплинге шлюз принимает сам: флаг `sampled` во входящем `traceparent` и
+`x-envoy-force-trace` от внешнего клиента он не учитывает (trace id при этом
+сохраняет). Проследить конкретный запрос можно, подняв сэмплинг на время
+(`gateway_sampling 100` из `scripts/lib.sh`, так делает дымовой тест), и вернув его.
 
 ## Каталог
 
@@ -208,6 +235,9 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | Prometheus | v3.14.0 | `stand/observability/federation/prometheus.yaml` |
 | Thanos | v0.42.4 | там же, `control/thanos-query.yaml`, `control/thanos-rule.yaml` |
 | Grafana | 13.2.1 | `stand/observability/control/grafana.yaml` |
+| Jaeger | 2.21.0 (v2, хранилище в памяти, `max_traces` 20000) | `stand/observability/control/jaeger.yaml` |
+| OTel Collector | 0.161.0 (core) | `stand/observability/federation/otel-collector.tmpl.yaml` |
+| OTel Go SDK | 1.46.0, otelhttp 0.71.0 | `test-service/go.mod` |
 | Kyverno | v1.19.1, чарт 3.9.1 | `stand/scripts/lib.sh`, values — `stand/policies/kyverno-values.yaml` |
 | PostgreSQL | 17.11-alpine | `stand/registry/postgres.yaml` |
 | registry | образ `federation/registry:dev`, собирается локально | `registry/` |
@@ -254,6 +284,11 @@ DR-контроллера и цель его пробы; сценарий 1 из
   workload <name>` в `control` (события Placed / Rejected / NoCandidates /
   Error) и логи `deploy/scheduler`. `NoCandidates` — каталог не отдал ни
   одного допустимого кластера (`down` или hard constraints), повтор раз в 30 с.
+- Трейса нет в Jaeger: `kubectl -n observability logs deploy/otel-collector` в
+  кластере федерации (ошибки экспорта — Jaeger control недоступен по IP узла;
+  повторный `make stand-up` перерендерит адрес); спаны шлюза — статус EnvoyProxy
+  `stand` и логи `envoy-gateway` в control. Трассировка сервиса выключена, если у
+  пода нет `OTEL_EXPORTER_OTLP_ENDPOINT` (лог `listening ... tracing=false`).
 - DR Controller: `make stand-status` показывает состояние, веса и сигналы по
   кластерам; подробнее — `/status` и логи (события `transition`, `route_updated`,
   `registry_status`, `cycle_error`). `panic=true` — все кластеры DOWN, веса

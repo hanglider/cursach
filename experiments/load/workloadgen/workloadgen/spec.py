@@ -15,6 +15,8 @@ WORKLOAD_PLURAL = "workloads"
 GATEWAY_NAME = "stand"
 DOMAIN = "fed.local"
 IMAGE = "federation/test-service:dev"
+# Коллектор трейсов в кластере федерации (ADR 0029): тот же адрес, что у планировщика.
+OTLP_ENDPOINT = "http://otel-collector.observability.svc:4318"
 MANAGED_BY_LABEL = "federation.spbu/managed-by"
 MANAGED_BY = "workloadgen"
 
@@ -97,6 +99,7 @@ def deployment(w: Workload, image: str = IMAGE) -> dict:
                                     "name": "BACKEND_URL",
                                     "value": f"http://backend.{NAMESPACE}.svc:8080",
                                 },
+                                {"name": "OTEL_EXPORTER_OTLP_ENDPOINT", "value": OTLP_ENDPOINT},
                             ],
                             "ports": [{"name": "http", "containerPort": 8080}],
                             "readinessProbe": {

@@ -63,6 +63,9 @@ func main() {
 	flag.StringVar(&cfg.Image, "image", envOr("SCHEDULER_IMAGE", "federation/test-service:dev"), "образ frontend'а по умолчанию")
 	flag.StringVar(&cfg.BackendURL, "backend-url", envOr("SCHEDULER_BACKEND_URL", "http://backend.workloads.svc:8080"),
 		"адрес backend'а тестового сервиса внутри кластера")
+	flag.StringVar(&cfg.OTLPEndpoint, "otlp-endpoint",
+		envOr("SCHEDULER_OTLP_ENDPOINT", "http://otel-collector.observability.svc:4318"),
+		"OTEL_EXPORTER_OTLP_ENDPOINT frontend'ов: коллектор трейсов в кластере (ADR 0029); пусто — без трассировки")
 	flag.StringVar(&cfg.Domain, "domain", envOr("SCHEDULER_DOMAIN", "fed.local"), "домен хостов workload'ов на шлюзе")
 	flag.StringVar(&cfg.GatewayNamespace, "gateway-namespace", envOr("SCHEDULER_GATEWAY_NAMESPACE", "gateway"), "namespace Gateway API")
 	flag.StringVar(&cfg.GatewayName, "gateway-name", envOr("SCHEDULER_GATEWAY_NAME", "stand"), "имя Gateway")

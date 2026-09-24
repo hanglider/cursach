@@ -70,9 +70,10 @@
 | Meta-Scheduler | Вне федерации | Нужен доступ к API всех кластеров одновременно |
 | DR Controller | Вне федерации | Наблюдатель не может жить в наблюдаемом |
 | Thanos Querier | Вне федерации | Точка агрегации |
-| Шлюз (Envoy Gateway) | Вне федерации | Единая точка входа трафика, веса по кластерам |
+| Шлюз (Envoy Gateway) | Вне федерации | Единая точка входа трафика, веса по кластерам; корень трейса (ADR 0029) |
+| Jaeger | Вне федерации | Хранилище трейсов; наблюдатель не в наблюдаемом (ADR 0029) |
 | Thanos sidecar | В каждом кластере | Рядом с локальным Prometheus |
-| Prometheus, OTel Collector | В каждом кластере | Сбор локальных метрик |
+| Prometheus, OTel Collector | В каждом кластере | Сбор локальных метрик и трейсов |
 | Kyverno | В каждом кластере | Admission webhook работает только внутри |
 | Chaos Mesh | В каждом кластере | Внесение отказов на месте |
 
@@ -95,7 +96,7 @@
 
 Каждый кластер: `Prometheus` (scrape локальных таргетов каждые 5 с, recording
 rules `cluster:*`) + `Thanos sidecar` (отдаёт данные наружу по StoreAPI) +
-`OpenTelemetry Collector` (трейсы, задача 3). Всё — raw-манифесты, без
+`OpenTelemetry Collector` (трейсы, ADR 0029). Всё — raw-манифесты, без
 оператора (ADR 0024).
 
 `Thanos Querier` вне федерации агрегирует все sidecar'ы и предоставляет единый
@@ -111,6 +112,23 @@ control:   Prometheus ──> Thanos sidecar ──┤           │  ▲
                   └──── query ──────────────────────────┼──┘
                                                         └──> Grafana
 ```
+
+Трассировка (ADR 0029): корень трейса — Envoy в control, он же принимает решение о
+сэмплинге (10%) и передаёт `traceparent` в кластер; тестовый сервис продолжает только
+сэмплированные трейсы. Коллектор кластера ставит метку `federation.cluster` и шлёт
+спаны в Jaeger control.
+
+```
+k6 ──> Envoy (control) ──span──────────────────────────────> Jaeger (control)
+          │ traceparent                                        ▲  OTLP gRPC,
+          ▼                                                    │  IP узла:30417
+cluster-a: frontend ──> backend ──OTLP/HTTP──> OTel Collector ─┘
+           (span)       (span)                 + federation.cluster
+```
+
+Экспорт прогона выгружает трейсы окна в `traces/`: сырые спаны и разложение
+задержки по звеньям — шлюз, переход control → кластер, frontend, сеть до backend,
+backend.
 
 ### 2.2. Без object storage
 
@@ -656,10 +674,11 @@ failover (режим `observe`) окно — весь отказ.
 │   ├── prometheus + thanos sidecar   k6 remote write, метрики шлюза
 │   ├── thanos-query                  единый PromQL над всеми sidecar'ами
 │   ├── thanos-rule                   federation:*, burn-rate алерты
+│   ├── jaeger                        трейсы, UI и API на хост 16686 (ADR 0029)
 │   └── grafana
 ├── kind cluster "cluster-a"      федерация: workloads, Prometheus + sidecar,
-└── kind cluster "cluster-b"      Kyverno (ns kyverno) с двумя ClusterPolicy,
-                                  Chaos Mesh (ns chaos-mesh, ADR 0028)
+└── kind cluster "cluster-b"      OTel Collector (ADR 0029), Kyverno (ns kyverno)
+                                  с двумя ClusterPolicy, Chaos Mesh (ns chaos-mesh, ADR 0028)
     (cluster-c — позже, при наличии ресурсов)
 ```
 
@@ -747,7 +766,7 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── kind/                    конфигурации кластеров
 │   ├── federation/              namespace'ы, backend тестового сервиса
 │   ├── gateway/                 EnvoyProxy, GatewayClass, Gateway
-│   ├── observability/           federation/: Prometheus + sidecar; control/: Querier, Ruler, Grafana
+│   ├── observability/           federation/: Prometheus + sidecar, OTel Collector; control/: Querier, Ruler, Grafana, Jaeger
 │   ├── registry/                ns federation, PostgreSQL, каталог (задача 4)
 │   ├── scheduler/               CRD Workload (generate), RBAC, Deployment планировщика
 │   ├── dr-controller/           RBAC, Deployment и Service DR Controller'а
@@ -771,6 +790,7 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── load/                    steady.js, run.sh, export.sh, workloadgen/
 │   ├── policy/                  run.sh: сценарий 3, нарушение политики в обход планировщика
 │   ├── dr/                      run.sh + summary.py: сценарий 1; check.sh: проверка DR
+│   ├── traces/                  export.py: трейсы прогона и разложение задержки; run.sh: замер
 │   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
 └── analysis/                    обработка результатов, графики
 ```

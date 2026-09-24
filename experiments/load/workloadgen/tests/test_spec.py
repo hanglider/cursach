@@ -36,6 +36,7 @@ def test_objects_are_consistent():
     env = {e["name"]: e["value"] for e in d["spec"]["template"]["spec"]["containers"][0]["env"]}
     assert env["WORKLOAD"] == "w-3"
     assert env["BACKEND_URL"] == "http://backend.workloads.svc:8080"
+    assert env["OTEL_EXPORTER_OTLP_ENDPOINT"] == "http://otel-collector.observability.svc:4318"
 
 
 def test_annotations_land_on_deployment_metadata() -> None:

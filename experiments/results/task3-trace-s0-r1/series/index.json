@@ -1,0 +1,62 @@
+{
+  "start": 1790269080,
+  "end": 1790269382,
+  "step": "5s",
+  "queries": [
+    {
+      "name": "http_requests_total",
+      "query": "http_requests_total{job=\"test-service\"}",
+      "series": 7
+    },
+    {
+      "name": "http_request_duration_seconds_bucket",
+      "query": "http_request_duration_seconds_bucket{job=\"test-service\",tier=\"frontend\"}",
+      "series": 70
+    },
+    {
+      "name": "up_test_service",
+      "query": "up{job=\"test-service\"}",
+      "series": 8
+    },
+    {
+      "name": "cluster_sli",
+      "query": "{__name__=~\"cluster:.*\"}",
+      "series": 28
+    },
+    {
+      "name": "federation_slo",
+      "query": "{__name__=~\"federation:.*\"}",
+      "series": 6
+    },
+    {
+      "name": "alerts",
+      "query": "ALERTS",
+      "series": 0
+    },
+    {
+      "name": "node_cpu_usage",
+      "query": "container_cpu_usage_seconds_total{job=\"kubelet-cadvisor\",id=\"/\"}",
+      "series": 2
+    },
+    {
+      "name": "node_memory_working_set",
+      "query": "container_memory_working_set_bytes{job=\"kubelet-cadvisor\",id=\"/\"}",
+      "series": 2
+    },
+    {
+      "name": "k6",
+      "query": "{__name__=~\"k6_http_.*\"}",
+      "series": 60
+    },
+    {
+      "name": "envoy_upstream_rq",
+      "query": "{__name__=~\"envoy_cluster_upstream_rq_(total|xx)\"}",
+      "series": 14
+    },
+    {
+      "name": "dr",
+      "query": "{__name__=~\"dr_(cluster_state|signal|error_rate|route_weight|route_weight_desired|transitions_total|panic|mode)\"}",
+      "series": 23
+    }
+  ]
+}

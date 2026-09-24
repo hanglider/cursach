@@ -6,7 +6,8 @@
 # Окно: [started_at − 60 с, finished_at + 60 с] из meta.json, шаг 5 с.
 # Результат: experiments/results/<run-id>/series/<имя>.json (формат
 # Prometheus matrix) и series/index.json со списком запросов; registry/*.csv —
-# что за окно видел каталог: снимки метрик, решения, нарушения, инциденты DR (ADR 0025, 0028).
+# что за окно видел каталог: снимки метрик, решения, нарушения, инциденты DR (ADR 0025, 0028);
+# traces/ — трейсы окна из Jaeger и разложение задержки по звеньям (ADR 0029).
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
@@ -69,4 +70,13 @@ if "${KC_CONTROL[@]}" get deployment/postgres >/dev/null 2>&1; then
 else
   log "каталог в control не найден: registry/*.csv не выгружены"
 fi
-log "готово: $OUT/series, $OUT/registry"
+# Трейсы за то же окно из Jaeger (ADR 0029): спаны и разложение задержки по звеньям.
+JAEGER_URL=${JAEGER_URL:-http://127.0.0.1:16686}
+if curl -sf "$JAEGER_URL/api/v3/services" >/dev/null 2>&1; then
+  uv run --no-project --quiet --python 3.13 python "$ROOT/experiments/traces/export.py" \
+    "$OUT" "$start" "$end" "$JAEGER_URL" >&2 || { log "выгрузка трейсов не удалась"; exit 1; }
+  log "traces/: $(jq '.all.traces' "$OUT/traces/summary.json") трейсов"
+else
+  log "Jaeger недоступен на $JAEGER_URL: трейсы не выгружены"
+fi
+log "готово: $OUT/series, $OUT/registry, $OUT/traces"

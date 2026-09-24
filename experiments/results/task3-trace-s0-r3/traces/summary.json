@@ -1,0 +1,66 @@
+{
+  "export_window": null,
+  "run_window": {
+    "start": "2026-09-24T17:19:56Z",
+    "end": "2026-09-24T17:22:57Z"
+  },
+  "jaeger": null,
+  "spans": 7405,
+  "traces_exported": 1481,
+  "components": [
+    "total",
+    "gateway",
+    "hop",
+    "frontend",
+    "backend_net",
+    "backend"
+  ],
+  "all": {
+    "traces": 0,
+    "complete": 0,
+    "errors": 0,
+    "total": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "gateway": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "hop": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "frontend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend_net": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    }
+  },
+  "by_cluster": {}
+}

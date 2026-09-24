@@ -56,6 +56,7 @@ make scheduler-mode [MODE=meta|naive]  # режим планировщика н�
 make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR»
 make dr-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 1: PodChaos на workloads + k6 в app.fed.local
 make dr-check [CLUSTER=cluster-b]      # проверка DR на стенде: инвариант 6 и недостижимый app
+make trace-run RUN=<id> [SAMPLING=10]  # замер трассировки: k6 в app.fed.local, трейсы и разложение задержки
 make generate        # deepcopy и CRD планировщика (controller-gen)
 make lint            # линт всего проекта
 make test            # тесты

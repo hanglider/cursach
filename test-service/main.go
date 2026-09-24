@@ -1,4 +1,5 @@
 // Тестовый сервис стенда (ADR 0014): один бинарь, роль задаётся флагом.
+// Трассировка включается переменной OTEL_EXPORTER_OTLP_ENDPOINT (ADR 0029).
 //
 //	--role=backend   отвечает на GET /work
 //	--role=frontend  на GET / вызывает backend и отражает его ошибки и
@@ -34,6 +35,13 @@ func main() {
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
+	tracing, err := app.NewTracing(context.Background(), cfg.Role, cfg.Workload)
+	if err != nil {
+		logger.Error("tracing", "err", err)
+		os.Exit(2)
+	}
+	cfg.Tracing = tracing
+
 	a, err := app.New(cfg, prometheus.NewRegistry(), logger)
 	if err != nil {
 		logger.Error("config", "err", err)
@@ -50,7 +58,8 @@ func main() {
 	defer stop()
 
 	go func() {
-		logger.Info("listening", "role", cfg.Role, "addr", cfg.Listen)
+		logger.Info("listening", "role", cfg.Role, "addr", cfg.Listen, "tracing", tracing.Enabled(),
+			"otlp_endpoint", os.Getenv(app.EnvOTLPEndpoint))
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.Error("serve", "err", err)
 			os.Exit(1)
@@ -62,6 +71,9 @@ func main() {
 	defer cancel()
 	if err := srv.Shutdown(shutdownCtx); err != nil {
 		logger.Error("shutdown", "err", err)
+	}
+	if err := tracing.Shutdown(shutdownCtx); err != nil {
+		logger.Error("tracing shutdown", "err", err)
 	}
 }
 

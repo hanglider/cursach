@@ -43,6 +43,15 @@ func TestDeploymentShape(t *testing.T) {
 	if c.Args[0] != "--role=frontend" || c.Env[0].Value != "w-7" || c.Env[1].Value != "http://backend.workloads.svc:8080" {
 		t.Fatalf("container %+v", c)
 	}
+	if len(c.Env) != 2 {
+		t.Fatalf("no OTLP endpoint — no tracing env: %+v", c.Env)
+	}
+	traced := sample()
+	traced.OTLPEndpoint = "http://otel-collector.observability.svc:4318"
+	env := Deployment(traced).Spec.Template.Spec.Containers[0].Env
+	if len(env) != 3 || env[2].Name != "OTEL_EXPORTER_OTLP_ENDPOINT" || env[2].Value != traced.OTLPEndpoint {
+		t.Fatalf("tracing env: %+v", env)
+	}
 	if len(d.Spec.Template.Annotations) != 0 {
 		t.Fatal("pod template must not carry requirement annotations (ADR 0009)")
 	}

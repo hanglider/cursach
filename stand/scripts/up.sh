@@ -55,10 +55,12 @@ for c in "${FEDERATION[@]}"; do
   "$STAND/scripts/render-capacity-rules.sh" "$c" | kc "$c" apply -f - >/dev/null
   kc "$c" apply -f "$STAND/observability/federation/prometheus-rules.yaml" >/dev/null
   kc "$c" apply -f "$STAND/observability/federation/prometheus.yaml" >/dev/null
+  # OTel Collector: трейсы тестового сервиса → Jaeger control (ADR 0029).
+  "$STAND/scripts/render-otel-collector.sh" "$c" | kc "$c" apply -f - >/dev/null
   # Конфиг мог измениться при повторном stand-up: перечитать без пересоздания пода.
   kc "$c" -n observability rollout status deployment/prometheus --timeout=180s >/dev/null
-  kc "$c" -n observability exec deploy/prometheus -c prometheus -- \
-    wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
+  kc "$c" -n observability rollout status deployment/otel-collector --timeout=120s >/dev/null
+  prom_reload "$c"
 done
 
 # --- 3c. Федерация: Kyverno + политики hard constraints (ADR 0019, 0026) ----
@@ -115,8 +117,8 @@ kc "$CONTROL" -n "$EG_NAMESPACE" wait deployment -l gateway.envoyproxy.io/owning
 # Маршрут долгоживущего сервиса app с весами по кластерам (ADR 0011).
 "$STAND/scripts/render-app-route.sh" | kc "$CONTROL" apply -f - >/dev/null
 
-# --- 4b. Control: Prometheus, Thanos Querier + Ruler, Grafana (ADR 0024) ---
-log "$CONTROL: Prometheus, Thanos Querier + Ruler, Grafana"
+# --- 4b. Control: Prometheus, Thanos Querier + Ruler, Grafana (ADR 0024), Jaeger (ADR 0029)
+log "$CONTROL: Prometheus, Thanos Querier + Ruler, Grafana, Jaeger"
 kc "$CONTROL" apply -f "$STAND/observability/federation/namespace-rbac.yaml" >/dev/null
 kc "$CONTROL" apply -f "$STAND/observability/control/prometheus-config.yaml" >/dev/null
 kc "$CONTROL" apply -f "$STAND/observability/federation/prometheus.yaml" >/dev/null
@@ -127,21 +129,20 @@ kc "$CONTROL" apply -f "$STAND/observability/control/thanos-rule.yaml" >/dev/nul
 kc "$CONTROL" create configmap grafana-dashboards -n observability \
   --from-file="$STAND/observability/control/grafana/dashboards/federation-slo.json" \
   --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
+# Датасорсы Grafana читает только при старте: изменился ConfigMap провижининга — рестарт.
+rv_before=$(kc "$CONTROL" -n observability get configmap grafana-provisioning \
+  -o jsonpath='{.metadata.resourceVersion}' 2>/dev/null || true)
 kc "$CONTROL" apply -f "$STAND/observability/control/grafana.yaml" >/dev/null
-for d in prometheus thanos-query thanos-rule grafana; do
+rv_after=$(kc "$CONTROL" -n observability get configmap grafana-provisioning -o jsonpath='{.metadata.resourceVersion}')
+if [ -n "$rv_before" ] && [ "$rv_before" != "$rv_after" ]; then
+  kc "$CONTROL" -n observability rollout restart deployment/grafana >/dev/null
+fi
+kc "$CONTROL" apply -f "$STAND/observability/control/jaeger.yaml" >/dev/null
+for d in prometheus thanos-query thanos-rule grafana jaeger; do
   kc "$CONTROL" -n observability rollout status "deployment/$d" --timeout=180s >/dev/null
 done
-# Конфиг scrape мог измениться (новый job): ConfigMap доходит до пода с задержкой kubelet
-# до минуты — ждём совпадения смонтированного файла и перечитываем без пересоздания пода.
-want=$(kc "$CONTROL" -n observability get configmap prometheus-config -o jsonpath='{.data.prometheus\.yml}')
-for _ in $(seq 1 45); do
-  have=$(kc "$CONTROL" -n observability exec deploy/prometheus -c prometheus -- \
-    cat /etc/prometheus/prometheus.yml 2>/dev/null || true)
-  [ "$have" = "$want" ] && break
-  sleep 2
-done
-kc "$CONTROL" -n observability exec deploy/prometheus -c prometheus -- \
-  wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
+# Конфиг scrape мог измениться (новый job): перечитать без пересоздания пода.
+prom_reload "$CONTROL"
 # Список store'ов мог измениться (IP узлов): Querier перечитывает файл сам,
 # но после stand-up с нуля ждать 30 с незачем.
 kc "$CONTROL" -n observability rollout restart deployment/thanos-query >/dev/null
@@ -265,6 +266,36 @@ for _ in $(seq 1 45); do
 done
 [ "$with_metrics" -ge "${#FEDERATION[@]}" ] \
   || die "каталог: метрики есть у $with_metrics кластеров из ${#FEDERATION[@]}"
+
+# Трассировка (ADR 0029): один трейс шлюз (control) → frontend → backend (кластер
+# федерации) с меткой кластера от коллектора. Решение о сэмплинге принимает только шлюз
+# и внешние заголовки (флаг traceparent, x-envoy-force-trace) не учитывает, поэтому на
+# время теста сэмплинг 100%: запросы идут с нашим traceparent, Envoy сохраняет trace id.
+log "дымовой тест: сквозной трейс шлюз → кластер в Jaeger"
+gateway_sampling 100
+tids=()
+trace=""
+for _ in $(seq 1 30); do
+  tid=$(openssl rand -hex 16)
+  tids+=("$tid")
+  curl -sf -o /dev/null -H 'Host: app.fed.local' -H "traceparent: 00-$tid-$(openssl rand -hex 8)-01" \
+    http://127.0.0.1:8080/ || true
+  sleep 2
+  for t in "${tids[@]}"; do
+    trace=$(curl -sf "$JAEGER_URL/api/v3/traces/$t" | jq -c '
+      [.result.resourceSpans[]
+       | {svc: (.resource.attributes[] | select(.key == "service.name") | .value.stringValue),
+          cluster: ([.resource.attributes[] | select(.key == "federation.cluster") | .value.stringValue] | first)}]' \
+      2>/dev/null || true)
+    if jq -e '([.[].svc] | index("gateway") and index("frontend") and index("backend"))
+              and all(.[] | select(.svc != "gateway"); .cluster != null)' <<<"$trace" >/dev/null 2>&1; then
+      break 2
+    fi
+    trace=""
+  done
+done
+gateway_sampling "$(gateway_sampling_default)"
+[ -n "$trace" ] || die "дымовой тест трейса: в Jaeger нет полного трейса за 60 с (${#tids[@]} запросов)"
 
 # DR Controller: все кластеры федерации HEALTHY, веса маршрута app номинальные, режим active.
 log "дымовой тест: DR Controller видит кластеры здоровыми"

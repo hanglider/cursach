@@ -20,6 +20,8 @@ KYVERNO_CHART_VERSION=3.9.1                  # Kyverno v1.19.1 в кластер
 KYVERNO_NAMESPACE=kyverno
 CHAOS_CHART_VERSION=2.8.4                    # Chaos Mesh в кластерах федерации (ADR 0023, 0028)
 CHAOS_NAMESPACE=chaos-mesh
+JAEGER_OTLP_NODEPORT=30417                   # OTLP gRPC Jaeger в control для коллекторов федерации (ADR 0029)
+JAEGER_URL=${JAEGER_URL:-http://127.0.0.1:16686}   # Jaeger UI и API v3 с хоста
 ENV_FILE="$ROOT/.env"                        # токены каталога, в .gitignore (ADR 0018)
 ENV_VARS=(REGISTRY_TOKEN_SCHEDULER REGISTRY_TOKEN_DR_CONTROLLER REGISTRY_TOKEN_ADMIN REGISTRY_DB_PASSWORD)
 
@@ -43,6 +45,28 @@ kc() {  # kc <cluster> <kubectl args...>
 }
 
 cluster_exists() { kind get clusters 2>/dev/null | grep -qx "$1"; }
+
+# Перечитать конфиг Prometheus кластера без пересоздания пода. ConfigMap доходит до пода с
+# задержкой kubelet до минуты: сначала ждём, пока смонтированный файл совпадёт с ConfigMap.
+prom_reload() {  # prom_reload <cluster>
+  local c=$1 want have
+  want=$(kc "$c" -n observability get configmap prometheus-config -o jsonpath='{.data.prometheus\.yml}')
+  for _ in $(seq 1 45); do
+    have=$(kc "$c" -n observability exec deploy/prometheus -c prometheus -- \
+      cat /etc/prometheus/prometheus.yml 2>/dev/null || true)
+    [ "$have" = "$want" ] && break
+    sleep 2
+  done
+  kc "$c" -n observability exec deploy/prometheus -c prometheus -- \
+    wget -q -O /dev/null --post-data '' http://localhost:9090/-/reload 2>/dev/null || true
+}
+
+# Доля сэмплинга трейсов на шлюзе (ADR 0029): EnvoyProxy stand, xDS без перезапуска прокси.
+gateway_sampling() {  # gateway_sampling <0..100>
+  kc "$CONTROL" -n "$EG_NAMESPACE" patch envoyproxy stand --type merge \
+    -p "{\"spec\":{\"telemetry\":{\"tracing\":{\"samplingRate\":$1}}}}" >/dev/null
+}
+gateway_sampling_default() { yq 'select(.kind == "EnvoyProxy") | .spec.telemetry.tracing.samplingRate' "$STAND/gateway/gateway.yaml"; }
 
 # /status DR Controller'а (JSON) через прокси API-сервера control: порт-форвард не нужен.
 dr_status() {

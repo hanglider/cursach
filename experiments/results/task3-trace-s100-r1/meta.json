@@ -1,0 +1,20 @@
+{
+  "run_id": "task3-trace-s100-r1",
+  "scenario": "tracing",
+  "started_at": "2026-09-24T17:05:57Z",
+  "finished_at": "2026-09-24T17:08:59Z",
+  "k6": {
+    "host": "app.fed.local",
+    "duration": "3m",
+    "rps": 50,
+    "exit_code": 0
+  },
+  "tracing": {
+    "gateway_sampling_percent": 100,
+    "stand_default_percent": 10,
+    "service_sampler": "parentbased(always_off)"
+  },
+  "scheduler": "meta",
+  "dr_mode": "active",
+  "git_rev": "f2b19cc"
+}

@@ -46,6 +46,8 @@ type Spec struct {
 	DecisionID  int64
 	Annotations map[string]string // federation.spbu/require-*, копируются на Deployment
 	BackendURL  string
+	// OTLPEndpoint — коллектор трейсов в кластере (ADR 0029); пусто — без трассировки.
+	OTLPEndpoint string
 
 	GatewayNamespace string
 	GatewayName      string
@@ -84,6 +86,13 @@ func Deployment(s Spec) *appsv1.Deployment {
 	if replicas < 1 {
 		replicas = 1
 	}
+	env := []corev1.EnvVar{
+		{Name: "WORKLOAD", Value: s.Name},
+		{Name: "BACKEND_URL", Value: s.BackendURL},
+	}
+	if s.OTLPEndpoint != "" {
+		env = append(env, corev1.EnvVar{Name: "OTEL_EXPORTER_OTLP_ENDPOINT", Value: s.OTLPEndpoint})
+	}
 	return &appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"},
 		ObjectMeta: metav1.ObjectMeta{
@@ -103,11 +112,8 @@ func Deployment(s Spec) *appsv1.Deployment {
 						Image:           s.Image,
 						ImagePullPolicy: corev1.PullNever,
 						Args:            []string{"--role=frontend"},
-						Env: []corev1.EnvVar{
-							{Name: "WORKLOAD", Value: s.Name},
-							{Name: "BACKEND_URL", Value: s.BackendURL},
-						},
-						Ports: []corev1.ContainerPort{{Name: "http", ContainerPort: 8080}},
+						Env:             env,
+						Ports:           []corev1.ContainerPort{{Name: "http", ContainerPort: 8080}},
 						ReadinessProbe: &corev1.Probe{
 							ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{
 								Path: "/readyz", Port: intstr.FromString("http"),

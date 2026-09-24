@@ -34,6 +34,25 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+  # Трассировка (ADR 0029): Envoy — корень трейса и единственный переход control →
+  # кластер федерации. Решение о сэмплинге принимает он: 10% запросов без входящего
+  # traceparent; сервисы продолжают только сэмплированные трейсы. Спаны — в Jaeger
+  # control; traceparent (W3C) уходит в кластер вместе с запросом.
+  telemetry:
+    tracing:
+      samplingRate: 10
+      provider:
+        type: OpenTelemetry
+        serviceName: gateway
+        backendRefs:
+          - name: jaeger
+            namespace: observability
+            port: 4317
+      customTags:
+        federation.cluster:
+          type: Literal
+          literal:
+            value: control
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass

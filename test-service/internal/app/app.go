@@ -28,6 +28,7 @@ type Config struct {
 	BackendURL     string
 	BackendTimeout time.Duration
 	Workload       string
+	Tracing        Tracing // нулевое значение — трассировка выключена (ADR 0014, 0029)
 }
 
 // App — собранное приложение одной роли.
@@ -36,6 +37,7 @@ type App struct {
 	metrics  *metrics
 	registry *prometheus.Registry
 	client   *http.Client
+	tracing  Tracing
 	hostname string
 	logger   *slog.Logger
 }
@@ -61,25 +63,28 @@ func New(cfg Config, reg *prometheus.Registry, logger *slog.Logger) (*App, error
 		return nil, err
 	}
 
-	return &App{
+	a := &App{
 		cfg:      cfg,
 		metrics:  m,
 		registry: reg,
-		client: &http.Client{
-			// Таймаут задаётся через контекст запроса, чтобы был виден в 502.
-			Transport: &http.Transport{
-				MaxIdleConns:        100,
-				MaxIdleConnsPerHost: 100,
-				IdleConnTimeout:     90 * time.Second,
-			},
-		},
+		tracing:  cfg.Tracing.withDefaults(),
 		hostname: hostname,
 		logger:   logger,
-	}, nil
+	}
+	a.client = &http.Client{
+		// Таймаут задаётся через контекст запроса, чтобы был виден в 502.
+		Transport: a.traceTransport(&http.Transport{
+			MaxIdleConns:        100,
+			MaxIdleConnsPerHost: 100,
+			IdleConnTimeout:     90 * time.Second,
+		}),
+	}
+	return a, nil
 }
 
 // Handler собирает маршруты роли. Пробы и /metrics не инструментируются,
-// чтобы не попадать в SLI.
+// чтобы не попадать в SLI и в трейсы. Метрики снаружи трассировки: её накладные
+// расходы входят в измеряемую длительность, а не прячутся от SLI.
 func (a *App) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", a.handleHealthz)
@@ -88,9 +93,9 @@ func (a *App) Handler() http.Handler {
 
 	switch a.cfg.Role {
 	case RoleBackend:
-		mux.Handle("GET /work", a.metrics.instrument("/work", http.HandlerFunc(a.handleWork)))
+		mux.Handle("GET /work", a.metrics.instrument("/work", a.traceHandler("/work", http.HandlerFunc(a.handleWork))))
 	case RoleFrontend:
-		mux.Handle("GET /{$}", a.metrics.instrument("/", http.HandlerFunc(a.handleFrontend)))
+		mux.Handle("GET /{$}", a.metrics.instrument("/", a.traceHandler("/", http.HandlerFunc(a.handleFrontend))))
 	}
 	return mux
 }

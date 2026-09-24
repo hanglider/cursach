@@ -1,0 +1,133 @@
+# OTel Collector кластера федерации (architecture §1.2, §2.1, ADR 0029): принимает
+# OTLP/HTTP от тестового сервиса, ставит метку кластера и отправляет спаны в Jaeger
+# control по IP узла (ADR 0021, 0022). Плейсхолдеры (id кластера, адрес Jaeger, хэш
+# конфига) подставляет stand/scripts/render-otel-collector.sh при stand-up.
+#
+# federation.cluster — атрибут ресурса, как external label у Prometheus: сервис не
+# знает, в каком кластере работает, это знает слой сбора.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  namespace: observability
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          http:
+            endpoint: 0.0.0.0:4318
+    processors:
+      # Недоступный Jaeger не должен раздувать коллектор: ограничение раньше OOM.
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 96
+        spike_limit_mib: 24
+      resource:
+        attributes:
+          - key: federation.cluster
+            value: __CLUSTER_ID__
+            action: upsert
+      batch:
+        timeout: 2s
+    exporters:
+      otlp_grpc:
+        endpoint: __JAEGER_OTLP__
+        tls:
+          insecure: true
+    extensions:
+      health_check:
+        endpoint: 0.0.0.0:13133
+    service:
+      extensions: [health_check]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, resource, batch]
+          exporters: [otlp_grpc]
+      telemetry:
+        metrics:
+          level: basic
+          readers:
+            - pull:
+                exporter:
+                  prometheus:
+                    host: 0.0.0.0
+                    port: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: otel-collector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: otel-collector
+      annotations:
+        # Хэш конфига подставляет render-otel-collector.sh: смена адреса Jaeger — новый под.
+        federation.spbu/config-hash: "__CONFIG_HASH__"
+    spec:
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector:0.161.0
+          args: ["--config=/etc/otelcol/config.yaml"]
+          ports:
+            - name: otlp-http
+              containerPort: 4318
+            - name: metrics
+              containerPort: 8888
+            - name: health
+              containerPort: 13133
+          readinessProbe:
+            httpGet:
+              path: /
+              port: health
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: health
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 20m
+              memory: 48Mi
+            limits:
+              cpu: 500m
+              memory: 160Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otelcol
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-config
+---
+# Адрес для подов тестового сервиса: OTEL_EXPORTER_OTLP_ENDPOINT (ADR 0014, 0029).
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: otel-collector
+spec:
+  selector:
+    app.kubernetes.io/name: otel-collector
+  ports:
+    - name: otlp-http
+      port: 4318
+      targetPort: otlp-http
+    - name: metrics
+      port: 8888
+      targetPort: metrics

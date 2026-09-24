@@ -1,0 +1,86 @@
+{
+  "run_id": "task3-trace-s10-r2",
+  "gateway_sampling_percent": 10,
+  "client": {
+    "requests": 9001,
+    "failed_rate": 0,
+    "latency_ms": {
+      "avg": 1.1423162981890926,
+      "p50": 0.831,
+      "p90": 1.624,
+      "p95": 2.327,
+      "p99": 5.838,
+      "max": 122.76
+    }
+  },
+  "traces": {
+    "count": 907,
+    "complete": 907,
+    "exported": 907,
+    "sampled_share": 0.10076658149094544
+  },
+  "decomposition_ms": {
+    "total": {
+      "n": 907,
+      "p50": 0.544,
+      "p95": 1.577,
+      "p99": 5.326,
+      "mean": 0.844
+    },
+    "gateway": {
+      "n": 907,
+      "p50": 0.1,
+      "p95": 0.307,
+      "p99": 0.698,
+      "mean": 0.159
+    },
+    "hop": {
+      "n": 907,
+      "p50": 0.208,
+      "p95": 0.496,
+      "p99": 1.23,
+      "mean": 0.272
+    },
+    "frontend": {
+      "n": 907,
+      "p50": 0.037,
+      "p95": 0.103,
+      "p99": 0.156,
+      "mean": 0.155
+    },
+    "backend_net": {
+      "n": 907,
+      "p50": 0.149,
+      "p95": 0.409,
+      "p99": 1.47,
+      "mean": 0.214
+    },
+    "backend": {
+      "n": 907,
+      "p50": 0.023,
+      "p95": 0.064,
+      "p99": 0.197,
+      "mean": 0.044
+    }
+  },
+  "by_cluster": {
+    "cluster-a": {
+      "traces": 462,
+      "total": 0.533,
+      "gateway": 0.095,
+      "hop": 0.205,
+      "frontend": 0.037,
+      "backend_net": 0.149,
+      "backend": 0.022
+    },
+    "cluster-b": {
+      "traces": 445,
+      "total": 0.557,
+      "gateway": 0.106,
+      "hop": 0.215,
+      "frontend": 0.037,
+      "backend_net": 0.149,
+      "backend": 0.025
+    }
+  }
+}

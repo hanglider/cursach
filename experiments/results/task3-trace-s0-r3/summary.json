@@ -1,0 +1,67 @@
+{
+  "run_id": "task3-trace-s0-r3",
+  "gateway_sampling_percent": 0,
+  "client": {
+    "requests": 9001,
+    "failed_rate": 0,
+    "latency_ms": {
+      "avg": 2.205976558160194,
+      "p50": 1.028,
+      "p90": 3.471,
+      "p95": 5.991,
+      "p99": 21.145,
+      "max": 430.718
+    }
+  },
+  "traces": {
+    "count": 0,
+    "complete": 0,
+    "exported": 1481,
+    "sampled_share": 0
+  },
+  "decomposition_ms": {
+    "total": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "gateway": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "hop": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "frontend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend_net": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    }
+  },
+  "by_cluster": {}
+}

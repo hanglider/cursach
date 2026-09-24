@@ -1,0 +1,10 @@
+
+workload requests: 9001 (50.0/s)
+error rate:        0.000% (0 failed)
+latency p95/p99:   2.5 / 6.1 ms
+latency avg/max:   1.2 / 48.4 ms
+dropped iterations: 0
+
+PASS http_reqs{kind:workload}: count>0
+PASS http_req_duration{kind:workload}: p(95)<200
+PASS http_req_failed{kind:workload}: rate<0.01

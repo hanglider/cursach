@@ -365,7 +365,7 @@ control-кластера (ADR 0017).
 |---|---|---|---|
 | 1 | Развёртывание стенда: control-кластер + 2 кластера федерации (kind), шлюз, тестовый сервис, нагрузка k6 | 1–2 | Работающий стенд, задокументированные конфигурации |
 | 2 | Prometheus + Thanos sidecar в каждом кластере, Thanos Querier + Grafana в control | 2–3 | Глобальный дашборд метрик, агрегированный SLO |
-| 3 | Интеграция OpenTelemetry для трассировки между кластерами | 3–4 | Распределённые трейсы в Jaeger / Grafana Tempo |
+| 3 | Интеграция OpenTelemetry для трассировки между кластерами | 3–4 | Распределённые трейсы в Jaeger / Grafana Tempo; разложение задержки по звеньям и цена трассировки (ADR 0029) |
 | 4 | Федеративный каталог (FastAPI + PostgreSQL) | 4–6 | REST API с регистрацией кластеров, SLO-статусом, audit log |
 | 5 | Набор Kyverno-политик для enforcement hard constraints | 5–6 | Политики: регион, сертификация; ресурсы — на каталоге (ADR 0019); watcher нарушений в каталоге и замер сценария 3 (ADR 0026) |
 | 6 | Прототип meta-scheduler'а (Go, controller-runtime) | 6–9 | Планировщик со scoring-функцией + наивная версия; CR `Workload`, запись всех кандидатов (ADR 0027) |
@@ -442,7 +442,7 @@ Kyverno-политику — например, запуск на кластер�
 | Кластеры (стенд) | kind | Лёгкий запуск на одной машине, подходит для экспериментов (ADR 0013, 0021) |
 | Метрики | Prometheus + Thanos (sidecar, Querier, Ruler; без object storage) | CNCF-стандарт, поддержка федерации через Thanos (ADR 0002, 0024) |
 | Визуализация | Grafana | Де-факто стандарт, готовые дашборды для k8s |
-| Трассировка | OpenTelemetry + Jaeger | Vendor-neutral, CNCF, поддержка Go и Python |
+| Трассировка | OpenTelemetry + Jaeger v2 (OTel Collector в кластерах, корень трейса — шлюз) | Vendor-neutral, CNCF, поддержка Go и Python (ADR 0029) |
 | Chaos Engineering | Chaos Mesh 2.8 | CNCF-проект, k8s-native сценарии; на стенде с задачи 7 (ADR 0028) |
 | Policy Enforcement | Kyverno 1.19, ClusterPolicy | YAML-native, не требует Rego — проще для старта; тип политик устаревший, версия закреплена (ADR 0026) |
 | Каталог | FastAPI + PostgreSQL | Лёгкий REST API, надёжная СУБД, простой деплой в k8s (ADR 0025) |

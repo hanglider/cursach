@@ -1,4 +1,5 @@
-# Grafana поверх Thanos Querier (spec §7). Стенд: анонимный Viewer, admin/admin.
+# Grafana поверх Thanos Querier (spec §7). Трейсы — в UI Jaeger (ADR 0029): датасорс
+# Grafana ходит в устаревший /api/services, которого в Jaeger 2.21 нет. Стенд: анонимный Viewer, admin/admin.
 # Дашборды — JSON в репозитории (grafana/dashboards/), ConfigMap собирает up.sh.
 apiVersion: v1
 kind: ConfigMap

@@ -25,6 +25,10 @@ spec:
           image: federation/test-service:dev
           imagePullPolicy: Never  # образ загружен через kind load, registry нет
           args: ["--role=backend"]
+          env:
+            # Трейсы — в коллектор своего кластера (ADR 0029); пусто — трассировка выключена.
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector.observability.svc:4318
           ports:
             - name: http
               containerPort: 8080

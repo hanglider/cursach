@@ -59,6 +59,7 @@ type Config struct {
 	WorkloadNamespace string // ns Deployment и Service в кластере федерации
 	Image             string
 	BackendURL        string
+	OTLPEndpoint      string // коллектор трейсов для frontend'ов (ADR 0029)
 	Domain            string
 	GatewayNamespace  string
 	GatewayName       string
@@ -271,6 +272,7 @@ func (r *Reconciler) spec(w *v1alpha1.Workload, nodeAddress string) placement.Sp
 		DecisionID:       decisionID,
 		Annotations:      w.Annotations,
 		BackendURL:       r.Config.BackendURL,
+		OTLPEndpoint:     r.Config.OTLPEndpoint,
 		GatewayNamespace: r.Config.GatewayNamespace,
 		GatewayName:      r.Config.GatewayName,
 		Host:             w.Name + "." + r.Config.Domain,
