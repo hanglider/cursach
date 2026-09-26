@@ -83,10 +83,13 @@ policies_in Enforce || { log "политики $target не в Enforce/Ready: ku
 mkdir -p "$OUT"
 if [ "$ENFORCEMENT" = audit ]; then
   trap restore_policies EXIT
+  # JSON patch, не replace: replace перезаписывает last-applied-configuration полным
+  # объектом с resourceVersion, и возврат через apply API отвергает (ADR 0032).
   for p in "${POLICIES[@]}"; do
-    "${KC_TARGET[@]}" get clusterpolicy "$p" -o json \
-      | jq '.spec.rules[].validate.failureAction = "Audit" | del(.status)' \
-      | "${KC_TARGET[@]}" replace -f - >/dev/null
+    patch=$("${KC_TARGET[@]}" get clusterpolicy "$p" -o json | jq -c '
+      [range(0; .spec.rules | length) | {op: "replace", value: "Audit",
+        path: "/spec/rules/\(.)/validate/failureAction"}]')
+    "${KC_TARGET[@]}" patch clusterpolicy "$p" --type=json -p "$patch" >/dev/null
   done
   wait_policies Audit || { log "политики $target не перешли в Audit"; exit 1; }
   log "политики $target в Audit на время прогона"
