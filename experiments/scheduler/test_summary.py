@@ -65,6 +65,10 @@ def test_read_requests_pairs_duration_and_drops_live_list(tmp_path):
         ("background", "", 0, 3.0),
     ]
 
+    # Пересчёт сводки без CSV k6: requests.csv.gz читается в те же записи.
+    summary.write_requests(tmp_path, reqs, "cluster-b")
+    assert summary.read_saved_requests(tmp_path / "requests.csv.gz") == reqs
+
 
 def test_increase_handles_existing_born_inside_and_reset():
     existing = [[0, "10"], [5, "15"], [10, "20"], [15, "25"]]

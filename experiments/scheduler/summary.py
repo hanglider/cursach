@@ -2,7 +2,9 @@
 клиентский ряд k6 (приёмочный) и серверный из Thanos, реакция планировщика по каталогу,
 признаки брака прогона.
 
-    python summary.py <каталог прогона> <k6.csv>
+    python summary.py <каталог прогона> [k6.csv]
+
+Без k6.csv сводка пересчитывается из requests.csv.gz прогона: CSV k6 раннер не хранит.
 
 Вход: meta.json (времена отказа из Chaos Mesh), CSV k6 (K6_CSV_TIME_FORMAT=unix_milli;
 отметка — момент завершения запроса; тег kind — поток или фон, target_cluster — кластер
@@ -91,6 +93,25 @@ def read_requests(path: Path) -> list[dict]:
                 out[-1]["duration_ms"] = float(row["metric_value"])
                 pending = None
     out.sort(key=lambda r: r["ts_ms"])
+    return out
+
+
+def read_saved_requests(path: Path) -> list[dict]:
+    """requests.csv.gz прогона (write_requests) → те же записи, что у read_requests."""
+    out: list[dict] = []
+    with gzip.open(path, "rt", newline="") as f:
+        for row in csv.DictReader(f):
+            d = row["duration_ms"]
+            out.append(
+                {
+                    "ts_ms": int(row["ts_ms"]),
+                    "kind": row["kind"],
+                    "cluster": row["target_cluster"],
+                    "status": int(row["status"]),
+                    "failed": int(row["failed"]),
+                    "duration_ms": float(d) if d else None,
+                }
+            )
     return out
 
 
@@ -347,19 +368,20 @@ def generator_events(run_dir: Path) -> dict:
     return {e: dict(c) for e, c in sorted(counts.items())}
 
 
-def main(run_dir: Path, csv_path: Path) -> None:
+def main(run_dir: Path, csv_path: Path | None) -> None:
     meta = json.loads((run_dir / "meta.json").read_text())
     cluster = meta["cluster"]
     inj = ms(meta["fault"]["injected_at"])
     rec = ms(meta["fault"].get("recovered_at")) or inj + meta["structure"]["fault_s"] * 1000
 
-    reqs = read_requests(csv_path)
+    reqs = read_requests(csv_path) if csv_path else read_saved_requests(run_dir / "requests.csv.gz")
     stream = [r for r in reqs if r["kind"] == "workload"]
     background = [r for r in reqs if r["kind"] == "background"]
     first = min(r["ts_ms"] for r in reqs)
     last = max(r["ts_ms"] for r in reqs) + 1
     bounds = {"baseline": (first, inj), "fault": (inj, rec), "recovery": (rec, last)}
-    write_requests(run_dir, reqs, cluster)
+    if csv_path:
+        write_requests(run_dir, reqs, cluster)
 
     placement, decisions = placement_rows(run_dir, bounds, cluster, inj, rec)
     inc_path = run_dir / "incidents.json"
@@ -371,7 +393,8 @@ def main(run_dir: Path, csv_path: Path) -> None:
     reasons, notes = [], []
     downs = sorted({i["cluster_id"] for i in incidents if i.get("peak_state") == "down"})
     if downs:
-        reasons.append(f"DR дошёл до DOWN: {','.join(downs)}")
+        # observe не трогает маршрут и каталог: DOWN — оговорка, не брак (ADR 0033).
+        notes.append(f"DR в observe дошёл до DOWN: {','.join(downs)} — с failover вмешался бы")
     if any("down" in (c.get("filtered_by") or "") for d in decisions for c in d["candidates"]):
         reasons.append("каталог отсеивал кластер как down")
     bad = Counter(d["outcome"] for d in decisions if d["outcome"] != "placed")
@@ -415,4 +438,4 @@ def main(run_dir: Path, csv_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]), Path(sys.argv[2]))
+    main(Path(sys.argv[1]), Path(sys.argv[2]) if len(sys.argv) > 2 else None)
