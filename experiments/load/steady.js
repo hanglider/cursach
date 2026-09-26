@@ -27,13 +27,17 @@ const BACKGROUND_HOST = __ENV.BACKGROUND_HOST || 'app.fed.local';
 // шлёт запросы в уже удалённый маршрут и получает ложные ошибки.
 const LIVE_REFRESH_MS = 2000;
 
+// VU выделяются заранее с запасом на худший случай сценария 2: весь поток в кластер с
+// деградировавшим backend'ом, ответ ~1 с (таймаут frontend → backend) — около RPS
+// одновременных запросов. VU, инициализируемый на ходу, опаздывает к своей итерации, и
+// k6 её пропускает (dropped_iterations — признак брака прогона, ADR 0031).
 const scenarios = {
   steady: {
     executor: 'constant-arrival-rate',
     rate: RPS,
     timeUnit: '1s',
     duration: DURATION,
-    preAllocatedVUs: 20,
+    preAllocatedVUs: Math.max(20, Math.ceil(RPS * 1.6)),
     maxVUs: 200,
   },
 };
@@ -52,7 +56,7 @@ if (BACKGROUND_RPS > 0) {
     rate: BACKGROUND_RPS,
     timeUnit: '1s',
     duration: DURATION,
-    preAllocatedVUs: 5,
+    preAllocatedVUs: Math.max(5, BACKGROUND_RPS * 2),
     maxVUs: 50,
   };
   // Без порога суб-метрики фона не попадут в сводку; сам порог ни на что не влияет.
