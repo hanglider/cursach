@@ -1,0 +1,146 @@
+{"event":"start","mode":"scheduler","interval":30.0,"ttl":180.0,"clusters":"cluster-a,cluster-b"}
+{"ts": 1790436034.9199, "event": "requested", "workload": "w-1", "node_port": 30001}
+{"ts": 1790436034.92205, "event": "pending", "workload": "w-1", "phase": null, "message": null}
+{"ts": 1790436035.929892, "event": "placed", "workload": "w-1", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 71, "node_port": 30001}
+{"ts": 1790436037.976554, "event": "ready", "workload": "w-1", "cluster": "cluster-a"}
+{"ts": 1790436065.200759, "event": "requested", "workload": "w-2", "node_port": 30002}
+{"ts": 1790436065.202511, "event": "pending", "workload": "w-2", "phase": null, "message": null}
+{"ts": 1790436066.208582, "event": "placed", "workload": "w-2", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 72, "node_port": 30002}
+{"ts": 1790436068.241287, "event": "ready", "workload": "w-2", "cluster": "cluster-b"}
+{"ts": 1790436094.998858, "event": "requested", "workload": "w-3", "node_port": 30003}
+{"ts": 1790436095.017972, "event": "pending", "workload": "w-3", "phase": null, "message": null}
+{"ts": 1790436096.0252469, "event": "placed", "workload": "w-3", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 73, "node_port": 30003}
+{"ts": 1790436098.05693, "event": "ready", "workload": "w-3", "cluster": "cluster-a"}
+{"ts": 1790436125.289633, "event": "requested", "workload": "w-4", "node_port": 30004}
+{"ts": 1790436125.296972, "event": "pending", "workload": "w-4", "phase": null, "message": null}
+{"ts": 1790436126.303096, "event": "placed", "workload": "w-4", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 74, "node_port": 30004}
+{"ts": 1790436127.319361, "event": "ready", "workload": "w-4", "cluster": "cluster-b"}
+{"ts": 1790436155.02234, "event": "requested", "workload": "w-5", "node_port": 30005}
+{"ts": 1790436155.02475, "event": "pending", "workload": "w-5", "phase": null, "message": null}
+{"ts": 1790436156.031328, "event": "placed", "workload": "w-5", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 75, "node_port": 30005}
+{"ts": 1790436159.05891, "event": "ready", "workload": "w-5", "cluster": "cluster-a"}
+{"ts": 1790436185.265995, "event": "requested", "workload": "w-6", "node_port": 30006}
+{"ts": 1790436185.267793, "event": "pending", "workload": "w-6", "phase": null, "message": null}
+{"ts": 1790436186.2744582, "event": "placed", "workload": "w-6", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 76, "node_port": 30006}
+{"ts": 1790436189.304053, "event": "ready", "workload": "w-6", "cluster": "cluster-b"}
+{"ts": 1790436214.9842129, "event": "requested", "workload": "w-7", "node_port": 30007}
+{"ts": 1790436214.993288, "event": "pending", "workload": "w-7", "phase": null, "message": null}
+{"ts": 1790436215.9990551, "event": "placed", "workload": "w-7", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 77, "node_port": 30007}
+{"ts": 1790436218.03197, "event": "ready", "workload": "w-7", "cluster": "cluster-a"}
+{"ts": 1790436224.04057, "event": "removed", "workload": "w-1", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436245.206686, "event": "requested", "workload": "w-8", "node_port": 30008}
+{"ts": 1790436245.2082582, "event": "pending", "workload": "w-8", "phase": null, "message": null}
+{"ts": 1790436246.2223098, "event": "placed", "workload": "w-8", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 78, "node_port": 30008}
+{"ts": 1790436248.258384, "event": "ready", "workload": "w-8", "cluster": "cluster-b"}
+{"ts": 1790436254.275578, "event": "removed", "workload": "w-2", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436274.942921, "event": "requested", "workload": "w-9", "node_port": 30009}
+{"ts": 1790436274.945853, "event": "pending", "workload": "w-9", "phase": null, "message": null}
+{"ts": 1790436275.954041, "event": "placed", "workload": "w-9", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 79, "node_port": 30009}
+{"ts": 1790436277.986596, "event": "ready", "workload": "w-9", "cluster": "cluster-a"}
+{"ts": 1790436284.0014899, "event": "removed", "workload": "w-3", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436305.153586, "event": "requested", "workload": "w-10", "node_port": 30010}
+{"ts": 1790436305.1554408, "event": "pending", "workload": "w-10", "phase": null, "message": null}
+{"ts": 1790436306.163454, "event": "placed", "workload": "w-10", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 80, "node_port": 30010}
+{"ts": 1790436335.35484, "event": "not_ready", "workload": "w-10", "cluster": "cluster-b", "timeout": 30.0}
+{"ts": 1790436341.3710132, "event": "removed", "workload": "w-4", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436347.378809, "event": "removed", "workload": "w-5", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436347.888951, "event": "requested", "workload": "w-11", "node_port": 30011}
+{"ts": 1790436347.8912141, "event": "pending", "workload": "w-11", "phase": null, "message": null}
+{"ts": 1790436348.89602, "event": "placed", "workload": "w-11", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 81, "node_port": 30011}
+{"ts": 1790436349.916312, "event": "ready", "workload": "w-11", "cluster": "cluster-a"}
+{"ts": 1790436365.04479, "event": "requested", "workload": "w-12", "node_port": 30012}
+{"ts": 1790436365.046693, "event": "pending", "workload": "w-12", "phase": null, "message": null}
+{"ts": 1790436366.0527492, "event": "placed", "workload": "w-12", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 82, "node_port": 30012}
+{"ts": 1790436395.2635279, "event": "not_ready", "workload": "w-12", "cluster": "cluster-b", "timeout": 30.0}
+{"ts": 1790436401.275979, "event": "removed", "workload": "w-6", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436407.287541, "event": "removed", "workload": "w-7", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436407.79481, "event": "requested", "workload": "w-13", "node_port": 30013}
+{"ts": 1790436407.796546, "event": "pending", "workload": "w-13", "phase": null, "message": null}
+{"ts": 1790436408.8040278, "event": "placed", "workload": "w-13", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 83, "node_port": 30013}
+{"ts": 1790436409.837298, "event": "ready", "workload": "w-13", "cluster": "cluster-a"}
+{"ts": 1790436424.934099, "event": "requested", "workload": "w-14", "node_port": 30014}
+{"ts": 1790436424.9358232, "event": "pending", "workload": "w-14", "phase": null, "message": null}
+{"ts": 1790436425.943346, "event": "placed", "workload": "w-14", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 84, "node_port": 30014}
+{"ts": 1790436455.143903, "event": "not_ready", "workload": "w-14", "cluster": "cluster-b", "timeout": 30.0}
+{"ts": 1790436461.186493, "event": "removed", "workload": "w-8", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436467.197393, "event": "removed", "workload": "w-9", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436467.70461, "event": "requested", "workload": "w-15", "node_port": 30015}
+{"ts": 1790436467.707063, "event": "pending", "workload": "w-15", "phase": null, "message": null}
+{"ts": 1790436468.7138271, "event": "placed", "workload": "w-15", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 85, "node_port": 30015}
+{"ts": 1790436469.7337868, "event": "ready", "workload": "w-15", "cluster": "cluster-a"}
+{"ts": 1790436485.403038, "event": "requested", "workload": "w-16", "node_port": 30016}
+{"ts": 1790436485.405356, "event": "pending", "workload": "w-16", "phase": null, "message": null}
+{"ts": 1790436486.4142761, "event": "placed", "workload": "w-16", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 86, "node_port": 30016}
+{"ts": 1790436515.6863732, "event": "not_ready", "workload": "w-16", "cluster": "cluster-b", "timeout": 30.0}
+{"ts": 1790436521.705002, "event": "removed", "workload": "w-10", "cluster": "", "via": "scheduler"}
+{"ts": 1790436522.2166772, "event": "requested", "workload": "w-17", "node_port": 30017}
+{"ts": 1790436522.218067, "event": "pending", "workload": "w-17", "phase": null, "message": null}
+{"ts": 1790436523.223945, "event": "placed", "workload": "w-17", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 87, "node_port": 30017}
+{"ts": 1790436525.26883, "event": "ready", "workload": "w-17", "cluster": "cluster-a"}
+{"ts": 1790436534.310275, "event": "removed", "workload": "w-11", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436544.955769, "event": "requested", "workload": "w-18", "node_port": 30018}
+{"ts": 1790436544.95746, "event": "pending", "workload": "w-18", "phase": null, "message": null}
+{"ts": 1790436545.961024, "event": "placed", "workload": "w-18", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 88, "node_port": 30018}
+{"ts": 1790436575.521099, "event": "not_ready", "workload": "w-18", "cluster": "cluster-b", "timeout": 30.0}
+{"ts": 1790436581.543634, "event": "removed", "workload": "w-12", "cluster": "", "via": "scheduler"}
+{"ts": 1790436582.058771, "event": "requested", "workload": "w-19", "node_port": 30019}
+{"ts": 1790436582.0618792, "event": "pending", "workload": "w-19", "phase": null, "message": null}
+{"ts": 1790436583.07778, "event": "placed", "workload": "w-19", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 89, "node_port": 30019}
+{"ts": 1790436586.146932, "event": "ready", "workload": "w-19", "cluster": "cluster-a"}
+{"ts": 1790436594.174474, "event": "removed", "workload": "w-13", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436605.264269, "event": "requested", "workload": "w-20", "node_port": 30020}
+{"ts": 1790436605.269303, "event": "pending", "workload": "w-20", "phase": null, "message": null}
+{"ts": 1790436606.277152, "event": "placed", "workload": "w-20", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 90, "node_port": 30020}
+{"ts": 1790436608.3543081, "event": "ready", "workload": "w-20", "cluster": "cluster-b"}
+{"ts": 1790436614.363421, "event": "removed", "workload": "w-14", "cluster": "", "via": "scheduler"}
+{"ts": 1790436635.0073018, "event": "requested", "workload": "w-21", "node_port": 30021}
+{"ts": 1790436635.0103722, "event": "pending", "workload": "w-21", "phase": null, "message": null}
+{"ts": 1790436636.0185971, "event": "placed", "workload": "w-21", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 91, "node_port": 30021}
+{"ts": 1790436638.141423, "event": "ready", "workload": "w-21", "cluster": "cluster-a"}
+{"ts": 1790436653.737376, "event": "removed", "workload": "w-15", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436665.3254888, "event": "requested", "workload": "w-22", "node_port": 30022}
+{"ts": 1790436665.327863, "event": "pending", "workload": "w-22", "phase": null, "message": null}
+{"ts": 1790436666.3344269, "event": "placed", "workload": "w-22", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 92, "node_port": 30022}
+{"ts": 1790436668.3728142, "event": "ready", "workload": "w-22", "cluster": "cluster-b"}
+{"ts": 1790436674.389741, "event": "removed", "workload": "w-16", "cluster": "", "via": "scheduler"}
+{"ts": 1790436695.037235, "event": "requested", "workload": "w-23", "node_port": 30023}
+{"ts": 1790436695.04157, "event": "pending", "workload": "w-23", "phase": null, "message": null}
+{"ts": 1790436696.048482, "event": "placed", "workload": "w-23", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 93, "node_port": 30023}
+{"ts": 1790436698.080956, "event": "ready", "workload": "w-23", "cluster": "cluster-a"}
+{"ts": 1790436708.627004, "event": "removed", "workload": "w-17", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436725.255969, "event": "requested", "workload": "w-24", "node_port": 30024}
+{"ts": 1790436725.2577841, "event": "pending", "workload": "w-24", "phase": null, "message": null}
+{"ts": 1790436726.267211, "event": "placed", "workload": "w-24", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 94, "node_port": 30024}
+{"ts": 1790436728.3261068, "event": "ready", "workload": "w-24", "cluster": "cluster-b"}
+{"ts": 1790436734.3703601, "event": "removed", "workload": "w-18", "cluster": "", "via": "scheduler"}
+{"ts": 1790436755.018456, "event": "requested", "workload": "w-25", "node_port": 30025}
+{"ts": 1790436755.0215812, "event": "pending", "workload": "w-25", "phase": null, "message": null}
+{"ts": 1790436756.026659, "event": "placed", "workload": "w-25", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 95, "node_port": 30025}
+{"ts": 1790436758.0938082, "event": "ready", "workload": "w-25", "cluster": "cluster-a"}
+{"ts": 1790436768.1268191, "event": "removed", "workload": "w-19", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436785.254569, "event": "requested", "workload": "w-26", "node_port": 30026}
+{"ts": 1790436785.257622, "event": "pending", "workload": "w-26", "phase": null, "message": null}
+{"ts": 1790436786.263344, "event": "placed", "workload": "w-26", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 96, "node_port": 30026}
+{"ts": 1790436787.300554, "event": "ready", "workload": "w-26", "cluster": "cluster-b"}
+{"ts": 1790436793.313001, "event": "removed", "workload": "w-20", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436814.9794009, "event": "requested", "workload": "w-27", "node_port": 30027}
+{"ts": 1790436814.982761, "event": "pending", "workload": "w-27", "phase": null, "message": null}
+{"ts": 1790436815.9917572, "event": "placed", "workload": "w-27", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 97, "node_port": 30027}
+{"ts": 1790436819.1022139, "event": "ready", "workload": "w-27", "cluster": "cluster-a"}
+{"ts": 1790436825.1185112, "event": "removed", "workload": "w-21", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436845.247662, "event": "requested", "workload": "w-28", "node_port": 30028}
+{"ts": 1790436845.2502139, "event": "pending", "workload": "w-28", "phase": null, "message": null}
+{"ts": 1790436846.265235, "event": "placed", "workload": "w-28", "cluster": "cluster-b", "scheduler": "naive", "decision_id": 98, "node_port": 30028}
+{"ts": 1790436848.331129, "event": "ready", "workload": "w-28", "cluster": "cluster-b"}
+{"ts": 1790436854.344176, "event": "removed", "workload": "w-22", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436875.013611, "event": "requested", "workload": "w-29", "node_port": 30029}
+{"ts": 1790436875.016654, "event": "pending", "workload": "w-29", "phase": null, "message": null}
+{"ts": 1790436876.0369222, "event": "placed", "workload": "w-29", "cluster": "cluster-a", "scheduler": "naive", "decision_id": 99, "node_port": 30029}
+{"ts": 1790436877.062926, "event": "ready", "workload": "w-29", "cluster": "cluster-a"}
+{"ts": 1790436883.078568, "event": "removed", "workload": "w-23", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436883.6089249, "event": "removed", "workload": "w-24", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436883.613394, "event": "removed", "workload": "w-25", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436883.619945, "event": "removed", "workload": "w-26", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436883.627058, "event": "removed", "workload": "w-27", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790436883.6338902, "event": "removed", "workload": "w-28", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790436883.639266, "event": "removed", "workload": "w-29", "cluster": "cluster-a", "via": "scheduler"}

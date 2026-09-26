@@ -1,0 +1,328 @@
+{
+  "run_id": "task8-s2-naive-r1",
+  "scenario": "2-network-degradation",
+  "cluster": "cluster-b",
+  "scheduler": "naive",
+  "dr_mode": "observe",
+  "fault": {
+    "ref": "networkchaos/chaos-mesh/scenario2-task8-s2-naive-r1@cluster-b",
+    "tool": "chaos-mesh NetworkChaos netem, backend в namespace workloads",
+    "spec": {
+      "action": "netem",
+      "delay": {
+        "latency": "500ms"
+      },
+      "loss": {
+        "loss": "10"
+      },
+      "direction": "to",
+      "selector": {
+        "namespaces": [
+          "workloads"
+        ],
+        "labelSelectors": {
+          "app.kubernetes.io/component": "backend"
+        }
+      }
+    },
+    "injected_at": "2026-09-26T15:24:40Z",
+    "recovered_at": "2026-09-26T15:29:39Z",
+    "runner_applied_at": "2026-09-26T15:24:39.477Z",
+    "note": "injected_at/recovered_at — события Apply/Recover Chaos Mesh, точность 1 с"
+  },
+  "acceptance": {
+    "error_rate": 0.168829,
+    "series": "client k6, поток workload'ов",
+    "window": "fault: Apply..Recover Chaos Mesh"
+  },
+  "client": {
+    "stream": {
+      "baseline": {
+        "from_ms": 1790436099597,
+        "to_ms": 1790436280000,
+        "seconds": 180.403,
+        "requests": 9021,
+        "failed": 0,
+        "error_rate": 0.0,
+        "p95_ms": 2.433,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 4915,
+            "failed": 0,
+            "error_rate": 0.0,
+            "p95_ms": 2.433
+          },
+          "cluster-b": {
+            "requests": 4106,
+            "failed": 0,
+            "error_rate": 0.0,
+            "p95_ms": 2.435
+          }
+        }
+      },
+      "fault": {
+        "from_ms": 1790436280000,
+        "to_ms": 1790436579000,
+        "seconds": 299.0,
+        "requests": 14950,
+        "failed": 2524,
+        "error_rate": 0.168829,
+        "p95_ms": 1002.608,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 11459,
+            "failed": 0,
+            "error_rate": 0.0,
+            "p95_ms": 2.261
+          },
+          "cluster-b": {
+            "requests": 3491,
+            "failed": 2524,
+            "error_rate": 0.723002,
+            "p95_ms": 1004.265
+          }
+        }
+      },
+      "recovery": {
+        "from_ms": 1790436579000,
+        "to_ms": 1790436879598,
+        "seconds": 300.598,
+        "requests": 15030,
+        "failed": 0,
+        "error_rate": 0.0,
+        "p95_ms": 3.847,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 9358,
+            "failed": 0,
+            "error_rate": 0.0,
+            "p95_ms": 4.01
+          },
+          "cluster-b": {
+            "requests": 5672,
+            "failed": 0,
+            "error_rate": 0.0,
+            "p95_ms": 3.611
+          }
+        }
+      }
+    },
+    "background": {
+      "baseline": {
+        "from_ms": 1790436099597,
+        "to_ms": 1790436280000,
+        "seconds": 180.403,
+        "requests": 903,
+        "failed": 0,
+        "error_rate": 0.0,
+        "p95_ms": 3.11
+      },
+      "fault": {
+        "from_ms": 1790436280000,
+        "to_ms": 1790436579000,
+        "seconds": 299.0,
+        "requests": 1493,
+        "failed": 523,
+        "error_rate": 0.350301,
+        "p95_ms": 1003.552
+      },
+      "recovery": {
+        "from_ms": 1790436579000,
+        "to_ms": 1790436879598,
+        "seconds": 300.598,
+        "requests": 1505,
+        "failed": 1,
+        "error_rate": 0.000664,
+        "p95_ms": 5.878
+      }
+    }
+  },
+  "server": {
+    "stream": {
+      "baseline": {
+        "requests": 8831,
+        "errors": 0,
+        "error_rate": 0.0,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 4808,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 4023,
+            "errors": 0,
+            "error_rate": 0.0
+          }
+        }
+      },
+      "fault": {
+        "requests": 14988,
+        "errors": 2474,
+        "error_rate": 0.165065,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 11461,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 3527,
+            "errors": 2474,
+            "error_rate": 0.701446
+          }
+        }
+      },
+      "recovery": {
+        "requests": 14967,
+        "errors": 0,
+        "error_rate": 0.0,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 9363,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 5604,
+            "errors": 0,
+            "error_rate": 0.0
+          }
+        }
+      }
+    },
+    "background": {
+      "baseline": {
+        "requests": 885,
+        "errors": 0,
+        "error_rate": 0.0,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 441,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 444,
+            "errors": 0,
+            "error_rate": 0.0
+          }
+        }
+      },
+      "fault": {
+        "requests": 1517,
+        "errors": 528,
+        "error_rate": 0.348055,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 750,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 767,
+            "errors": 528,
+            "error_rate": 0.688396
+          }
+        }
+      },
+      "recovery": {
+        "requests": 1501,
+        "errors": 1,
+        "error_rate": 0.000666,
+        "by_cluster": {
+          "cluster-a": {
+            "requests": 750,
+            "errors": 0,
+            "error_rate": 0.0
+          },
+          "cluster-b": {
+            "requests": 751,
+            "errors": 1,
+            "error_rate": 0.001332
+          }
+        }
+      }
+    }
+  },
+  "placement": {
+    "weights": [
+      0.5,
+      0.3,
+      0.2
+    ],
+    "latency_budget_ms": 200.0,
+    "baseline": {
+      "placements": 6,
+      "to_degraded": 3,
+      "share_to_degraded": 0.5
+    },
+    "fault": {
+      "placements": 9,
+      "to_degraded": 5,
+      "share_to_degraded": 0.5556
+    },
+    "recovery": {
+      "placements": 11,
+      "to_degraded": 5,
+      "share_to_degraded": 0.4545
+    },
+    "first_avoid_s": null,
+    "first_return_s": 26.292,
+    "degraded_s": 40.865,
+    "score_loss_s": 40.865,
+    "catalog_recovered_s": 222.771
+  },
+  "dr": {
+    "incidents": [
+      {
+        "id": 8,
+        "cluster_id": "cluster-b",
+        "dr_mode": "observe",
+        "peak_state": "down",
+        "detected_at": "2026-09-26T15:25:08.939241Z",
+        "ttd_seconds": 28.939241,
+        "fault_ref": "networkchaos/chaos-mesh/scenario2-task8-s2-naive-r1@cluster-b"
+      }
+    ]
+  },
+  "generator": {
+    "not_ready": {
+      "cluster-b": 5
+    },
+    "pending": {
+      "-": 29
+    },
+    "placed": {
+      "cluster-a": 15,
+      "cluster-b": 14
+    },
+    "ready": {
+      "cluster-a": 15,
+      "cluster-b": 9
+    },
+    "removed": {
+      "cluster-a": 15,
+      "cluster-b": 9,
+      "-": 5
+    },
+    "requested": {
+      "-": 29
+    },
+    "start": {
+      "-": 1
+    }
+  },
+  "k6": {
+    "exit_code": 99,
+    "dropped_iterations": 0
+  },
+  "validity": {
+    "valid": true,
+    "reasons": [],
+    "notes": [
+      "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы",
+      "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 5}"
+    ]
+  }
+}

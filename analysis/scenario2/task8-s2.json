@@ -1,0 +1,200 @@
+{
+  "runs": [
+    {
+      "run_id": "task8-s2-meta-r1",
+      "scheduler": "meta",
+      "repeat": 1,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы"
+      ],
+      "error_rate": 0.028333,
+      "failed": 425,
+      "requests": 15000,
+      "p95_ms": 503.21,
+      "server_error_rate": 0.028079,
+      "placements": 10,
+      "to_degraded": 0,
+      "degraded_s": 42.019,
+      "score_loss_s": 12.002,
+      "first_avoid_s": 25.338
+    },
+    {
+      "run_id": "task8-s2-naive-r1",
+      "scheduler": "naive",
+      "repeat": 1,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы",
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 5}"
+      ],
+      "error_rate": 0.168829,
+      "failed": 2524,
+      "requests": 14950,
+      "p95_ms": 1002.608,
+      "server_error_rate": 0.165065,
+      "placements": 9,
+      "to_degraded": 5,
+      "degraded_s": 40.865,
+      "score_loss_s": 40.865,
+      "first_avoid_s": null
+    },
+    {
+      "run_id": "task8-s2-meta-r2",
+      "scheduler": "meta",
+      "repeat": 2,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы",
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 1}"
+      ],
+      "error_rate": 0.051973,
+      "failed": 777,
+      "requests": 14950,
+      "p95_ms": 550.387,
+      "server_error_rate": 0.051347,
+      "placements": 10,
+      "to_degraded": 1,
+      "degraded_s": 39.623,
+      "score_loss_s": 39.623,
+      "first_avoid_s": 67.991
+    },
+    {
+      "run_id": "task8-s2-naive-r2",
+      "scheduler": "naive",
+      "repeat": 2,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы",
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 6}"
+      ],
+      "error_rate": 0.15,
+      "failed": 2250,
+      "requests": 15000,
+      "p95_ms": 1002.912,
+      "server_error_rate": 0.146019,
+      "placements": 9,
+      "to_degraded": 5,
+      "degraded_s": 23.041,
+      "score_loss_s": 23.041,
+      "first_avoid_s": null
+    },
+    {
+      "run_id": "task8-s2-meta-r3",
+      "scheduler": "meta",
+      "repeat": 3,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы"
+      ],
+      "error_rate": 0.0942,
+      "failed": 1413,
+      "requests": 15000,
+      "p95_ms": 1002.127,
+      "server_error_rate": 0.09152,
+      "placements": 10,
+      "to_degraded": 0,
+      "degraded_s": 20.287,
+      "score_loss_s": 20.287,
+      "first_avoid_s": 26.088
+    },
+    {
+      "run_id": "task8-s2-naive-r3",
+      "scheduler": "naive",
+      "repeat": 3,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "DR в observe дошёл до DOWN: cluster-b — с failover вмешался бы",
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 6}"
+      ],
+      "error_rate": 0.171267,
+      "failed": 2569,
+      "requests": 15000,
+      "p95_ms": 1002.916,
+      "server_error_rate": 0.165776,
+      "placements": 9,
+      "to_degraded": 5,
+      "degraded_s": 18.314,
+      "score_loss_s": 18.314,
+      "first_avoid_s": null
+    }
+  ],
+  "by_mode": {
+    "meta": {
+      "error_rate": {
+        "n": 3,
+        "mean": 0.05816866666666667,
+        "min": 0.028333,
+        "max": 0.0942
+      },
+      "server_error_rate": {
+        "n": 3,
+        "mean": 0.056982,
+        "min": 0.028079,
+        "max": 0.09152
+      },
+      "p95_ms": {
+        "n": 3,
+        "mean": 685.2413333333333,
+        "min": 503.21,
+        "max": 1002.127
+      },
+      "share_to_degraded": {
+        "n": 3,
+        "mean": 0.03333333333333333,
+        "min": 0.0,
+        "max": 0.1
+      }
+    },
+    "naive": {
+      "error_rate": {
+        "n": 3,
+        "mean": 0.16336533333333333,
+        "min": 0.15,
+        "max": 0.171267
+      },
+      "server_error_rate": {
+        "n": 3,
+        "mean": 0.15895333333333334,
+        "min": 0.146019,
+        "max": 0.165776
+      },
+      "p95_ms": {
+        "n": 3,
+        "mean": 1002.812,
+        "min": 1002.608,
+        "max": 1002.916
+      },
+      "share_to_degraded": {
+        "n": 3,
+        "mean": 0.5555555555555556,
+        "min": 0.5555555555555556,
+        "max": 0.5555555555555556
+      }
+    }
+  },
+  "reduction": 0.6439350657830303,
+  "absolute_difference": 0.10519666666666666,
+  "pairs": [
+    {
+      "repeat": 1,
+      "reduction": 0.8321793056880038
+    },
+    {
+      "repeat": 2,
+      "reduction": 0.6535133333333334
+    },
+    {
+      "repeat": 3,
+      "reduction": 0.44998160766522444
+    }
+  ],
+  "target": 0.2,
+  "meets_target": true
+}

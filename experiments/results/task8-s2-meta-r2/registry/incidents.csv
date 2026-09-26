@@ -1,0 +1,2 @@
+id,cluster_id,dr_mode,peak_state,detected_at,failover_started_at,failover_completed_at,recovery_started_at,recovery_completed_at,fault_injected_at,fault_ref,details
+9,cluster-b,observe,down,2026-09-26 15:39:38.981643+00,2026-09-26 15:41:48.948548+00,,2026-09-26 15:46:28.98644+00,2026-09-26 15:48:18.939973+00,2026-09-26 15:39:13+00,networkchaos/chaos-mesh/scenario2-task8-s2-meta-r2@cluster-b,"{""failovers"": 2, ""detected_signals"": {""api"": true, ""sli"": ""bad"", ""svc"": true, ""error_rate"": 0.053709998843430924}, ""recovery_attempts"": 2}"

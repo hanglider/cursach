@@ -1,0 +1,3 @@
+id,region,provider,api_endpoint,labels,certifications,slo_status,registered_at
+cluster-a,eu-west,local,https://cluster-a-control-plane:6443,{},"{pci-dss,iso-27001}",healthy,2026-09-13 22:19:34.116263+00
+cluster-b,eu-central,local,https://cluster-b-control-plane:6443,{},{iso-27001},degraded,2026-09-13 22:19:34.15389+00
