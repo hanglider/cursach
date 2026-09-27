@@ -811,7 +811,7 @@ Workload — экземпляр `frontend` с именем `w-<n>`: CR `Workload
 │   ├── scheduler/               run.sh + summary.py: сценарий 2; series.sh + compare.py: серия
 │   ├── traces/                  export.py: трейсы прогона и разложение задержки; run.sh: замер
 │   └── results/                 сырые данные прогонов: series/ из Thanos, registry/ из каталога
-└── analysis/                    plots.py: графики сценариев 1 и 2; scenario1/–scenario3/: таблицы и графики серий
+└── analysis/                    plots.py: графики; task9.py + scoring.py: гипотезы и sensitivity (task9/); scenario1/–3/: серии
 ```
 
 Разделение `scheduler` и `dr-controller` на отдельные модули, а не один

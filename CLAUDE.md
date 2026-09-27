@@ -61,6 +61,7 @@ make dr-check [CLUSTER=cluster-b]      # проверка DR на стенде: 
 make sched-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 2: NetworkChaos на backend, поток + фон в app; DR в observe
 make sched-series PREFIX=<p> [REPEATS=3]     # серия сценария 2: meta и naive вперемешку, таблица в analysis/scenario2/
 make plots           # графики деградации и восстановления сценариев 1 и 2 в analysis/ (без стенда)
+make analysis        # задача 9: гипотезы H1–H5, sensitivity весов, сверка каталога — analysis/task9/
 make trace-run RUN=<id> [SAMPLING=10]  # замер трассировки: k6 в app.fed.local, трейсы и разложение задержки
 make generate        # deepcopy и CRD планировщика (controller-gen)
 make lint            # линт всего проекта

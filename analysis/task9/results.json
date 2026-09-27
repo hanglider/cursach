@@ -1,0 +1,1039 @@
+{
+  "h1": {
+    "runs": [
+      {
+        "run_id": "task8-s1-active-r1",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.803,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.06949265687583445,
+          "gateway": 0.05919276457883369,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s1-active-r2",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.948,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.06745846400213519,
+          "gateway": 0.05889612615701063,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s1-active-r3",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.69,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.06675567423230974,
+          "gateway": 0.05900876232201534,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s1-observe-r1",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.683,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.4985619690990569,
+          "gateway": 0.47508021390374333,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s1-observe-r2",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.918,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.4989983974358974,
+          "gateway": 0.48198970840480276,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s1-observe-r3",
+        "target": "app.fed.local",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 1.916,
+        "alerts": {},
+        "sli_fault_error_share": {
+          "client": 0.4969493798189742,
+          "gateway": 0.47724904480722474,
+          "server": 0.0
+        }
+      },
+      {
+        "run_id": "task8-s2-meta-r1",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 2.759,
+        "alerts": {
+          "FederationErrorBudgetBurnSlow": "pending",
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      },
+      {
+        "run_id": "task8-s2-meta-r2",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 4.415,
+        "alerts": {
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      },
+      {
+        "run_id": "task8-s2-meta-r3",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 5.332,
+        "alerts": {
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      },
+      {
+        "run_id": "task8-s2-naive-r1",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 2.433,
+        "alerts": {
+          "FederationErrorBudgetBurnSlow": "pending",
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      },
+      {
+        "run_id": "task8-s2-naive-r2",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 5.428,
+        "alerts": {
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      },
+      {
+        "run_id": "task8-s2-naive-r3",
+        "target": "поток",
+        "baseline_availability": 1.0,
+        "baseline_p95_ms": 3.145,
+        "alerts": {
+          "FederationErrorBudgetBurnSlow": "pending",
+          "FederationLatencyBudgetBreached": "firing"
+        },
+        "sli_fault_error_share": null
+      }
+    ],
+    "min_baseline_availability": 1.0,
+    "max_baseline_p95_ms": 5.428,
+    "burn_alert_fired_runs": 0,
+    "parts": {
+      "availability ≥ 99% в baseline каждого прогона": true,
+      "p95 < 200 мс в baseline каждого прогона": true,
+      "burn-rate алерт срабатывает при отказе": false
+    },
+    "verdict": "частично"
+  },
+  "h2": {
+    "runs": [
+      {
+        "run_id": "task8-s1-active-r1",
+        "ttd_s": 12.82894,
+        "rto_s": 42.8619,
+        "lost": 985,
+        "fault_availability": 0.930507
+      },
+      {
+        "run_id": "task8-s1-active-r2",
+        "ttd_s": 10.600379,
+        "rto_s": 40.664926,
+        "lost": 965,
+        "fault_availability": 0.932542
+      },
+      {
+        "run_id": "task8-s1-active-r3",
+        "ttd_s": 10.702494,
+        "rto_s": 40.693824,
+        "lost": 938,
+        "fault_availability": 0.933244
+      },
+      {
+        "run_id": "task8-s1-observe-r1",
+        "ttd_s": 10.707283,
+        "rto_s": null,
+        "lost": 7454,
+        "fault_availability": 0.501438
+      },
+      {
+        "run_id": "task8-s1-observe-r2",
+        "ttd_s": 10.728973,
+        "rto_s": null,
+        "lost": 7473,
+        "fault_availability": 0.501002
+      },
+      {
+        "run_id": "task8-s1-observe-r3",
+        "ttd_s": 11.202725,
+        "rto_s": null,
+        "lost": 7412,
+        "fault_availability": 0.503051
+      }
+    ],
+    "mean": {
+      "ttd_s": 11.128465666666667,
+      "rto_s": 41.40688333333333,
+      "lost_active": 962.6666666666666,
+      "lost_observe": 7446.333333333333,
+      "fault_availability_active": 0.9320976666666666,
+      "fault_availability_observe": 0.5018303333333334
+    },
+    "lost_reduction": 0.8707193697121626,
+    "pairs": [
+      {
+        "repeat": 1,
+        "lost_active": 985,
+        "lost_observe": 7454,
+        "reduction": 0.867856184598873
+      },
+      {
+        "repeat": 2,
+        "lost_active": 965,
+        "lost_observe": 7473,
+        "reduction": 0.8708684597885722
+      },
+      {
+        "repeat": 3,
+        "lost_active": 938,
+        "lost_observe": 7412,
+        "reduction": 0.8734484619535887
+      }
+    ],
+    "parts": {
+      "TTD < 60 с в каждом прогоне": true,
+      "RTO < 5 мин в каждом active": true,
+      "потерянных с DR меньше в каждой паре": true
+    },
+    "verdict": "подтверждена"
+  },
+  "h3": {
+    "sets": {
+      "enforce": {
+        "attempts": 15,
+        "rejected": 15,
+        "admitted": 0,
+        "recorded": 15
+      },
+      "audit": {
+        "attempts": 15,
+        "rejected": 0,
+        "admitted": 15,
+        "recorded": 15
+      },
+      "audit-hold": {
+        "attempts": 15,
+        "rejected": 0,
+        "admitted": 15,
+        "recorded": 15
+      }
+    },
+    "parts": {
+      "enforce: 0 размещённых нарушителей в каждом прогоне": true,
+      "enforce: каждый отказ зафиксирован в каталоге": true,
+      "audit: нарушители размещаются и фиксируются в каждом прогоне": true
+    },
+    "verdict": "подтверждена"
+  },
+  "h4": {
+    "runs": [
+      {
+        "run_id": "task8-s2-meta-r1",
+        "er_fault": 0.028333,
+        "er_first_180s": 0.04722222222222222,
+        "placed": 29,
+        "not_ready": 0
+      },
+      {
+        "run_id": "task8-s2-meta-r2",
+        "er_fault": 0.051973,
+        "er_first_180s": 0.08633333333333333,
+        "placed": 29,
+        "not_ready": 1
+      },
+      {
+        "run_id": "task8-s2-meta-r3",
+        "er_fault": 0.0942,
+        "er_first_180s": 0.15597554196775987,
+        "placed": 29,
+        "not_ready": 0
+      },
+      {
+        "run_id": "task8-s2-naive-r1",
+        "er_fault": 0.168829,
+        "er_first_180s": 0.28044444444444444,
+        "placed": 29,
+        "not_ready": 5
+      },
+      {
+        "run_id": "task8-s2-naive-r2",
+        "er_fault": 0.15,
+        "er_first_180s": 0.25,
+        "placed": 29,
+        "not_ready": 6
+      },
+      {
+        "run_id": "task8-s2-naive-r3",
+        "er_fault": 0.171267,
+        "er_first_180s": 0.28544444444444445,
+        "placed": 29,
+        "not_ready": 6
+      }
+    ],
+    "mean_er_fault": {
+      "meta": 0.05816866666666667,
+      "naive": 0.16336533333333333
+    },
+    "reduction": 0.6439350657830303,
+    "pairs": [
+      {
+        "repeat": 1,
+        "reduction": 0.8321793056880038
+      },
+      {
+        "repeat": 2,
+        "reduction": 0.6535133333333334
+      },
+      {
+        "repeat": 3,
+        "reduction": 0.44998160766522444
+      }
+    ],
+    "secondary": {
+      "window_s": 180,
+      "mean_er": {
+        "meta": 0.09651036584110514,
+        "naive": 0.27196296296296296
+      },
+      "reduction": 0.6451341580130956,
+      "not_ready": {
+        "meta": {
+          "not_ready": 1,
+          "placed": 87
+        },
+        "naive": {
+          "not_ready": 17,
+          "placed": 87
+        }
+      }
+    },
+    "parts": {
+      "снижение ER ≥ 20% на среднем": true,
+      "ER meta ниже naive в каждой паре": true
+    },
+    "verdict": "подтверждена"
+  },
+  "h5": {
+    "decisions": 176,
+    "decisions_in_fault": 57,
+    "naive_share_fault": 0.5555555555555556,
+    "base": {
+      "weights": [
+        0.5,
+        0.3,
+        0.2
+      ],
+      "changed_share": 0.0,
+      "degraded_share_fault": 0.03508771929824561
+    },
+    "worst_dynamic": {
+      "weights": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "changed_share": 0.09090909090909091,
+      "degraded_share_fault": 0.21052631578947367
+    },
+    "points_below_naive": 65,
+    "points_dynamic": 65,
+    "max_changed_share": 0.39204545454545453,
+    "grid": [
+      {
+        "weights": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "changed_share": 0.39204545454545453,
+        "degraded_share_fault": 0.5263157894736842
+      },
+      {
+        "weights": [
+          0.0,
+          0.1,
+          0.9
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.2,
+          0.8
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.3,
+          0.7
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.4,
+          0.6
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.5,
+          0.5
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.6,
+          0.4
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.7,
+          0.3
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.8,
+          0.2
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.0,
+          0.9,
+          0.1
+        ],
+        "changed_share": 0.022727272727272728,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "changed_share": 0.16761363636363635,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.1,
+          0.0,
+          0.9
+        ],
+        "changed_share": 0.09090909090909091,
+        "degraded_share_fault": 0.21052631578947367
+      },
+      {
+        "weights": [
+          0.1,
+          0.1,
+          0.8
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.2,
+          0.7
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.3,
+          0.6
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.4,
+          0.5
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.5,
+          0.4
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.6,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.7,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.1,
+          0.8,
+          0.1
+        ],
+        "changed_share": 0.022727272727272728,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.1,
+          0.9,
+          0.0
+        ],
+        "changed_share": 0.16761363636363635,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.2,
+          0.0,
+          0.8
+        ],
+        "changed_share": 0.03977272727272727,
+        "degraded_share_fault": 0.08771929824561403
+      },
+      {
+        "weights": [
+          0.2,
+          0.1,
+          0.7
+        ],
+        "changed_share": 0.017045454545454544,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.2,
+          0.6
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.3,
+          0.5
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.4,
+          0.4
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.5,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.2,
+          0.7,
+          0.1
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.2,
+          0.8,
+          0.0
+        ],
+        "changed_share": 0.16761363636363635,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.3,
+          0.0,
+          0.7
+        ],
+        "changed_share": 0.028409090909090908,
+        "degraded_share_fault": 0.07017543859649122
+      },
+      {
+        "weights": [
+          0.3,
+          0.1,
+          0.6
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.3,
+          0.2,
+          0.5
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.3,
+          0.3,
+          0.4
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.3,
+          0.4,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.3,
+          0.5,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.3,
+          0.6,
+          0.1
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.3,
+          0.7,
+          0.0
+        ],
+        "changed_share": 0.16761363636363635,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.4,
+          0.0,
+          0.6
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.4,
+          0.1,
+          0.5
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.4,
+          0.2,
+          0.4
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.4,
+          0.3,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.4,
+          0.4,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.4,
+          0.5,
+          0.1
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.4,
+          0.6,
+          0.0
+        ],
+        "changed_share": 0.16477272727272727,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.5,
+          0.1,
+          0.4
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.5,
+          0.2,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.5,
+          0.3,
+          0.2
+        ],
+        "changed_share": 0.0,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.5,
+          0.4,
+          0.1
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "changed_share": 0.16193181818181818,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.6,
+          0.0,
+          0.4
+        ],
+        "changed_share": 0.011363636363636364,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.6,
+          0.1,
+          0.3
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.6,
+          0.2,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.6,
+          0.3,
+          0.1
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.6,
+          0.4,
+          0.0
+        ],
+        "changed_share": 0.16193181818181818,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.7,
+          0.0,
+          0.3
+        ],
+        "changed_share": 0.0,
+        "degraded_share_fault": 0.03508771929824561
+      },
+      {
+        "weights": [
+          0.7,
+          0.1,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.7,
+          0.2,
+          0.1
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.7,
+          0.3,
+          0.0
+        ],
+        "changed_share": 0.16477272727272727,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.8,
+          0.0,
+          0.2
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.8,
+          0.1,
+          0.1
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.8,
+          0.2,
+          0.0
+        ],
+        "changed_share": 0.16477272727272727,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          0.9,
+          0.0,
+          0.1
+        ],
+        "changed_share": 0.005681818181818182,
+        "degraded_share_fault": 0.017543859649122806
+      },
+      {
+        "weights": [
+          0.9,
+          0.1,
+          0.0
+        ],
+        "changed_share": 0.16193181818181818,
+        "degraded_share_fault": 0.0
+      },
+      {
+        "weights": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "changed_share": 0.15056818181818182,
+        "degraded_share_fault": 0.0
+      }
+    ],
+    "parts": {
+      "доля в деградировавший ниже naive во всех точках с w1 + w2 > 0": true
+    },
+    "verdict": "подтверждена"
+  },
+  "reconcile": {
+    "error_rate_abs_diff": {
+      "n": 368,
+      "p50": 0.0,
+      "p95": 0.005750097343311125,
+      "p99": 0.02384104310740004,
+      "max": 0.09897676020641574,
+      "tolerance": 0.01,
+      "within": 0.9619565217391305
+    },
+    "p95_rel_diff": {
+      "n": 368,
+      "p50": 0.0,
+      "p95": 0.0031315014993334913,
+      "p99": 0.03375671923741616,
+      "max": 339.7398334703469,
+      "tolerance": 0.1,
+      "within": 0.9945652173913043
+    },
+    "both_absent": 4,
+    "one_absent": 0
+  },
+  "tail": [
+    {
+      "run_id": "task8-s2-meta-r1",
+      "requests": 1502,
+      "failed": 387,
+      "last_error_s": 154,
+      "dr_recovery_started_s": 160.9357829093933
+    },
+    {
+      "run_id": "task8-s2-meta-r2",
+      "requests": 1503,
+      "failed": 341,
+      "last_error_s": 135,
+      "dr_recovery_started_s": 136.9864399433136
+    },
+    {
+      "run_id": "task8-s2-meta-r3",
+      "requests": 1502,
+      "failed": 140,
+      "last_error_s": 55,
+      "dr_recovery_started_s": 63.974756956100464
+    },
+    {
+      "run_id": "task8-s2-naive-r1",
+      "requests": 1502,
+      "failed": 1,
+      "last_error_s": 0,
+      "dr_recovery_started_s": -25.024456024169922
+    },
+    {
+      "run_id": "task8-s2-naive-r2",
+      "requests": 1502,
+      "failed": 236,
+      "last_error_s": 93,
+      "dr_recovery_started_s": 97.95662093162537
+    },
+    {
+      "run_id": "task8-s2-naive-r3",
+      "requests": 1501,
+      "failed": 175,
+      "last_error_s": 69,
+      "dr_recovery_started_s": 79.92953300476074
+    }
+  ]
+}

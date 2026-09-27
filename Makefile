@@ -8,7 +8,7 @@ CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series plots trace-run generate lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series plots analysis trace-run generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -58,6 +58,10 @@ sched-series:  ## серия сценария 2, meta и naive вперемеш�
 plots:  ## графики деградации и восстановления серий задачи 8 в analysis/ (стенд не нужен)
 	uv run --no-project --quiet --python 3.13 --with matplotlib==3.11.2 python analysis/plots.py
 
+analysis:  ## задача 9: гипотезы H1–H5, sensitivity, сверка каталога — analysis/task9/ (стенд не нужен)
+	uv run --no-project --quiet --python 3.13 --with matplotlib==3.11.2 python analysis/task9.py >/dev/null
+	@echo analysis/task9/results.md
+
 trace-run:  ## замер трассировки: make trace-run RUN=<id> [SAMPLING=10] (DURATION=3m, ADR 0029)
 	experiments/traces/run.sh $(RUN) $(SAMPLING)
 
@@ -83,4 +87,5 @@ test:  ## тесты
 	@for m in $(GO_MODULES); do (cd $$m && go test ./...) || exit 1; done
 	@for p in $(PY_PROJECTS); do (cd $$p && uv run --quiet pytest -q) || exit 1; done
 	@cd experiments/scheduler && uv run --no-project --quiet --python 3.13 --with pytest pytest -q -p no:cacheprovider
+	@cd analysis && uv run --no-project --quiet --python 3.13 --with pytest pytest -q -p no:cacheprovider
 	@kyverno test stand/policies/tests >/dev/null 2>&1 || kyverno test stand/policies/tests --detailed-results
