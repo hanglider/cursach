@@ -1,0 +1,18 @@
+{
+  "enforcement": "enforce",
+  "attempts": 5,
+  "rejected": 5,
+  "admitted": 0,
+  "other_errors": 0,
+  "violating_deployments_left": 0,
+  "recorded": 5,
+  "recorded_raw": 5,
+  "recorded_by_source": {
+    "event": 5
+  },
+  "eligible_ok": 5,
+  "detection_latency_s": {
+    "max": 7.215,
+    "median": 4.686
+  }
+}

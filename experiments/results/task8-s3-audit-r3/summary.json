@@ -1,0 +1,18 @@
+{
+  "enforcement": "audit",
+  "attempts": 5,
+  "rejected": 0,
+  "admitted": 5,
+  "other_errors": 0,
+  "violating_deployments_left": 0,
+  "recorded": 5,
+  "recorded_raw": 10,
+  "recorded_by_source": {
+    "event": 10
+  },
+  "eligible_ok": 10,
+  "detection_latency_s": {
+    "max": 9.382,
+    "median": 3.347
+  }
+}

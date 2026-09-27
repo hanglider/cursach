@@ -1,0 +1,40 @@
+{"ts": 1790499197.791884, "event": "rejected", "workload": "pv-1", "cluster": "cluster-b", "message": "admission webhook \"validate.kyverno.svc-fail\" denied the request: \n\nresource Deployment/workloads/pv-1 was blocked due to the following policies \n\nrequire-certification:\n  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'\n"}
+rejected by cluster-b: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/workloads/pv-1 was blocked due to the following policies 
+
+require-certification:
+  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'
+
+{"ts": 1790499199.1499882, "event": "rejected", "workload": "pv-2", "cluster": "cluster-b", "message": "admission webhook \"validate.kyverno.svc-fail\" denied the request: \n\nresource Deployment/workloads/pv-2 was blocked due to the following policies \n\nrequire-certification:\n  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'\n"}
+rejected by cluster-b: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/workloads/pv-2 was blocked due to the following policies 
+
+require-certification:
+  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'
+
+{"ts": 1790499200.4003499, "event": "rejected", "workload": "pv-3", "cluster": "cluster-b", "message": "admission webhook \"validate.kyverno.svc-fail\" denied the request: \n\nresource Deployment/workloads/pv-3 was blocked due to the following policies \n\nrequire-certification:\n  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'\n"}
+rejected by cluster-b: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/workloads/pv-3 was blocked due to the following policies 
+
+require-certification:
+  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'
+
+{"ts": 1790499201.6713998, "event": "rejected", "workload": "pv-4", "cluster": "cluster-b", "message": "admission webhook \"validate.kyverno.svc-fail\" denied the request: \n\nresource Deployment/workloads/pv-4 was blocked due to the following policies \n\nrequire-certification:\n  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'\n"}
+rejected by cluster-b: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/workloads/pv-4 was blocked due to the following policies 
+
+require-certification:
+  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'
+
+{"ts": 1790499202.943937, "event": "rejected", "workload": "pv-5", "cluster": "cluster-b", "message": "admission webhook \"validate.kyverno.svc-fail\" denied the request: \n\nresource Deployment/workloads/pv-5 was blocked due to the following policies \n\nrequire-certification:\n  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'\n"}
+rejected by cluster-b: admission webhook "validate.kyverno.svc-fail" denied the request: 
+
+resource Deployment/workloads/pv-5 was blocked due to the following policies 
+
+require-certification:
+  certifications-present: 'federation.spbu/require-certification=pci-dss not satisfied: cluster cluster-b has certifications iso-27001'
+
