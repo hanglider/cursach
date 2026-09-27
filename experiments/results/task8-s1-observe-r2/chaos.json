@@ -1,0 +1,113 @@
+{
+    "apiVersion": "chaos-mesh.org/v1alpha1",
+    "kind": "PodChaos",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"chaos-mesh.org/v1alpha1\",\"kind\":\"PodChaos\",\"metadata\":{\"annotations\":{},\"labels\":{\"federation.spbu/scenario\":\"1\"},\"name\":\"scenario1-task8-s1-observe-r2\",\"namespace\":\"chaos-mesh\"},\"spec\":{\"action\":\"pod-failure\",\"duration\":\"300s\",\"mode\":\"all\",\"selector\":{\"namespaces\":[\"workloads\"]}}}\n"
+        },
+        "creationTimestamp": "2026-09-27T09:40:36Z",
+        "finalizers": [
+            "chaos-mesh/records"
+        ],
+        "generation": 8,
+        "labels": {
+            "federation.spbu/scenario": "1"
+        },
+        "name": "scenario1-task8-s1-observe-r2",
+        "namespace": "chaos-mesh",
+        "resourceVersion": "127395",
+        "uid": "5efcb517-5b11-4370-a04c-5ba29d51f5dd"
+    },
+    "spec": {
+        "action": "pod-failure",
+        "duration": "300s",
+        "mode": "all",
+        "selector": {
+            "namespaces": [
+                "workloads"
+            ]
+        }
+    },
+    "status": {
+        "conditions": [
+            {
+                "status": "True",
+                "type": "AllRecovered"
+            },
+            {
+                "status": "False",
+                "type": "Paused"
+            },
+            {
+                "status": "True",
+                "type": "Selected"
+            },
+            {
+                "status": "False",
+                "type": "AllInjected"
+            }
+        ],
+        "experiment": {
+            "containerRecords": [
+                {
+                    "events": [
+                        {
+                            "operation": "Apply",
+                            "timestamp": "2026-09-27T09:40:36Z",
+                            "type": "Succeeded"
+                        },
+                        {
+                            "operation": "Recover",
+                            "timestamp": "2026-09-27T09:45:36Z",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "id": "workloads/app-56cd99bf86-7667w",
+                    "injectedCount": 1,
+                    "phase": "Not Injected",
+                    "recoveredCount": 1,
+                    "selectorKey": "."
+                },
+                {
+                    "events": [
+                        {
+                            "operation": "Apply",
+                            "timestamp": "2026-09-27T09:40:36Z",
+                            "type": "Succeeded"
+                        },
+                        {
+                            "operation": "Recover",
+                            "timestamp": "2026-09-27T09:45:36Z",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "id": "workloads/app-56cd99bf86-cvlx6",
+                    "injectedCount": 1,
+                    "phase": "Not Injected",
+                    "recoveredCount": 1,
+                    "selectorKey": "."
+                },
+                {
+                    "events": [
+                        {
+                            "operation": "Apply",
+                            "timestamp": "2026-09-27T09:40:36Z",
+                            "type": "Succeeded"
+                        },
+                        {
+                            "operation": "Recover",
+                            "timestamp": "2026-09-27T09:45:36Z",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "id": "workloads/backend-5fc59dfc86-nzlqj",
+                    "injectedCount": 1,
+                    "phase": "Not Injected",
+                    "recoveredCount": 1,
+                    "selectorKey": "."
+                }
+            ],
+            "desiredPhase": "Stop"
+        }
+    }
+}

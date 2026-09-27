@@ -1,0 +1,185 @@
+{
+  "runs": [
+    {
+      "run_id": "task8-s1-active-r1",
+      "dr_mode": "active",
+      "repeat": 1,
+      "ttd_s": 12.82894,
+      "rto_s": 42.8619,
+      "return_s": 70.826,
+      "lost_requests": 985,
+      "fault_requests": 14980,
+      "fault_failed": 1041,
+      "fault_availability": 0.930507,
+      "fault_p95_ms": 481.99,
+      "run_availability": 0.9732939969214982,
+      "notes": []
+    },
+    {
+      "run_id": "task8-s1-observe-r1",
+      "dr_mode": "observe",
+      "repeat": 1,
+      "ttd_s": 10.707283,
+      "rto_s": null,
+      "return_s": 68.703,
+      "lost_requests": 7454,
+      "fault_requests": 14951,
+      "fault_failed": 7454,
+      "fault_availability": 0.501438,
+      "fault_p95_ms": 4843.06,
+      "run_availability": 0.806552582292121,
+      "notes": []
+    },
+    {
+      "run_id": "task8-s1-active-r2",
+      "dr_mode": "active",
+      "repeat": 2,
+      "ttd_s": 10.600379,
+      "rto_s": 40.664926,
+      "return_s": 68.592,
+      "lost_requests": 965,
+      "fault_requests": 14987,
+      "fault_failed": 1011,
+      "fault_availability": 0.932542,
+      "fault_p95_ms": 361.022,
+      "run_availability": 0.9740682791699797,
+      "notes": []
+    },
+    {
+      "run_id": "task8-s1-observe-r2",
+      "dr_mode": "observe",
+      "repeat": 2,
+      "ttd_s": 10.728973,
+      "rto_s": null,
+      "return_s": 68.711,
+      "lost_requests": 7473,
+      "fault_requests": 14976,
+      "fault_failed": 7473,
+      "fault_availability": 0.501002,
+      "fault_p95_ms": 3708.081,
+      "run_availability": 0.8065459395680501,
+      "notes": []
+    },
+    {
+      "run_id": "task8-s1-active-r3",
+      "dr_mode": "active",
+      "repeat": 3,
+      "ttd_s": 10.702494,
+      "rto_s": 40.693824,
+      "return_s": 68.689,
+      "lost_requests": 938,
+      "fault_requests": 14980,
+      "fault_failed": 1000,
+      "fault_availability": 0.933244,
+      "fault_p95_ms": 321.225,
+      "run_availability": 0.9743458183683941,
+      "notes": []
+    },
+    {
+      "run_id": "task8-s1-observe-r3",
+      "dr_mode": "observe",
+      "repeat": 3,
+      "ttd_s": 11.202725,
+      "rto_s": null,
+      "return_s": 69.181,
+      "lost_requests": 7412,
+      "fault_requests": 14915,
+      "fault_failed": 7412,
+      "fault_availability": 0.503051,
+      "fault_p95_ms": 4265.566,
+      "run_availability": 0.8071426738845986,
+      "notes": []
+    }
+  ],
+  "by_mode": {
+    "active": {
+      "ttd_s": {
+        "n": 3,
+        "mean": 11.377271,
+        "min": 10.600379,
+        "max": 12.82894
+      },
+      "rto_s": {
+        "n": 3,
+        "mean": 41.40688333333333,
+        "min": 40.664926,
+        "max": 42.8619
+      },
+      "return_s": {
+        "n": 3,
+        "mean": 69.369,
+        "min": 68.592,
+        "max": 70.826
+      },
+      "lost_requests": {
+        "n": 3,
+        "mean": 962.6666666666666,
+        "min": 938,
+        "max": 985
+      },
+      "fault_availability": {
+        "n": 3,
+        "mean": 0.9320976666666666,
+        "min": 0.930507,
+        "max": 0.933244
+      },
+      "fault_p95_ms": {
+        "n": 3,
+        "mean": 388.079,
+        "min": 321.225,
+        "max": 481.99
+      },
+      "run_availability": {
+        "n": 3,
+        "mean": 0.9739026981532907,
+        "min": 0.9732939969214982,
+        "max": 0.9743458183683941
+      }
+    },
+    "observe": {
+      "ttd_s": {
+        "n": 3,
+        "mean": 10.879660333333334,
+        "min": 10.707283,
+        "max": 11.202725
+      },
+      "rto_s": null,
+      "return_s": {
+        "n": 3,
+        "mean": 68.865,
+        "min": 68.703,
+        "max": 69.181
+      },
+      "lost_requests": {
+        "n": 3,
+        "mean": 7446.333333333333,
+        "min": 7412,
+        "max": 7473
+      },
+      "fault_availability": {
+        "n": 3,
+        "mean": 0.5018303333333334,
+        "min": 0.501002,
+        "max": 0.503051
+      },
+      "fault_p95_ms": {
+        "n": 3,
+        "mean": 4272.2356666666665,
+        "min": 3708.081,
+        "max": 4843.06
+      },
+      "run_availability": {
+        "n": 3,
+        "mean": 0.8067470652482566,
+        "min": 0.8065459395680501,
+        "max": 0.8071426738845986
+      }
+    }
+  },
+  "lost_requests_reduction": 0.8707193697121626,
+  "fault_availability_gain": 0.4302673333333332,
+  "targets": {
+    "ttd_lt_60s_all": true,
+    "rto_lt_300s_all_active": true
+  }
+}

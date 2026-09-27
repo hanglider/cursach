@@ -1,0 +1,97 @@
+{
+  "run_id": "task8-s1-active-r1",
+  "scenario": "1-cluster-failure",
+  "cluster": "cluster-b",
+  "dr_mode": "active",
+  "fault": {
+    "ref": "podchaos/chaos-mesh/scenario1-task8-s1-active-r1@cluster-b",
+    "tool": "chaos-mesh PodChaos pod-failure, namespace workloads",
+    "injected_at": "2026-09-27T09:00:30Z",
+    "recovered_at": "2026-09-27T09:05:30Z",
+    "runner_applied_at": "2026-09-27T09:00:30.543Z",
+    "note": "injected_at/recovered_at — события Apply/Recover Chaos Mesh, точность 1 с"
+  },
+  "incident": {
+    "id": 14,
+    "dr_mode": "active",
+    "peak_state": "down",
+    "detected_at": "2026-09-27T09:00:42.828940Z",
+    "failover_started_at": "2026-09-27T09:01:12.823427Z",
+    "failover_completed_at": "2026-09-27T09:01:12.861900Z",
+    "recovery_started_at": "2026-09-27T09:05:40.832255Z",
+    "recovery_completed_at": "2026-09-27T09:06:40.826488Z",
+    "ttd_seconds": 12.82894,
+    "rto_seconds": 42.8619,
+    "return_seconds": 70.826,
+    "details": {
+      "failovers": 1,
+      "detected_signals": {
+        "api": true,
+        "sli": "ok",
+        "svc": false,
+        "error_rate": 0,
+        "svc_detail": "Get \"http://192.168.117.2:31998/healthz\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"
+      },
+      "recovery_attempts": 1
+    }
+  },
+  "incidents_in_run": 1,
+  "incidents_before_fault": 0,
+  "requests": {
+    "total": 38980,
+    "failed": 1041
+  },
+  "lost_requests": 985,
+  "lost_requests_window": "fault_injected..failover_completed",
+  "windows": {
+    "baseline": {
+      "from_ms": 1790499450710,
+      "to_ms": 1790499630000,
+      "seconds": 179.29,
+      "requests": 8969,
+      "failed": 0,
+      "availability": 1.0,
+      "p95_ms": 1.803
+    },
+    "fault": {
+      "from_ms": 1790499630000,
+      "to_ms": 1790499930000,
+      "seconds": 300.0,
+      "requests": 14980,
+      "failed": 1041,
+      "availability": 0.930507,
+      "p95_ms": 481.99
+    },
+    "recovery": {
+      "from_ms": 1790499930000,
+      "to_ms": 1790500230609,
+      "seconds": 300.609,
+      "requests": 15031,
+      "failed": 0,
+      "availability": 1.0,
+      "p95_ms": 1.757
+    },
+    "until_failover": {
+      "from_ms": 1790499630000,
+      "to_ms": 1790499672861,
+      "seconds": 42.861,
+      "requests": 2071,
+      "failed": 985,
+      "availability": 0.524384,
+      "p95_ms": 5000.138
+    },
+    "after_failover_in_fault": {
+      "from_ms": 1790499672861,
+      "to_ms": 1790499930000,
+      "seconds": 257.139,
+      "requests": 12909,
+      "failed": 56,
+      "availability": 0.995662,
+      "p95_ms": 1.771
+    }
+  },
+  "targets": {
+    "ttd_lt_60s": true,
+    "rto_lt_300s": true
+  }
+}
