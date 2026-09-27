@@ -32,16 +32,22 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          # Таймауты проб — с запасом под netem сценария 2 (ADR 0037): 500 мс на каждый
+          # исходящий пакет backend'а и потери 10% дают пробе ≥ 1 с и ретрансмиссии TCP.
+          # С таймаутом 1 с по умолчанию kubelet убивал медленный, но живой backend,
+          # и CrashLoopBackOff держал его лежащим до 160 с после снятия отказа.
           readinessProbe:
             httpGet:
               path: /readyz
               port: http
-            periodSeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 3
           livenessProbe:
             httpGet:
               path: /healthz
               port: http
             periodSeconds: 10
+            timeoutSeconds: 5
           resources:
             requests:
               cpu: 50m
