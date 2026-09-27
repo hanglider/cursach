@@ -8,7 +8,7 @@ CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run scheduler-mode dr-mode dr-run dr-check sched-run sched-series trace-run generate lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series trace-run generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -39,6 +39,9 @@ dr-mode:  ## режим DR Controller'а: make dr-mode [MODE=active|observe]
 
 dr-run:  ## сценарий 1, отказ кластера: make dr-run RUN=<id> [CLUSTER=cluster-b]
 	experiments/dr/run.sh $(RUN) $(CLUSTER)
+
+dr-series:  ## серия сценария 1, active и observe вперемешку: make dr-series PREFIX=<p> [REPEATS=3]
+	experiments/dr/series.sh $(PREFIX) $(REPEATS) $(CLUSTER)
 
 dr-check:  ## проверка DR на стенде: инвариант 6 и недостижимый app (ADR 0023 В)
 	experiments/dr/check.sh $(CLUSTER)

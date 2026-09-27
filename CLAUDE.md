@@ -55,6 +55,7 @@ make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения 
 make scheduler-mode [MODE=meta|naive]  # режим планировщика на стенде
 make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR» и сценарий 2
 make dr-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 1: PodChaos на workloads + k6 в app.fed.local
+make dr-series PREFIX=<p> [REPEATS=3]        # серия сценария 1: active и observe вперемешку, таблица в analysis/scenario1/
 make dr-check [CLUSTER=cluster-b]      # проверка DR на стенде: инвариант 6 и недостижимый app
 make sched-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 2: NetworkChaos на backend, поток + фон в app; DR в observe
 make sched-series PREFIX=<p> [REPEATS=3]     # серия сценария 2: meta и naive вперемешку, таблица в analysis/scenario2/

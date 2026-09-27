@@ -182,6 +182,7 @@ source .env
 curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" 'http://127.0.0.1:8000/api/v1/incidents?open=true' | jq
 make dr-check                    # инвариант 6 и недостижимый app на живом стенде, ~6 мин
 make dr-run RUN=<id>             # сценарий 1: 3 мин baseline, 5 мин PodChaos, 5 мин восстановления
+make dr-series PREFIX=<p>        # серия: active и observe вперемешку, таблица в analysis/scenario1/, ~1.5 ч
 ```
 
 Сценарий 1 (`experiments/dr/run.sh`): k6 50 RPS в `app.fed.local`, PodChaos
