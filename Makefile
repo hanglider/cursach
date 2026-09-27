@@ -8,7 +8,7 @@ CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series trace-run generate lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series plots trace-run generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -55,6 +55,9 @@ sched-run:  ## сценарий 2, деградация сети (DR в observe)
 sched-series:  ## серия сценария 2, meta и naive вперемешку: make sched-series PREFIX=<p> [REPEATS=3]
 	experiments/scheduler/series.sh $(PREFIX) $(REPEATS) $(CLUSTER)
 
+plots:  ## графики деградации и восстановления серий задачи 8 в analysis/ (стенд не нужен)
+	uv run --no-project --quiet --python 3.13 --with matplotlib==3.11.2 python analysis/plots.py
+
 trace-run:  ## замер трассировки: make trace-run RUN=<id> [SAMPLING=10] (DURATION=3m, ADR 0029)
 	experiments/traces/run.sh $(RUN) $(SAMPLING)
 
@@ -65,7 +68,7 @@ generate:  ## сгенерировать deepcopy и CRD планировщик�
 lint:  ## линт всего проекта
 	@for m in $(GO_MODULES); do (cd $$m && test -z "$$(gofmt -l .)" && go vet ./... && golangci-lint run ./...) || exit 1; done
 	@for p in $(PY_PROJECTS); do (cd $$p && uv run --quiet ruff check . && uv run --quiet ruff format --check .) || exit 1; done
-	@ruff check experiments/dr experiments/traces experiments/scheduler experiments/policy && ruff format --check experiments/dr experiments/traces experiments/scheduler experiments/policy
+	@ruff check experiments/dr experiments/traces experiments/scheduler experiments/policy analysis && ruff format --check experiments/dr experiments/traces experiments/scheduler experiments/policy analysis
 	@yamllint -f parsable .yamllint stand experiments/load experiments/policy experiments/chaos
 	@kubeconform -summary -ignore-missing-schemas -schema-location default \
 	  -schema-location '$(CRD_SCHEMAS)' \
