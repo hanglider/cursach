@@ -1,0 +1,54 @@
+{
+  "run_id": "task8-s2c-naive-r1",
+  "scenario": "2-network-degradation",
+  "cluster": "cluster-b",
+  "scheduler": "naive",
+  "dr_mode": "observe",
+  "started_at": "2026-09-27T15:47:38Z",
+  "finished_at": "2026-09-27T16:01:41Z",
+  "k6_started_at": "2026-09-27T15:48:40.878Z",
+  "structure": {
+    "baseline_s": 180,
+    "fault_s": 300,
+    "recovery_s": 300,
+    "warmup_hosts": 3
+  },
+  "k6": {
+    "rps": 50,
+    "background_rps": 5,
+    "background_host": "app.fed.local",
+    "exit_code": 99
+  },
+  "workloads": {
+    "interval_s": 30,
+    "ttl_s": 180,
+    "placed_by": "scheduler"
+  },
+  "fault": {
+    "ref": "networkchaos/chaos-mesh/scenario2-task8-s2c-naive-r1@cluster-b",
+    "tool": "chaos-mesh NetworkChaos netem, backend в namespace workloads",
+    "spec": {
+      "action": "netem",
+      "delay": {
+        "latency": "500ms"
+      },
+      "loss": {
+        "loss": "10"
+      },
+      "direction": "to",
+      "selector": {
+        "namespaces": [
+          "workloads"
+        ],
+        "labelSelectors": {
+          "app.kubernetes.io/component": "backend"
+        }
+      }
+    },
+    "injected_at": "2026-09-27T15:51:41Z",
+    "recovered_at": "2026-09-27T15:56:41Z",
+    "runner_applied_at": "2026-09-27T15:51:40.901Z",
+    "note": "injected_at/recovered_at — события Apply/Recover Chaos Mesh, точность 1 с"
+  },
+  "git_rev": "caca47e"
+}

@@ -12,7 +12,12 @@ make load RUN=<id> [DURATION=3m] [INTERVAL=30] [TTL=180]
 make stand-down      # только вручную
 ```
 
-Требования: OrbStack (или другой docker) с VM на 8 GB. Полный контур (после задач
+Требования: OrbStack (или другой docker) с VM на 10 GB. На 8 GB свежий стенд
+работает, но к концу дня прогонов память кончается: VM уходит в своп, под нагрузкой
+load average доходит до 50, webhook Chaos Mesh не отвечает, и отказ не снимается по
+`duration` (2026-09-27, ADR 0037). Признак — рост `pswpin` в `/proc/vmstat` в
+простое. Память меняется `orb config set memory_mib 10240`, затем `orb stop` и
+`orb start`, затем `make stand-up`. Полный контур (после задач
 7 и 3) занимает около 5.3 GB анонимной памяти узлов, в VM остаётся около 1.9 GB
 (замер 2026-09-24). Больше всего — kube-apiserver кластеров федерации, около
 1.1 GB каждый; Chaos Mesh — около 32 MiB на кластер, DR Controller — 13 MiB,

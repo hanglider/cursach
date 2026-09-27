@@ -5,7 +5,8 @@
     make analysis
     uv run --no-project --python 3.13 --with matplotlib==3.11.2 python analysis/task9.py
 
-Вход — experiments/results/ (серии task8-s1, task8-s2, task8-s3), выход —
+Вход — experiments/results/ (серии task8-s1, task8-s2c, task8-s3 и первая серия
+сценария 2 task8-s2 отдельным разделом, ADR 0037), выход —
 analysis/task9/results.{md,json} и sensitivity.{png,svg}. Стенд не нужен.
 """
 
@@ -546,7 +547,7 @@ def plot_sensitivity(r: dict) -> None:
         fontsize=12,
     )
     ax.set_title(
-        f"офлайн-пересчёт {r['decisions_in_fault']} решений серии task8-s2 (meta и naive), сетка "
+        f"офлайн-пересчёт {r['decisions_in_fault']} решений серии {S2} (meta и naive), сетка "
         "весов с шагом 0.1;\nобведены базовые веса 0.5 / 0.3 / 0.2",
         loc="left",
         color=ink2,
@@ -687,8 +688,9 @@ def render(r: dict) -> str:
         "# Задача 9: результаты по гипотезам",
         "",
         (
-            "Генерируется `analysis/task9.py` (`make analysis`) из серий task8-s1, task8-s2, "
-            "task8-s3; гипотезы и правило решения — ADR 0035. Не править руками."
+            f"Генерируется `analysis/task9.py` (`make analysis`) из серий {S1}, {S2}, {S3} "
+            f"(первая серия сценария 2, {S2_AMPLIFIED}, — отдельным разделом, ADR 0037); "
+            "гипотезы и правило решения — ADR 0035. Не править руками."
         ),
         "",
         "| гипотеза | ключевые числа | вердикт |",

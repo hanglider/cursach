@@ -1,0 +1,91 @@
+{
+    "apiVersion": "chaos-mesh.org/v1alpha1",
+    "kind": "NetworkChaos",
+    "metadata": {
+        "annotations": {
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"chaos-mesh.org/v1alpha1\",\"kind\":\"NetworkChaos\",\"metadata\":{\"annotations\":{},\"labels\":{\"federation.spbu/scenario\":\"2\"},\"name\":\"scenario2-task8-s2c-meta-r2\",\"namespace\":\"chaos-mesh\"},\"spec\":{\"action\":\"netem\",\"delay\":{\"latency\":\"500ms\"},\"direction\":\"to\",\"duration\":\"300s\",\"loss\":{\"loss\":\"10\"},\"mode\":\"all\",\"selector\":{\"labelSelectors\":{\"app.kubernetes.io/component\":\"backend\"},\"namespaces\":[\"workloads\"]}}}\n"
+        },
+        "creationTimestamp": "2026-09-27T16:06:14Z",
+        "finalizers": [
+            "chaos-mesh/records"
+        ],
+        "generation": 12,
+        "labels": {
+            "federation.spbu/scenario": "2"
+        },
+        "name": "scenario2-task8-s2c-meta-r2",
+        "namespace": "chaos-mesh",
+        "resourceVersion": "203456",
+        "uid": "e03bdf2f-7916-416b-a9bb-fac35c156708"
+    },
+    "spec": {
+        "action": "netem",
+        "delay": {
+            "correlation": "0",
+            "jitter": "0ms",
+            "latency": "500ms"
+        },
+        "direction": "to",
+        "duration": "300s",
+        "loss": {
+            "correlation": "0",
+            "loss": "10"
+        },
+        "mode": "all",
+        "selector": {
+            "labelSelectors": {
+                "app.kubernetes.io/component": "backend"
+            },
+            "namespaces": [
+                "workloads"
+            ]
+        }
+    },
+    "status": {
+        "conditions": [
+            {
+                "status": "True",
+                "type": "AllRecovered"
+            },
+            {
+                "status": "False",
+                "type": "Paused"
+            },
+            {
+                "status": "True",
+                "type": "Selected"
+            },
+            {
+                "status": "False",
+                "type": "AllInjected"
+            }
+        ],
+        "experiment": {
+            "containerRecords": [
+                {
+                    "events": [
+                        {
+                            "operation": "Apply",
+                            "timestamp": "2026-09-27T16:06:14Z",
+                            "type": "Succeeded"
+                        },
+                        {
+                            "operation": "Recover",
+                            "timestamp": "2026-09-27T16:11:14Z",
+                            "type": "Succeeded"
+                        }
+                    ],
+                    "id": "workloads/backend-6fdb88d68f-kvnlw",
+                    "injectedCount": 1,
+                    "phase": "Not Injected",
+                    "recoveredCount": 1,
+                    "selectorKey": "."
+                }
+            ],
+            "desiredPhase": "Stop"
+        },
+        "instances": {
+            "workloads/backend-6fdb88d68f-kvnlw": 10
+        }
+    }
+}

@@ -1,0 +1,190 @@
+{
+  "runs": [
+    {
+      "run_id": "task8-s2c-meta-r1",
+      "scheduler": "meta",
+      "repeat": 1,
+      "valid": true,
+      "reasons": [],
+      "notes": [],
+      "error_rate": 0.026735,
+      "failed": 401,
+      "requests": 14999,
+      "p95_ms": 563.169,
+      "server_error_rate": 0.026689,
+      "placements": 10,
+      "to_degraded": 0,
+      "degraded_s": 21.096,
+      "score_loss_s": 21.096,
+      "first_avoid_s": 26.242
+    },
+    {
+      "run_id": "task8-s2c-naive-r1",
+      "scheduler": "naive",
+      "repeat": 1,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 1}"
+      ],
+      "error_rate": 0.04398,
+      "failed": 659,
+      "requests": 14984,
+      "p95_ms": 724.667,
+      "server_error_rate": 0.043086,
+      "placements": 10,
+      "to_degraded": 5,
+      "degraded_s": 21.714,
+      "score_loss_s": 21.714,
+      "first_avoid_s": null
+    },
+    {
+      "run_id": "task8-s2c-meta-r2",
+      "scheduler": "meta",
+      "repeat": 2,
+      "valid": true,
+      "reasons": [],
+      "notes": [],
+      "error_rate": 0.021267,
+      "failed": 319,
+      "requests": 15000,
+      "p95_ms": 505.283,
+      "server_error_rate": 0.021298,
+      "placements": 10,
+      "to_degraded": 0,
+      "degraded_s": 19.63,
+      "score_loss_s": 19.63,
+      "first_avoid_s": 25.415
+    },
+    {
+      "run_id": "task8-s2c-naive-r2",
+      "scheduler": "naive",
+      "repeat": 2,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 3}"
+      ],
+      "error_rate": 0.043006,
+      "failed": 645,
+      "requests": 14998,
+      "p95_ms": 725.249,
+      "server_error_rate": 0.042926,
+      "placements": 9,
+      "to_degraded": 5,
+      "degraded_s": 23.005,
+      "score_loss_s": 23.005,
+      "first_avoid_s": null
+    },
+    {
+      "run_id": "task8-s2c-meta-r3",
+      "scheduler": "meta",
+      "repeat": 3,
+      "valid": true,
+      "reasons": [],
+      "notes": [],
+      "error_rate": 0.023933,
+      "failed": 359,
+      "requests": 15000,
+      "p95_ms": 525.778,
+      "server_error_rate": 0.023873,
+      "placements": 10,
+      "to_degraded": 0,
+      "degraded_s": 23.573,
+      "score_loss_s": 23.573,
+      "first_avoid_s": 27.444
+    },
+    {
+      "run_id": "task8-s2c-naive-r3",
+      "scheduler": "naive",
+      "repeat": 3,
+      "valid": true,
+      "reasons": [],
+      "notes": [
+        "не стали готовыми (без трафика, их ошибки вне ряда): {'cluster-b': 1}"
+      ],
+      "error_rate": 0.045248,
+      "failed": 678,
+      "requests": 14984,
+      "p95_ms": 723.894,
+      "server_error_rate": 0.044992,
+      "placements": 10,
+      "to_degraded": 5,
+      "degraded_s": 21.197,
+      "score_loss_s": 21.197,
+      "first_avoid_s": null
+    }
+  ],
+  "by_mode": {
+    "meta": {
+      "error_rate": {
+        "n": 3,
+        "mean": 0.023978333333333334,
+        "min": 0.021267,
+        "max": 0.026735
+      },
+      "server_error_rate": {
+        "n": 3,
+        "mean": 0.023953333333333333,
+        "min": 0.021298,
+        "max": 0.026689
+      },
+      "p95_ms": {
+        "n": 3,
+        "mean": 531.41,
+        "min": 505.283,
+        "max": 563.169
+      },
+      "share_to_degraded": {
+        "n": 3,
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "naive": {
+      "error_rate": {
+        "n": 3,
+        "mean": 0.044078,
+        "min": 0.043006,
+        "max": 0.045248
+      },
+      "server_error_rate": {
+        "n": 3,
+        "mean": 0.043668,
+        "min": 0.042926,
+        "max": 0.044992
+      },
+      "p95_ms": {
+        "n": 3,
+        "mean": 724.6033333333334,
+        "min": 723.894,
+        "max": 725.249
+      },
+      "share_to_degraded": {
+        "n": 3,
+        "mean": 0.5185185185185185,
+        "min": 0.5,
+        "max": 0.5555555555555556
+      }
+    }
+  },
+  "reduction": 0.45600223845607024,
+  "absolute_difference": 0.020099666666666665,
+  "pairs": [
+    {
+      "repeat": 1,
+      "reduction": 0.3921100500227376
+    },
+    {
+      "repeat": 2,
+      "reduction": 0.505487606380505
+    },
+    {
+      "repeat": 3,
+      "reduction": 0.4710705445544554
+    }
+  ],
+  "target": 0.2,
+  "meets_target": true
+}
