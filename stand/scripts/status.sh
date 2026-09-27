@@ -27,6 +27,8 @@ for c in "$CONTROL" "${FEDERATION[@]}"; do
     fi
     stores=$(curl -sf http://127.0.0.1:10902/api/v1/stores 2>/dev/null | jq -r '.data[][] | "\(.name) \(.lastError // "ok")"' 2>/dev/null)
     [ -n "$stores" ] && { echo "  thanos stores:"; echo "$stores" | awk '{print "    " $0}'; }
+    drift=$(addr_drift)
+    [ -z "$drift" ] || warn "адреса узлов устарели, нужен make stand-up: $drift"
     echo "  grafana: http://127.0.0.1:3000  prometheus: http://127.0.0.1:9090  thanos: http://127.0.0.1:10902  registry: $REGISTRY_URL"
   else
     kc "$c" -n federation-system get configmap cluster-identity -o jsonpath='  identity: {.data}{"\n"}' 2>/dev/null

@@ -48,6 +48,8 @@ kc "$CLUSTER" get crd podchaos.chaos-mesh.org >/dev/null 2>&1 || die "$CLUSTER: 
 if [ -n "$(kc "$CLUSTER" get podchaos,networkchaos -A --no-headers 2>/dev/null)" ]; then
   die "$CLUSTER: остались эксперименты Chaos Mesh: $(kc "$CLUSTER" get podchaos,networkchaos -A --no-headers | tr '\n' ';')"
 fi
+drift=$(addr_drift)
+[ -z "$drift" ] || die "адреса узлов устарели (перезапуск docker?): $drift make stand-up"
 
 # Штатное состояние до прогона: все кластеры HEALTHY, веса номинальные, down нет.
 status=$(dr_status) || die "нет ответа /status DR Controller'а"

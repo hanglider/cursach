@@ -46,6 +46,23 @@ kc() {  # kc <cluster> <kubectl args...>
 
 cluster_exists() { kind get clusters 2>/dev/null | grep -qx "$1"; }
 
+node_ip() { docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$1-control-plane" 2>/dev/null || true; }
+
+# Адреса узлов рендерятся при stand-up (ADR 0022), а после перезапуска docker-VM IP
+# переназначаются: маршрут app и проба DR уходят в чужой кластер, Querier теряет sidecar.
+# Печатает расхождения; пусто — адреса актуальны. Лечится повторным make stand-up.
+addr_drift() {
+  local c ip got sd
+  sd=$(kc "$CONTROL" -n observability get configmap thanos-query-sd -o jsonpath='{.data}' 2>/dev/null || true)
+  for c in "${FEDERATION[@]}"; do
+    ip=$(node_ip "$c")
+    got=$(kc "$CONTROL" -n gateway get backends.gateway.envoyproxy.io "app-$c" \
+      -o jsonpath='{.spec.endpoints[0].ip.address}' 2>/dev/null || true)
+    [ -n "$ip" ] && [ "$got" = "$ip" ] || echo "Backend app-$c → ${got:-нет}, узел $c — ${ip:-нет};"
+    [ -n "$ip" ] && grep -qF "$ip:" <<<"$sd" || echo "Thanos SD без $c (${ip:-нет});"
+  done
+}
+
 # Перечитать конфиг Prometheus кластера без пересоздания пода. ConfigMap доходит до пода с
 # задержкой kubelet до минуты: сначала ждём, пока смонтированный файл совпадёт с ConfigMap.
 prom_reload() {  # prom_reload <cluster>

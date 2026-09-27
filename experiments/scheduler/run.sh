@@ -56,6 +56,8 @@ for c in "${FEDERATION[@]}"; do
   left=$(kc "$c" get podchaos,networkchaos -A --no-headers 2>/dev/null || true)
   [ -z "$left" ] || die "$c: остались эксперименты Chaos Mesh: $(tr '\n' ';' <<<"$left")"
 done
+drift=$(addr_drift)
+[ -z "$drift" ] || die "адреса узлов устарели (перезапуск docker?): $drift make stand-up"
 
 # DR — только наблюдатель (ADR 0031): down в каталоге отсеял бы кластер для обоих режимов.
 DR_MODE=$("$ROOT/stand/scripts/dr-mode.sh")
