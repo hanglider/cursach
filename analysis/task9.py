@@ -125,6 +125,56 @@ def sli_views_s1(run_dir: Path, summary: dict) -> dict:
     }
 
 
+SLO_TARGET = 0.99
+MONTH_S = 30 * 86400
+FAST_BURN, FAST_WINDOW_S = 14.4, 3600  # правило FederationErrorBudgetBurnFast
+
+
+def gateway_view(run_dir: Path, summary: dict) -> dict:
+    """SLI шлюза офлайн по выгруженным счётчикам Envoy (ADR 0036, п. 5): все маршруты
+    `httproute/*`, как в правилах Ruler. Burn rate за 5 мин — по скользящему окну с шагом
+    экспорта; бюджет месяца — при фактической нагрузке прогона."""
+    t0, t1 = (
+        epoch(summary["fault"]["injected_at"]),
+        epoch(summary["fault"]["recovered_at"]),
+    )
+    total, errors, stamps = [], [], set()
+    for s in series(run_dir, "envoy_upstream_rq"):
+        m = s["metric"]
+        if m.get("__name__") != "envoy_cluster_upstream_rq_xx":
+            continue
+        if not m.get("envoy_cluster_name", "").startswith("httproute/"):
+            continue
+        total.append(s["values"])
+        if m.get("envoy_response_code_class") == "5":
+            errors.append(s["values"])
+        stamps.update(float(t) for t, _ in s["values"])
+    if not total:
+        return {}
+
+    def inc(group, a, b):
+        return sum(increase(v, a, b) for v in group)
+
+    start = min(stamps)
+    burns = []
+    for t in sorted(x for x in stamps if t0 <= x <= t1 + 300 and x - 300 >= start):
+        req = inc(total, t - 300, t)
+        if req:
+            burns.append(inc(errors, t - 300, t) / req / (1 - SLO_TARGET))
+    fault_req, fault_err = inc(total, t0, t1), inc(errors, t0, t1)
+    run_req = inc(total, start, max(stamps))
+    rps = run_req / (max(stamps) - start)
+    return {
+        "fault_error_share": fault_err / fault_req if fault_req else None,
+        "fault_errors": fault_err,
+        "burn_5m_max": max(burns) if burns else None,
+        "budget_month_share": fault_err / ((1 - SLO_TARGET) * rps * MONTH_S),
+        # fast-burn требует > 14.4% ошибок за час при непрерывной нагрузке
+        "fast_burn_errors_needed": FAST_BURN * (1 - SLO_TARGET) * rps * FAST_WINDOW_S,
+        "rps": rps,
+    }
+
+
 def h1() -> dict:
     rows = []
     for prefix, modes in ((S1, ("active", "observe")), (S2, ("meta", "naive"))):
@@ -149,6 +199,7 @@ def h1() -> dict:
                     "sli_fault_error_share": sli_views_s1(d, s)
                     if prefix == S1
                     else None,
+                    "gateway": gateway_view(d, s),
                 }
             )
     burn_fired = [
@@ -172,6 +223,12 @@ def h1() -> dict:
         "min_baseline_availability": min(r["baseline_availability"] for r in rows),
         "max_baseline_p95_ms": max(r["baseline_p95_ms"] for r in rows),
         "burn_alert_fired_runs": sum(burn_fired),
+        "gateway_burn_5m_max": max(
+            (r["gateway"]["burn_5m_max"] or 0) for r in rows if r["gateway"]
+        ),
+        "gateway_budget_month_share_max": max(
+            r["gateway"]["budget_month_share"] for r in rows if r["gateway"]
+        ),
         "parts": parts,
         "verdict": verdict(parts),
     }
@@ -581,7 +638,9 @@ def render(r: dict) -> str:
             (
                 f"мин. availability baseline {pct(h1r['min_baseline_availability'], 2)}, "
                 f"макс. p95 baseline {h1r['max_baseline_p95_ms']:.1f} мс; burn-rate алерт — "
-                f"в {h1r['burn_alert_fired_runs']} из {len(h1r['runs'])} прогонов"
+                f"в {h1r['burn_alert_fired_runs']} из {len(h1r['runs'])} прогонов; на SLI "
+                f"шлюза (ADR 0036) burn 5m до {h1r['gateway_burn_5m_max']:.0f}, инцидент — до "
+                f"{pct(h1r['gateway_budget_month_share_max'], 2)} бюджета месяца"
             ),
             h1r["verdict"],
         ),
@@ -667,6 +726,30 @@ def render(r: dict) -> str:
                 out.append(
                     f"| {row['run_id']} | {row['target']} | {pct(row['baseline_availability'], 2)} "
                     f"| {row['baseline_p95_ms']:.1f} | {alerts} | {views} |"
+                )
+            out += [
+                "",
+                (
+                    "SLI шлюза офлайн (ADR 0036, п. 5): те же счётчики Envoy, по которым теперь "
+                    "считает Thanos Ruler; все маршруты `httproute/*`. Fast-burn требует больше "
+                    "14.4% ошибок за час при непрерывной нагрузке."
+                ),
+                "",
+                (
+                    "| прогон | ошибки шлюза за отказ | burn 5m, макс. | бюджета месяца за инцидент "
+                    "| ошибок инцидента / нужно для fast-burn |"
+                ),
+                "|---|---|---|---|---|",
+            ]
+            for row in h1r["runs"]:
+                g = row["gateway"]
+                if not g:
+                    continue
+                burn = "—" if g["burn_5m_max"] is None else f"{g['burn_5m_max']:.1f}"
+                out.append(
+                    f"| {row['run_id']} | {pct(g['fault_error_share'])} | {burn} "
+                    f"| {pct(g['budget_month_share'], 2)} "
+                    f"| {g['fault_errors']:.0f} / {g['fast_burn_errors_needed']:.0f} |"
                 )
             out.append("")
         elif key == "h2":

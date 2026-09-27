@@ -68,24 +68,24 @@ def ts(title, pairs, unit, x, y, w=12, h=8, thresholds=None, max_=None, min_=Non
 GREEN, RED, ORANGE = "green", "red", "orange"
 
 panels = [
-    # --- строка 1: SLO федерации ---
+    # --- строка 1: SLO федерации, на шлюзе (ADR 0036) ---
     stat(
-        "Availability федерации, 5 мин",
-        "federation:availability:ratio5m",
+        "Availability федерации (шлюз), 5 мин",
+        "federation:gateway_availability:ratio5m",
         "percentunit",
         [{"color": RED, "value": None}, {"color": GREEN, "value": 0.99}],
         0, 0, decimals=3,
     ),
     stat(
-        "p95 федерации, 5 мин",
-        "federation:http_request_duration_seconds:p95_5m",
+        "p95 федерации (шлюз), 5 мин",
+        "federation:gateway_request_duration_seconds:p95_5m",
         "s",
         [{"color": GREEN, "value": None}, {"color": RED, "value": 0.2}],
         6, 0, decimals=3,
     ),
     stat(
-        "Burn rate, 1 ч",
-        "federation:error_budget_burn_rate:1h",
+        "Burn rate (шлюз), 1 ч",
+        "federation:gateway_error_budget_burn_rate:1h",
         "none",
         [{"color": GREEN, "value": None}, {"color": ORANGE, "value": 1}, {"color": RED, "value": 14.4}],
         12, 0,
@@ -147,7 +147,16 @@ panels = [
     ts(
         "Envoy: запросов/с по upstream'ам",
         [("sum by (envoy_cluster_name) (rate(envoy_cluster_upstream_rq_total[1m]))", "{{envoy_cluster_name}}")],
-        "reqps", 0, 28, w=24, min_=0,
+        "reqps", 0, 28, min_=0,
+    ),
+    # Расхождение рядов — запросы, не дошедшие до сервиса (отказ кластера, ADR 0036).
+    ts(
+        "Availability федерации: шлюз и сервер",
+        [
+            ("federation:gateway_availability:ratio5m", "шлюз (SLO)"),
+            ("federation:availability:ratio5m", "сервер (frontend'ы кластеров)"),
+        ],
+        "percentunit", 12, 28, thresholds=[{"color": RED, "value": None}, {"color": GREEN, "value": 0.99}], max_=1,
     ),
     # --- строка 4: DR Controller (ADR 0028); метка кластера — cluster_id ---
     ts(

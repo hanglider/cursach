@@ -42,6 +42,7 @@
 | [0033](0033-scenario2-dr-down-in-observe.md) | Сценарий 2: DOWN в DR при `observe` — оговорка, не брак; сводки серии пересчитываются из `requests.csv.gz` | задача 8 |
 | [0034](0034-scenario3-policyreport-hold.md) | Сценарий 3: путь PolicyReport — audit-прогоны с удержанием нарушителей, задержка фиксации по источникам | spec 8.13, oq 5.1 |
 | [0035](0035-task9-hypotheses.md) | Задача 9: гипотезы H1–H5 и правило решения, вторичный ряд сценария 2, детали sensitivity, сверка каталога с Thanos | spec 8.14, 8.15, oq 6.1, 6.2 |
+| [0036](0036-federation-sli-at-gateway.md) | SLI федерации — на шлюзе: availability, burn rate, p95 и алерты по метрикам Envoy; серверные ряды — диагностика | spec 8.16, oq 6.3 |
 
 `oq` — `docs/open-questions.md` (номера на момент закрытия; закрытые пункты
 из документа удалены).

@@ -53,7 +53,10 @@ Jaeger — 50 MiB, OTel Collector — 20 MiB на кластер. Стенд б�
 оператора (ADR 0024). Recording rules per-cluster `cluster:*`
 (`observability/federation/prometheus-rules.yaml`), глобальные `federation:*`
 и burn-rate алерты — Thanos Ruler в control
-(`observability/control/thanos-rule.yaml`). Метка `cluster` — external label,
+(`observability/control/thanos-rule.yaml`). SLO федерации и алерты —
+`federation:gateway_*` по метрикам шлюза; серверные `federation:availability:*`
+— диагностика: отказ кластера целиком они не видят (ADR 0036). Изменённые
+правила `up.sh` применяет перезапуском Ruler'а. Метка `cluster` — external label,
 внутри Prometheus её нет.
 
 Querier находит sidecar'ы федерации по IP узлов: ConfigMap `thanos-query-sd`
@@ -66,7 +69,7 @@ JSON рядом коммитится; `up.sh` кладёт его в ConfigMap `
 
 ```bash
 curl -s http://127.0.0.1:10902/api/v1/stores | jq '.data[][] | {name, lastError}'
-curl -sG http://127.0.0.1:10902/api/v1/query --data-urlencode 'query=federation:availability:ratio5m' | jq .data.result
+curl -sG http://127.0.0.1:10902/api/v1/query --data-urlencode 'query=federation:gateway_availability:ratio5m' | jq .data.result
 open http://127.0.0.1:3000/d/federation-slo
 ```
 

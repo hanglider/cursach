@@ -43,26 +43,56 @@ data:
           - record: federation:error_budget_burn_rate:6h
             expr: (1 - federation:availability:ratio6h) / (1 - 0.99)
 
+      # SLI федерации на точке входа (ADR 0036): серверные ряды выше не видят запросов,
+      # упавших на шлюзе при отказе кластера целиком, и остаются как диагностика.
+      - name: federation-slo-gateway
+        interval: 10s
+        rules:
+          - record: federation:gateway_requests:rate5m
+            expr: sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*"}[5m]))
+          - record: federation:gateway_errors:rate5m
+            expr: sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*",envoy_response_code_class="5"}[5m])) or vector(0)
+          - record: federation:gateway_availability:ratio5m
+            expr: 1 - federation:gateway_errors:rate5m / federation:gateway_requests:rate5m
+          - record: federation:gateway_availability:ratio30m
+            expr: 1 - (sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*",envoy_response_code_class="5"}[30m])) or vector(0)) / sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*"}[30m]))
+          - record: federation:gateway_availability:ratio1h
+            expr: 1 - (sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*",envoy_response_code_class="5"}[1h])) or vector(0)) / sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*"}[1h]))
+          - record: federation:gateway_availability:ratio6h
+            expr: 1 - (sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*",envoy_response_code_class="5"}[6h])) or vector(0)) / sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*"}[6h]))
+          - record: federation:gateway_error_budget_burn_rate:5m
+            expr: (1 - federation:gateway_availability:ratio5m) / (1 - 0.99)
+          - record: federation:gateway_error_budget_burn_rate:30m
+            expr: (1 - federation:gateway_availability:ratio30m) / (1 - 0.99)
+          - record: federation:gateway_error_budget_burn_rate:1h
+            expr: (1 - federation:gateway_availability:ratio1h) / (1 - 0.99)
+          - record: federation:gateway_error_budget_burn_rate:6h
+            expr: (1 - federation:gateway_availability:ratio6h) / (1 - 0.99)
+          # Гистограмма Envoy — в миллисекундах; ряд — в секундах, как серверный.
+          - record: federation:gateway_request_duration_seconds:p95_5m
+            expr: histogram_quantile(0.95, sum by (le) (rate(envoy_cluster_upstream_rq_time_bucket{envoy_cluster_name=~"httproute/.*"}[5m]))) / 1000
+
       - name: federation-slo-alerts
         interval: 10s
         rules:
+          # Алерты — по SLI шлюза (ADR 0036).
           # Быстрое сгорание: 2% месячного бюджета за час (spec §1.3, burn rate).
           - alert: FederationErrorBudgetBurnFast
-            expr: federation:error_budget_burn_rate:1h > 14.4 and federation:error_budget_burn_rate:5m > 14.4
+            expr: federation:gateway_error_budget_burn_rate:1h > 14.4 and federation:gateway_error_budget_burn_rate:5m > 14.4
             for: 2m
             labels:
               severity: page
             annotations:
               summary: "Error budget федерации сгорает быстро (burn rate 1h > 14.4)"
           - alert: FederationErrorBudgetBurnSlow
-            expr: federation:error_budget_burn_rate:6h > 6 and federation:error_budget_burn_rate:30m > 6
+            expr: federation:gateway_error_budget_burn_rate:6h > 6 and federation:gateway_error_budget_burn_rate:30m > 6
             for: 15m
             labels:
               severity: ticket
             annotations:
               summary: "Error budget федерации сгорает (burn rate 6h > 6)"
           - alert: FederationLatencyBudgetBreached
-            expr: federation:http_request_duration_seconds:p95_5m > 0.2
+            expr: federation:gateway_request_duration_seconds:p95_5m > 0.2
             for: 5m
             labels:
               severity: ticket

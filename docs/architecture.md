@@ -168,18 +168,26 @@ sum by (cluster) (rate(http_requests_total{tier="frontend",status=~"5.."}[5m]))
 histogram_quantile(0.95,
   sum by (cluster, le) (rate(http_request_duration_seconds_bucket{tier="frontend"}[5m])))
 
-# глобальная availability федерации
-sum(rate(http_requests_total{tier="frontend",status!~"5.."}[5m]))
-  / sum(rate(http_requests_total{tier="frontend"}[5m]))
+# глобальная availability федерации — на шлюзе, точке входа (ADR 0036)
+1 - sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*",envoy_response_code_class="5"}[5m]))
+  / sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~"httproute/.*"}[5m]))
 ```
 
 Первые две — вход для scoring-функции. Третья — целевой показатель ≥ 99.0%.
+Глобальный SLI меряется на шлюзе, а не суммой серверных SLI кластеров: при
+отказе кластера целиком его запросы падают на шлюзе и до frontend'ов не доходят.
+Серверная сумма выбрасывает их из знаменателя и показывает 100% (задача 9,
+ADR 0036).
 
 На стенде это recording rules: `cluster:http_error_rate:ratio5m`,
 `cluster:http_request_duration_seconds:p95_5m`, `cluster:saturation:ratio`
 (per-cluster, `stand/observability/federation/prometheus-rules.yaml`) и
-`federation:availability:ratio5m`, `federation:error_budget_burn_rate:*`
-(глобальные, Thanos Ruler, `stand/observability/control/thanos-rule.yaml`).
+глобальные в Thanos Ruler (`stand/observability/control/thanos-rule.yaml`):
+`federation:gateway_availability:ratio*`,
+`federation:gateway_error_budget_burn_rate:*`,
+`federation:gateway_request_duration_seconds:p95_5m` — SLO и алерты;
+серверные `federation:availability:ratio*`, `federation:error_budget_burn_rate:*` —
+диагностика.
 Окно 1 мин (`cluster:*:ratio1m`) — для DR Controller'а (ADR 0007).
 
 ---

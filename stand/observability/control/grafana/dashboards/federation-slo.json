@@ -23,7 +23,7 @@
   "panels": [
     {
       "type": "stat",
-      "title": "Availability федерации, 5 мин",
+      "title": "Availability федерации (шлюз), 5 мин",
       "datasource": {
         "type": "prometheus",
         "uid": "thanos"
@@ -40,7 +40,7 @@
             "type": "prometheus",
             "uid": "thanos"
           },
-          "expr": "federation:availability:ratio5m",
+          "expr": "federation:gateway_availability:ratio5m",
           "legendFormat": "",
           "refId": "A"
         }
@@ -79,7 +79,7 @@
     },
     {
       "type": "stat",
-      "title": "p95 федерации, 5 мин",
+      "title": "p95 федерации (шлюз), 5 мин",
       "datasource": {
         "type": "prometheus",
         "uid": "thanos"
@@ -96,7 +96,7 @@
             "type": "prometheus",
             "uid": "thanos"
           },
-          "expr": "federation:http_request_duration_seconds:p95_5m",
+          "expr": "federation:gateway_request_duration_seconds:p95_5m",
           "legendFormat": "",
           "refId": "A"
         }
@@ -135,7 +135,7 @@
     },
     {
       "type": "stat",
-      "title": "Burn rate, 1 ч",
+      "title": "Burn rate (шлюз), 1 ч",
       "datasource": {
         "type": "prometheus",
         "uid": "thanos"
@@ -152,7 +152,7 @@
             "type": "prometheus",
             "uid": "thanos"
           },
-          "expr": "federation:error_budget_burn_rate:1h",
+          "expr": "federation:gateway_error_budget_burn_rate:1h",
           "legendFormat": "",
           "refId": "A"
         }
@@ -613,7 +613,7 @@
       "gridPos": {
         "x": 0,
         "y": 28,
-        "w": 24,
+        "w": 12,
         "h": 8
       },
       "targets": [
@@ -648,6 +648,77 @@
         "overrides": []
       },
       "id": 11
+    },
+    {
+      "type": "timeseries",
+      "title": "Availability федерации: шлюз и сервер",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "thanos"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 28,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "thanos"
+          },
+          "expr": "federation:gateway_availability:ratio5m",
+          "legendFormat": "шлюз (SLO)",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "thanos"
+          },
+          "expr": "federation:availability:ratio5m",
+          "legendFormat": "сервер (frontend'ы кластеров)",
+          "refId": "B"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.99
+              }
+            ]
+          },
+          "max": 1
+        },
+        "overrides": []
+      },
+      "id": 12
     },
     {
       "type": "timeseries",
@@ -694,7 +765,7 @@
         },
         "overrides": []
       },
-      "id": 12
+      "id": 13
     },
     {
       "type": "timeseries",
@@ -749,7 +820,7 @@
         },
         "overrides": []
       },
-      "id": 13
+      "id": 14
     }
   ]
 }

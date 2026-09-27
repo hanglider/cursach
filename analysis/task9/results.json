@@ -11,6 +11,14 @@
           "client": 0.06949265687583445,
           "gateway": 0.05919276457883369,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.05919276457883369,
+          "fault_errors": 877.0,
+          "burn_5m_max": 7.468915005961499,
+          "budget_month_share": 0.0007845061028670874,
+          "fast_burn_errors_needed": 22358.016000000018,
+          "rps": 43.12888888888889
         }
       },
       {
@@ -23,6 +31,14 @@
           "client": 0.06745846400213519,
           "gateway": 0.05889612615701063,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.05889612615701063,
+          "fault_errors": 859.0,
+          "burn_5m_max": 6.254550749963589,
+          "budget_month_share": 0.000727881223342091,
+          "fast_burn_errors_needed": 23602.752000000022,
+          "rps": 45.53
         }
       },
       {
@@ -35,6 +51,14 @@
           "client": 0.06675567423230974,
           "gateway": 0.05900876232201534,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.05900876232201534,
+          "fault_errors": 862.0,
+          "burn_5m_max": 6.378496185978927,
+          "budget_month_share": 0.0007307264539930549,
+          "fast_burn_errors_needed": 23592.96000000002,
+          "rps": 45.51111111111111
         }
       },
       {
@@ -47,6 +71,14 @@
           "client": 0.4985619690990569,
           "gateway": 0.47508021390374333,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.47508021390374333,
+          "fault_errors": 6663.0,
+          "burn_5m_max": 47.52225415294031,
+          "budget_month_share": 0.0057331160892765635,
+          "fast_burn_errors_needed": 23243.904000000024,
+          "rps": 44.83777777777778
         }
       },
       {
@@ -59,6 +91,14 @@
           "client": 0.4989983974358974,
           "gateway": 0.48198970840480276,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.48198970840480276,
+          "fault_errors": 7025.0,
+          "burn_5m_max": 48.769146608315054,
+          "budget_month_share": 0.006008562693642498,
+          "fast_burn_errors_needed": 23383.29600000002,
+          "rps": 45.10666666666667
         }
       },
       {
@@ -71,6 +111,14 @@
           "client": 0.4969493798189742,
           "gateway": 0.47724904480722474,
           "server": 0.0
+        },
+        "gateway": {
+          "fault_error_share": 0.47724904480722474,
+          "fault_errors": 6870.0,
+          "burn_5m_max": 47.89033906498166,
+          "budget_month_share": 0.005908591763268267,
+          "fast_burn_errors_needed": 23254.27200000002,
+          "rps": 44.85777777777778
         }
       },
       {
@@ -82,7 +130,15 @@
           "FederationErrorBudgetBurnSlow": "pending",
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.052393633492289586,
+          "fault_errors": 846.0,
+          "burn_5m_max": 5.371699720160598,
+          "budget_month_share": 0.0007381941026502392,
+          "fast_burn_errors_needed": 22920.800829015563,
+          "rps": 44.214507772020724
+        }
       },
       {
         "run_id": "task8-s2-meta-r2",
@@ -92,7 +148,15 @@
         "alerts": {
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.07272389676301294,
+          "fault_errors": 1175.0,
+          "burn_5m_max": 7.2914132814400325,
+          "budget_month_share": 0.000977436654432706,
+          "fast_burn_errors_needed": 24042.478756476703,
+          "rps": 46.37823834196891
+        }
       },
       {
         "run_id": "task8-s2-meta-r3",
@@ -102,7 +166,15 @@
         "alerts": {
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.12996612257468432,
+          "fault_errors": 2110.0,
+          "burn_5m_max": 13.080142804382605,
+          "budget_month_share": 0.0017773467069343942,
+          "fast_burn_errors_needed": 23743.257202072557,
+          "rps": 45.80103626943005
+        }
       },
       {
         "run_id": "task8-s2-naive-r1",
@@ -113,7 +185,15 @@
           "FederationErrorBudgetBurnSlow": "pending",
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.18823602330482211,
+          "fault_errors": 3037.0,
+          "burn_5m_max": 18.571515929798796,
+          "budget_month_share": 0.002671849391059693,
+          "fast_burn_errors_needed": 22733.317305699504,
+          "rps": 43.85284974093264
+        }
       },
       {
         "run_id": "task8-s2-naive-r2",
@@ -123,7 +203,15 @@
         "alerts": {
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.17501519756838907,
+          "fault_errors": 2879.0,
+          "burn_5m_max": 17.61884524315462,
+          "budget_month_share": 0.0025178527668299395,
+          "fast_burn_errors_needed": 22868.692227979296,
+          "rps": 44.1139896373057
+        }
       },
       {
         "run_id": "task8-s2-naive-r3",
@@ -134,12 +222,22 @@
           "FederationErrorBudgetBurnSlow": "pending",
           "FederationLatencyBudgetBreached": "firing"
         },
-        "sli_fault_error_share": null
+        "sli_fault_error_share": null,
+        "gateway": {
+          "fault_error_share": 0.19985071841761523,
+          "fault_errors": 3213.0,
+          "burn_5m_max": 19.73338225402065,
+          "budget_month_share": 0.00279963001536889,
+          "fast_burn_errors_needed": 22953.032953367892,
+          "rps": 44.27668393782383
+        }
       }
     ],
     "min_baseline_availability": 1.0,
     "max_baseline_p95_ms": 5.428,
     "burn_alert_fired_runs": 0,
+    "gateway_burn_5m_max": 48.769146608315054,
+    "gateway_budget_month_share_max": 0.006008562693642498,
     "parts": {
       "availability ≥ 99% в baseline каждого прогона": true,
       "p95 < 200 мс в baseline каждого прогона": true,

@@ -125,7 +125,14 @@ kc "$CONTROL" apply -f "$STAND/observability/federation/prometheus.yaml" >/dev/n
 kc "$CONTROL" apply -f "$STAND/observability/control/prometheus-nodeport.yaml" >/dev/null
 "$STAND/scripts/render-thanos-sd.sh" | kc "$CONTROL" apply -f - >/dev/null
 kc "$CONTROL" apply -f "$STAND/observability/control/thanos-query.yaml" >/dev/null
+# Файл правил Ruler сам не перечитывает: изменился ConfigMap правил — рестарт.
+rules_before=$(kc "$CONTROL" -n observability get configmap thanos-rules \
+  -o jsonpath='{.metadata.resourceVersion}' 2>/dev/null || true)
 kc "$CONTROL" apply -f "$STAND/observability/control/thanos-rule.yaml" >/dev/null
+rules_after=$(kc "$CONTROL" -n observability get configmap thanos-rules -o jsonpath='{.metadata.resourceVersion}')
+if [ -n "$rules_before" ] && [ "$rules_before" != "$rules_after" ]; then
+  kc "$CONTROL" -n observability rollout restart deployment/thanos-rule >/dev/null
+fi
 kc "$CONTROL" create configmap grafana-dashboards -n observability \
   --from-file="$STAND/observability/control/grafana/dashboards/federation-slo.json" \
   --dry-run=client -o yaml | kc "$CONTROL" apply -f - >/dev/null
