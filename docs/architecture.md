@@ -445,7 +445,8 @@ Enforce` (`stand/policies/`); Kyverno 1.19 объявил этот тип уст
 требования отклонённого workload'а. Политики проверяются без кластера:
 `kyverno test stand/policies/tests` в `make test`. Прогон «до» сценария 3
 временно переводит политики целевого кластера в `Audit` и возвращает `Enforce`
-(ADR 0032).
+(ADR 0032); путь PolicyReport меряется audit-прогонами `HOLD=report`, где
+нарушители живут до записи из отчёта (ADR 0034).
 
 Фиксация нарушения в audit log каталога — два пути. Планировщик, получив отказ
 admission, сам пишет `POST /api/v1/violations`. Размещения в обход

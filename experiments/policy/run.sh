@@ -4,6 +4,7 @@
 #
 #   experiments/policy/run.sh <run-id> [attempts=5]
 #   ENFORCEMENT=audit experiments/policy/run.sh <run-id>   # «до» enforcement (ADR 0032)
+#   ENFORCEMENT=audit HOLD=report experiments/policy/run.sh <run-id>   # путь PolicyReport (ADR 0034)
 #
 # Замер: attempts; rejected — отклонил Kyverno (код 3 генератора); admitted — Deployment
 # всё же создан (нарушение, целевой показатель в Enforce — 0); recorded — нарушителей в
@@ -15,6 +16,11 @@
 # возвращаются в Enforce из stand/policies/ в ловушке выхода. Нарушители остаются до
 # фиксации в каталоге (или WAIT_S), затем удаляются. Перед прогоном в любом режиме
 # политики должны быть в Enforce и Ready.
+#
+# HOLD=report (только с audit): нарушители живут, пока каждый не попадёт в каталог и из
+# PolicyReport, или до WAIT_S=360 с — больше периода фонового сканирования Kyverno. В
+# сводке — нарушители и задержка фиксации по источникам и policyreport_since_event_s: от
+# события admission нарушителя до записи из отчёта (ADR 0034).
 # Результат: experiments/results/<run-id>/{meta.json,violations.json,summary.json,workloadgen.log}.
 # RESULTS_ROOT=<dir> переопределяет каталог результатов (пробные прогоны).
 set -euo pipefail
@@ -25,8 +31,10 @@ ATTEMPTS=${2:-5}
 CERT=${CERT:-pci-dss}
 RESULTS_ROOT=${RESULTS_ROOT:-$ROOT/experiments/results}
 REGISTRY_URL=${REGISTRY_URL:-http://127.0.0.1:8000}
-WAIT_S=${WAIT_S:-90}                       # ожидание записей watcher'а (период 10 с)
 ENFORCEMENT=${ENFORCEMENT:-enforce}        # enforce | audit (ADR 0032)
+HOLD=${HOLD:-}                             # пусто | report (ADR 0034)
+# Ожидание записей watcher'а (период 10 с); с HOLD=report — ещё и агрегации PolicyReport.
+if [ "$HOLD" = report ]; then WAIT_S=${WAIT_S:-360}; else WAIT_S=${WAIT_S:-90}; fi
 POLICIES=(require-certification require-region-match)
 OUT="$RESULTS_ROOT/$RUN_ID"
 GEN="uv run --quiet --project $ROOT/experiments/load/workloadgen workloadgen"
@@ -52,6 +60,8 @@ expected=$(CERT="$CERT" yq -o=json -I=0 '[.clusters[] | select((.certifications 
   "$CLUSTERS")
 [ -n "$target" ] || { log "в $CLUSTERS нет кластера без $CERT"; exit 1; }
 case "$ENFORCEMENT" in enforce|audit) ;; *) log "ENFORCEMENT: enforce | audit"; exit 1 ;; esac
+case "$HOLD" in ''|report) ;; *) log "HOLD: пусто | report"; exit 1 ;; esac
+[ -z "$HOLD" ] || [ "$ENFORCEMENT" = audit ] || { log "HOLD=report — только с ENFORCEMENT=audit (ADR 0034)"; exit 1; }
 KC_TARGET=(kubectl --kubeconfig "$ROOT/stand/kubeconfig/$target.kubeconfig")
 
 policies_in() {  # policies_in <Enforce|Audit> — все правила обеих политик в режиме и Ready
@@ -119,19 +129,25 @@ done
 log "попыток $ATTEMPTS: отклонено $rejected, размещено $admitted, иных ошибок $other"
 
 # Записи watcher'а: ждём, пока нарушителей в каталоге станет не меньше ожидаемого — отказов
-# в Enforce, размещённых в Audit. Нарушитель считается один раз (ADR 0032).
+# в Enforce, размещённых в Audit. Нарушитель считается один раз (ADR 0032). С HOLD=report
+# каждый должен прийти ещё и из PolicyReport (ADR 0034).
 if [ "$ENFORCEMENT" = audit ]; then want=$admitted; else want=$rejected; fi
 deadline=$(( $(date +%s) + WAIT_S ))
-recorded=0
+recorded=0; reported=0
 while :; do
   curl -sf -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
     "$REGISTRY_URL/api/v1/violations?from=$STARTED&cluster_id=$target" >"$OUT/violations.json" \
     || echo '[]' >"$OUT/violations.json"
   recorded=$(jq '[.[] | select(.workload_ref | startswith("workloads/pv-")) | .workload_ref] | unique | length' \
     "$OUT/violations.json")
-  [ "$recorded" -ge "$want" ] && break
+  reported=$(jq '[.[] | select(.workload_ref | startswith("workloads/pv-"))
+    | select((.source_key // "") | startswith("policyreport/")) | .workload_ref] | unique | length' \
+    "$OUT/violations.json")
+  if [ "$recorded" -ge "$want" ] && { [ "$HOLD" != report ] || [ "$reported" -ge "$want" ]; }; then
+    break
+  fi
   if [ "$(date +%s)" -ge "$deadline" ]; then
-    log "в каталоге $recorded нарушителей из $want за $WAIT_S с"
+    log "в каталоге $recorded нарушителей из $want (из PolicyReport — $reported) за $WAIT_S с"
     break
   fi
   sleep 3
@@ -147,10 +163,10 @@ leftover=$("${KC_TARGET[@]}" -n workloads \
 
 jq -n --arg run_id "$RUN_ID" --arg started "$STARTED" --arg finished "$FINISHED" \
   --argjson attempts "$ATTEMPTS" --arg target "$target" --argjson expected "$expected" --arg cert "$CERT" \
-  --arg enforcement "$ENFORCEMENT" \
+  --arg enforcement "$ENFORCEMENT" --arg hold "$HOLD" \
   --arg git "$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)" \
   '{run_id:$run_id, scenario:"3-policy-violation", started_at:$started, finished_at:$finished,
-    enforcement:$enforcement,
+    enforcement:$enforcement, hold:(if $hold == "" then null else $hold end), wait_s:'"$WAIT_S"',
     attempts:$attempts, certification:$cert, target_cluster:$target, expected_eligible:$expected,
     placed_by:"workloadgen (в обход планировщика)", git_rev:$git}' >"$OUT/meta.json"
 
@@ -158,22 +174,33 @@ jq -n --arg run_id "$RUN_ID" --arg started "$STARTED" --arg finished "$FINISHED"
 # разбираем им, доли секунды прибавляем отдельно.
 jq --argjson attempts "$ATTEMPTS" --argjson rejected "$rejected" --argjson admitted "$admitted" \
    --argjson other "$other" --argjson leftover "$leftover" --argjson expected "$expected" \
-   --arg enforcement "$ENFORCEMENT" '
+   --arg enforcement "$ENFORCEMENT" --arg hold "$HOLD" '
   def ts: . as $s
     | ($s | sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z") | fromdateiso8601)
     + ((($s | capture("\\.(?<f>[0-9]+)") | .f) // "0") | ("0." + .) | tonumber);
+  def src: .source_key // "scheduler" | split("/")[0];
+  def lat: map(select(.details.detected_at != null) | ((.details.detected_at | ts) - (.occurred_at | ts)));
+  def stats: sort | if length == 0 then {max:null, median:null}
+    else {max:(max * 1000 | round / 1000), median:(.[length / 2 | floor] * 1000 | round / 1000)} end;
   [.[] | select(.workload_ref | startswith("workloads/pv-"))] as $v
   | ($v | map(select((.details.eligible_clusters // []) | sort == $expected)) | length) as $ok
-  | ($v | map(select(.details.detected_at != null) | ((.details.detected_at | ts) - (.occurred_at | ts))) | sort) as $lat
-  | {enforcement:$enforcement, attempts:$attempts, rejected:$rejected, admitted:$admitted, other_errors:$other,
+  | ($v | group_by(src)) as $by_src
+  # Путь PolicyReport целиком: от события admission нарушителя до записи из отчёта (ADR 0034).
+  | [$v | group_by(.workload_ref)[]
+      | (map(select(src == "event") | .occurred_at | ts) | min) as $ev
+      | (map(select(src == "policyreport" and .details.detected_at != null) | .details.detected_at | ts) | min) as $pr
+      | select($ev != null and $pr != null) | $pr - $ev] as $pr_since_event
+  | {enforcement:$enforcement, hold:(if $hold == "" then null else $hold end),
+     attempts:$attempts, rejected:$rejected, admitted:$admitted, other_errors:$other,
      violating_deployments_left:$leftover, recorded:($v | map(.workload_ref) | unique | length),
      recorded_raw:($v|length),
-     recorded_by_source:($v | group_by(.source_key // "" | split("/")[0])
-       | map({key:(.[0].source_key // "scheduler" | split("/")[0]), value:length}) | from_entries),
+     recorded_by_source:($by_src | map({key:(.[0] | src), value:length}) | from_entries),
+     recorded_unique_by_source:($by_src
+       | map({key:(.[0] | src), value:(map(.workload_ref) | unique | length)}) | from_entries),
      eligible_ok:$ok,
-     detection_latency_s:{
-       max:(($lat|max) | if . == null then null else (. * 1000 | round / 1000) end),
-       median:(if ($lat|length) > 0 then ($lat[(($lat|length) / 2) | floor] * 1000 | round / 1000) else null end)}}' \
+     detection_latency_s:($v | lat | stats),
+     detection_latency_by_source_s:($by_src | map({key:(.[0] | src), value:(lat | stats)}) | from_entries),
+     policyreport_since_event_s:($pr_since_event | stats)}' \
   "$OUT/violations.json" >"$OUT/summary.json"
 cat "$OUT/summary.json" >&2
 
@@ -181,6 +208,8 @@ if [ "$ENFORCEMENT" = audit ]; then
   # «До»: размещение нарушителей — ожидаемый результат, а не сбой прогона.
   if [ "$leftover" -eq 0 ] && [ "$other" -eq 0 ]; then
     [ "$recorded" -ge "$admitted" ] || log "зафиксировано $recorded нарушителей из $admitted размещённых"
+    [ "$HOLD" != report ] || [ "$reported" -ge "$admitted" ] \
+      || log "из PolicyReport зафиксировано $reported нарушителей из $admitted размещённых (ADR 0034)"
     log "готово: $OUT"
     exit 0
   fi

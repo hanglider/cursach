@@ -140,6 +140,8 @@ source .env
 curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
   'http://127.0.0.1:8000/api/v1/violations?workload_ref=workloads/pv-demo' | jq
 make policy-run RUN=<id> ATTEMPTS=5      # сценарий 3 целиком, summary.json в результатах
+ENFORCEMENT=audit make policy-run RUN=<id>   # «до»: политики cluster-b в Audit на время прогона (ADR 0032)
+ENFORCEMENT=audit HOLD=report make policy-run RUN=<id>   # нарушители живут до записи из PolicyReport, до 6 мин (ADR 0034)
 kyverno test policies/tests              # политики без кластера
 ```
 
