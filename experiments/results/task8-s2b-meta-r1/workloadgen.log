@@ -1,0 +1,131 @@
+{"event":"start","mode":"scheduler","interval":30.0,"ttl":180.0,"clusters":"cluster-a,cluster-b"}
+{"ts": 1790521553.6882482, "event": "requested", "workload": "w-1", "node_port": 30001}
+{"ts": 1790521553.696914, "event": "pending", "workload": "w-1", "phase": null, "message": null}
+{"ts": 1790521554.704312, "event": "placed", "workload": "w-1", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 222, "node_port": 30001}
+{"ts": 1790521557.7609138, "event": "ready", "workload": "w-1", "cluster": "cluster-a"}
+{"ts": 1790521584.05207, "event": "requested", "workload": "w-2", "node_port": 30002}
+{"ts": 1790521584.058625, "event": "pending", "workload": "w-2", "phase": null, "message": null}
+{"ts": 1790521585.093952, "event": "placed", "workload": "w-2", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 223, "node_port": 30002}
+{"ts": 1790521587.173449, "event": "ready", "workload": "w-2", "cluster": "cluster-a"}
+{"ts": 1790521613.967146, "event": "requested", "workload": "w-3", "node_port": 30003}
+{"ts": 1790521613.969422, "event": "pending", "workload": "w-3", "phase": null, "message": null}
+{"ts": 1790521614.976189, "event": "placed", "workload": "w-3", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 224, "node_port": 30003}
+{"ts": 1790521618.10377, "event": "ready", "workload": "w-3", "cluster": "cluster-a"}
+{"ts": 1790521643.826101, "event": "requested", "workload": "w-4", "node_port": 30004}
+{"ts": 1790521643.829399, "event": "pending", "workload": "w-4", "phase": null, "message": null}
+{"ts": 1790521644.869771, "event": "placed", "workload": "w-4", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 225, "node_port": 30004}
+{"ts": 1790521647.919747, "event": "ready", "workload": "w-4", "cluster": "cluster-a"}
+{"ts": 1790521674.7348092, "event": "requested", "workload": "w-5", "node_port": 30005}
+{"ts": 1790521674.7590091, "event": "pending", "workload": "w-5", "phase": null, "message": null}
+{"ts": 1790521675.7761338, "event": "pending", "workload": "w-5", "phase": "Pending", "message": "placing"}
+{"ts": 1790521676.9385989, "event": "placed", "workload": "w-5", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 226, "node_port": 30005}
+{"ts": 1790521689.440678, "event": "ready", "workload": "w-5", "cluster": "cluster-a"}
+{"ts": 1790521704.11961, "event": "requested", "workload": "w-6", "node_port": 30006}
+{"ts": 1790521704.126459, "event": "pending", "workload": "w-6", "phase": null, "message": null}
+{"ts": 1790521705.1428192, "event": "placed", "workload": "w-6", "cluster": "cluster-b", "scheduler": "meta", "decision_id": 227, "node_port": 30006}
+{"ts": 1790521709.329928, "event": "ready", "workload": "w-6", "cluster": "cluster-b"}
+{"ts": 1790521734.0400069, "event": "requested", "workload": "w-7", "node_port": 30007}
+{"ts": 1790521734.044329, "event": "pending", "workload": "w-7", "phase": null, "message": null}
+{"ts": 1790521735.131455, "event": "placed", "workload": "w-7", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 228, "node_port": 30007}
+{"ts": 1790521738.2470841, "event": "ready", "workload": "w-7", "cluster": "cluster-a"}
+{"ts": 1790521744.3095942, "event": "removed", "workload": "w-1", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521764.165963, "event": "requested", "workload": "w-8", "node_port": 30008}
+{"ts": 1790521764.1703732, "event": "pending", "workload": "w-8", "phase": null, "message": null}
+{"ts": 1790521765.192276, "event": "pending", "workload": "w-8", "phase": "Pending", "message": "placing"}
+{"ts": 1790521766.1991081, "event": "placed", "workload": "w-8", "cluster": "cluster-b", "scheduler": "meta", "decision_id": 229, "node_port": 30008}
+{"ts": 1790521769.3162482, "event": "ready", "workload": "w-8", "cluster": "cluster-b"}
+{"ts": 1790521775.354603, "event": "removed", "workload": "w-2", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521794.0422359, "event": "requested", "workload": "w-9", "node_port": 30009}
+{"ts": 1790521794.046983, "event": "pending", "workload": "w-9", "phase": null, "message": null}
+{"ts": 1790521795.061486, "event": "placed", "workload": "w-9", "cluster": "cluster-b", "scheduler": "meta", "decision_id": 230, "node_port": 30009}
+{"ts": 1790521798.149878, "event": "ready", "workload": "w-9", "cluster": "cluster-b"}
+{"ts": 1790521804.2209852, "event": "removed", "workload": "w-3", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521824.123065, "event": "requested", "workload": "w-10", "node_port": 30010}
+{"ts": 1790521824.2114828, "event": "pending", "workload": "w-10", "phase": null, "message": null}
+{"ts": 1790521825.222518, "event": "placed", "workload": "w-10", "cluster": "cluster-b", "scheduler": "meta", "decision_id": 231, "node_port": 30010}
+{"ts": 1790521843.190581, "event": "ready", "workload": "w-10", "cluster": "cluster-b"}
+{"ts": 1790521849.2484832, "event": "removed", "workload": "w-4", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521853.808776, "event": "requested", "workload": "w-11", "node_port": 30011}
+{"ts": 1790521853.811104, "event": "pending", "workload": "w-11", "phase": null, "message": null}
+{"ts": 1790521854.844049, "event": "placed", "workload": "w-11", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 232, "node_port": 30011}
+{"ts": 1790521857.2459168, "event": "ready", "workload": "w-11", "cluster": "cluster-a"}
+{"ts": 1790521863.357774, "event": "removed", "workload": "w-5", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521884.104183, "event": "requested", "workload": "w-12", "node_port": 30012}
+{"ts": 1790521884.1085691, "event": "pending", "workload": "w-12", "phase": null, "message": null}
+{"ts": 1790521885.139911, "event": "placed", "workload": "w-12", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 233, "node_port": 30012}
+{"ts": 1790521887.200146, "event": "ready", "workload": "w-12", "cluster": "cluster-a"}
+{"ts": 1790521893.3950012, "event": "removed", "workload": "w-6", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790521914.129239, "event": "requested", "workload": "w-13", "node_port": 30013}
+{"ts": 1790521914.134633, "event": "pending", "workload": "w-13", "phase": null, "message": null}
+{"ts": 1790521915.2400472, "event": "placed", "workload": "w-13", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 234, "node_port": 30013}
+{"ts": 1790521919.454123, "event": "ready", "workload": "w-13", "cluster": "cluster-a"}
+{"ts": 1790521925.482945, "event": "removed", "workload": "w-7", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790521944.2035, "event": "requested", "workload": "w-14", "node_port": 30014}
+{"ts": 1790521944.213714, "event": "pending", "workload": "w-14", "phase": null, "message": null}
+{"ts": 1790521945.335501, "event": "placed", "workload": "w-14", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 235, "node_port": 30014}
+{"ts": 1790521951.55867, "event": "ready", "workload": "w-14", "cluster": "cluster-a"}
+{"ts": 1790521957.872501, "event": "removed", "workload": "w-8", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790521974.0052989, "event": "requested", "workload": "w-15", "node_port": 30015}
+{"ts": 1790521974.007777, "event": "pending", "workload": "w-15", "phase": null, "message": null}
+{"ts": 1790521975.029135, "event": "placed", "workload": "w-15", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 236, "node_port": 30015}
+{"ts": 1790521983.0356538, "event": "ready", "workload": "w-15", "cluster": "cluster-a"}
+{"ts": 1790521989.101656, "event": "removed", "workload": "w-9", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790522011.360897, "event": "requested", "workload": "w-16", "node_port": 30016}
+{"ts": 1790522017.66379, "event": "pending", "workload": "w-16", "phase": null, "message": null}
+{"ts": 1790522027.524531, "event": "pending", "workload": "w-16", "phase": "Pending", "message": "placing"}
+{"ts": 1790522035.900448, "event": "pending", "workload": "w-16", "phase": "Error", "message": "create deployment: Internal error occurred: failed calling webhook \"validate.kyverno.svc-fail\": failed to call webhook: Post \"https://kyverno-svc.kyverno.svc:443/validate/fail?timeout=10s\": dial tcp 10.96.221.72:443: connect: connection refused"}
+{"ts": 1790522042.494963, "event": "not_placed", "workload": "w-16", "phase": "Error"}
+{"ts": 1790522050.043941, "event": "removed", "workload": "w-10", "cluster": "cluster-b", "via": "scheduler"}
+{"ts": 1790522057.655037, "event": "removed", "workload": "w-11", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790522058.689097, "event": "requested", "workload": "w-17", "node_port": 30017}
+{"ts": 1790522059.066167, "event": "pending", "workload": "w-17", "phase": null, "message": null}
+{"ts": 1790522088.233235, "event": "pending", "workload": "w-17", "phase": "Pending", "message": "placing"}
+{"ts": 1790522089.2343612, "event": "not_placed", "workload": "w-17", "phase": "Pending"}
+{"ts": 1790522098.163052, "event": "removed", "workload": "w-12", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790522109.1790552, "event": "removed", "workload": "w-13", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790522110.751824, "event": "requested", "workload": "w-18", "node_port": 30018}
+{"ts": 1790522111.5749571, "event": "pending", "workload": "w-18", "phase": null, "message": null}
+{"ts": 1790522142.109505, "event": "not_placed", "workload": "w-18", "phase": null}
+{"ts": 1790522148.4459782, "event": "removed", "workload": "w-14", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790522149.378844, "event": "requested", "workload": "w-19", "node_port": 30019}
+{"ts": 1790522149.396866, "event": "pending", "workload": "w-19", "phase": null, "message": null}
+{"ts": 1790522168.139596, "event": "pending", "workload": "w-19", "phase": "Pending", "message": "placing"}
+{"ts": 1790522169.154243, "event": "pending", "workload": "w-19", "phase": "Error", "message": "create deployment: Internal error occurred: failed calling webhook \"validate.kyverno.svc-fail\": failed to call webhook: Post \"https://kyverno-svc.kyverno.svc:443/validate/fail?timeout=10s\": dial tcp 10.96.221.72:443: connect: connection refused"}
+{"ts": 1790522180.426922, "event": "not_placed", "workload": "w-19", "phase": "Error"}
+{"ts": 1790522186.670039, "event": "removed", "workload": "w-15", "cluster": "cluster-a", "via": "scheduler"}
+{"ts": 1790522188.01357, "event": "requested", "workload": "w-20", "node_port": 30020}
+{"ts": 1790522188.046226, "event": "pending", "workload": "w-20", "phase": null, "message": null}
+{"ts": 1790522198.960284, "event": "pending", "workload": "w-20", "phase": "Error", "message": "create deployment: Internal error occurred: failed calling webhook \"validate.kyverno.svc-fail\": failed to call webhook: Post \"https://kyverno-svc.kyverno.svc:443/validate/fail?timeout=10s\": dial tcp 10.96.221.72:443: connect: connection refused"}
+{"ts": 1790522218.792084, "event": "not_placed", "workload": "w-20", "phase": "Error"}
+{"ts": 1790522225.933905, "event": "removed", "workload": "w-16", "cluster": "", "via": "scheduler"}
+{"ts": 1790522226.638258, "event": "requested", "workload": "w-21", "node_port": 30021}
+{"ts": 1790522226.87154, "event": "pending", "workload": "w-21", "phase": null, "message": null}
+{"ts": 1790522256.795555, "event": "not_placed", "workload": "w-21", "phase": null}
+{"ts": 1790522264.0169432, "event": "removed", "workload": "w-17", "cluster": "", "via": "scheduler"}
+{"ts": 1790522264.537812, "event": "requested", "workload": "w-22", "node_port": 30022}
+{"ts": 1790522264.545519, "event": "pending", "workload": "w-22", "phase": null, "message": null}
+{"ts": 1790522267.6181078, "event": "pending", "workload": "w-22", "phase": "Error", "message": "create deployment: Internal error occurred: failed calling webhook \"validate.kyverno.svc-fail\": failed to call webhook: Post \"https://kyverno-svc.kyverno.svc:443/validate/fail?timeout=10s\": dial tcp 10.96.22.20:443: connect: connection refused"}
+{"ts": 1790522295.239464, "event": "not_placed", "workload": "w-22", "phase": "Error"}
+{"ts": 1790522301.389266, "event": "removed", "workload": "w-18", "cluster": "", "via": "scheduler"}
+{"ts": 1790522302.050602, "event": "requested", "workload": "w-23", "node_port": 30023}
+{"ts": 1790522302.0703402, "event": "pending", "workload": "w-23", "phase": null, "message": null}
+{"ts": 1790522312.0832891, "event": "pending", "workload": "w-23", "phase": "Pending", "message": "placing"}
+{"ts": 1790522319.5585349, "event": "placed", "workload": "w-23", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 244, "node_port": 30023}
+{"ts": 1790522333.807456, "event": "not_ready", "workload": "w-23", "cluster": "cluster-a", "timeout": 30.0}
+{"ts": 1790522342.413919, "event": "removed", "workload": "w-19", "cluster": "", "via": "scheduler"}
+{"ts": 1790522344.102113, "event": "requested", "workload": "w-24", "node_port": 30024}
+{"ts": 1790522345.803909, "event": "pending", "workload": "w-24", "phase": null, "message": null}
+{"ts": 1790522362.179849, "event": "pending", "workload": "w-24", "phase": "Pending", "message": "placing"}
+{"ts": 1790522367.624982, "event": "placed", "workload": "w-24", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 245, "node_port": 30024}
+{"ts": 1790522374.680767, "event": "not_ready", "workload": "w-24", "cluster": "cluster-a", "timeout": 30.0}
+{"ts": 1790522380.743604, "event": "removed", "workload": "w-20", "cluster": "", "via": "scheduler"}
+{"ts": 1790522381.3378618, "event": "requested", "workload": "w-25", "node_port": 30025}
+{"ts": 1790522381.345776, "event": "pending", "workload": "w-25", "phase": null, "message": null}
+{"ts": 1790522384.9067352, "event": "pending", "workload": "w-25", "phase": "Pending", "message": "placing"}
+{"ts": 1790522400.1599061, "event": "placed", "workload": "w-25", "cluster": "cluster-a", "scheduler": "meta", "decision_id": 246, "node_port": 30025}
+{"ts": 1790522413.2341812, "event": "not_ready", "workload": "w-25", "cluster": "cluster-a", "timeout": 30.0}
+{"ts": 1790522424.957827, "event": "removed", "workload": "w-21", "cluster": "", "via": "scheduler"}
+{"ts": 1790522435.94331, "event": "removed", "workload": "w-22", "cluster": "", "via": "scheduler"}
+{"ts": 1790522439.8653219, "event": "removed", "workload": "w-23", "cluster": "", "via": "scheduler"}
+{"ts": 1790522443.0369332, "event": "removed", "workload": "w-24", "cluster": "", "via": "scheduler"}
+{"ts": 1790522446.2979572, "event": "removed", "workload": "w-25", "cluster": "", "via": "scheduler"}

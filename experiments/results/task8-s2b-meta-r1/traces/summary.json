@@ -1,0 +1,69 @@
+{
+  "export_window": {
+    "start": "2026-09-27T15:04:53Z",
+    "end": "2026-09-27T15:21:01Z"
+  },
+  "run_window": {
+    "start": "2026-09-27T15:05:53Z",
+    "end": "2026-09-27T15:20:01Z"
+  },
+  "jaeger": "http://127.0.0.1:16686",
+  "spans": 0,
+  "traces_exported": 0,
+  "components": [
+    "total",
+    "gateway",
+    "hop",
+    "frontend",
+    "backend_net",
+    "backend"
+  ],
+  "all": {
+    "traces": 0,
+    "complete": 0,
+    "errors": 0,
+    "total": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "gateway": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "hop": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "frontend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend_net": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    },
+    "backend": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "mean": null
+    }
+  },
+  "by_cluster": {}
+}

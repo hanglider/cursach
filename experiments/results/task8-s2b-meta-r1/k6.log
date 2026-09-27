@@ -1,0 +1,1248 @@
+time="2026-09-27T18:10:02+03:00" level=warning msg="2026-09-27T15:10:02.518Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:02+03:00" level=warning msg="2026-09-27T15:10:02.553Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:02+03:00" level=warning msg="2026-09-27T15:10:02.595Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:02+03:00" level=warning msg="2026-09-27T15:10:02.754Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:03+03:00" level=warning msg="2026-09-27T15:10:03.036Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:03+03:00" level=warning msg="2026-09-27T15:10:03.154Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:03+03:00" level=warning msg="2026-09-27T15:10:03.333Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:03+03:00" level=warning msg="2026-09-27T15:10:03.535Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:03+03:00" level=warning msg="2026-09-27T15:10:03.615Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:04+03:00" level=warning msg="2026-09-27T15:10:04.316Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:04+03:00" level=warning msg="2026-09-27T15:10:04.831Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:05+03:00" level=warning msg="2026-09-27T15:10:05.326Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:05+03:00" level=warning msg="2026-09-27T15:10:05.855Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:05+03:00" level=warning msg="2026-09-27T15:10:05.874Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:06+03:00" level=warning msg="2026-09-27T15:10:06.344Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:06+03:00" level=warning msg="2026-09-27T15:10:06.391Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:06+03:00" level=warning msg="2026-09-27T15:10:06.834Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:06+03:00" level=warning msg="2026-09-27T15:10:06.915Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:07+03:00" level=warning msg="2026-09-27T15:10:07.695Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:07+03:00" level=warning msg="2026-09-27T15:10:07.777Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:08+03:00" level=warning msg="2026-09-27T15:10:08.116Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:08+03:00" level=warning msg="2026-09-27T15:10:08.958Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:09+03:00" level=warning msg="2026-09-27T15:10:09.339Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:09+03:00" level=warning msg="2026-09-27T15:10:09.609Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:10+03:00" level=warning msg="2026-09-27T15:10:10.358Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:11+03:00" level=warning msg="2026-09-27T15:10:11.166Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:11+03:00" level=warning msg="2026-09-27T15:10:11.353Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:11+03:00" level=warning msg="2026-09-27T15:10:11.700Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:12+03:00" level=warning msg="2026-09-27T15:10:12.256Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:12+03:00" level=warning msg="2026-09-27T15:10:12.536Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:12+03:00" level=warning msg="2026-09-27T15:10:12.754Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:12+03:00" level=warning msg="2026-09-27T15:10:12.834Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:13+03:00" level=warning msg="2026-09-27T15:10:13.213Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:13+03:00" level=warning msg="2026-09-27T15:10:13.414Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:15+03:00" level=warning msg="2026-09-27T15:10:15.518Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:15+03:00" level=warning msg="2026-09-27T15:10:15.534Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:15+03:00" level=warning msg="2026-09-27T15:10:15.556Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:15+03:00" level=warning msg="2026-09-27T15:10:15.897Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:16+03:00" level=warning msg="2026-09-27T15:10:16.017Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:16+03:00" level=warning msg="2026-09-27T15:10:16.716Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:16+03:00" level=warning msg="2026-09-27T15:10:16.799Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:17+03:00" level=warning msg="2026-09-27T15:10:17.133Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:17+03:00" level=warning msg="2026-09-27T15:10:17.434Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.074Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.158Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.280Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.298Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.738Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:18+03:00" level=warning msg="2026-09-27T15:10:18.836Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:19+03:00" level=warning msg="2026-09-27T15:10:19.402Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:19+03:00" level=warning msg="2026-09-27T15:10:19.425Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:19+03:00" level=warning msg="2026-09-27T15:10:19.615Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:20+03:00" level=warning msg="2026-09-27T15:10:20.058Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:20+03:00" level=warning msg="2026-09-27T15:10:20.202Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:20+03:00" level=warning msg="2026-09-27T15:10:20.256Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:20+03:00" level=warning msg="2026-09-27T15:10:20.434Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.116Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.354Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.394Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.416Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.539Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:21+03:00" level=warning msg="2026-09-27T15:10:21.817Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:22+03:00" level=warning msg="2026-09-27T15:10:22.535Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:22+03:00" level=warning msg="2026-09-27T15:10:22.860Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:22+03:00" level=warning msg="2026-09-27T15:10:22.915Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:23+03:00" level=warning msg="2026-09-27T15:10:23.842Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:23+03:00" level=warning msg="2026-09-27T15:10:23.844Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:23+03:00" level=warning msg="2026-09-27T15:10:23.874Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:24+03:00" level=warning msg="2026-09-27T15:10:24.217Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:24+03:00" level=warning msg="2026-09-27T15:10:24.738Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:25+03:00" level=warning msg="2026-09-27T15:10:25.303Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:25+03:00" level=warning msg="2026-09-27T15:10:25.437Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:25+03:00" level=warning msg="2026-09-27T15:10:25.841Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:26+03:00" level=warning msg="2026-09-27T15:10:26.438Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:27+03:00" level=warning msg="2026-09-27T15:10:27.280Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:27+03:00" level=warning msg="2026-09-27T15:10:27.475Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:28+03:00" level=warning msg="2026-09-27T15:10:28.276Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:28+03:00" level=warning msg="2026-09-27T15:10:28.396Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:28+03:00" level=warning msg="2026-09-27T15:10:28.794Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:29+03:00" level=warning msg="2026-09-27T15:10:29.435Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:30+03:00" level=warning msg="2026-09-27T15:10:30.117Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:30+03:00" level=warning msg="2026-09-27T15:10:30.398Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:30+03:00" level=warning msg="2026-09-27T15:10:30.598Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:31+03:00" level=warning msg="2026-09-27T15:10:31.035Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:31+03:00" level=warning msg="2026-09-27T15:10:31.314Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:31+03:00" level=warning msg="2026-09-27T15:10:31.354Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:31+03:00" level=warning msg="2026-09-27T15:10:31.893Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:32+03:00" level=warning msg="2026-09-27T15:10:32.096Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:32+03:00" level=warning msg="2026-09-27T15:10:32.176Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:32+03:00" level=warning msg="2026-09-27T15:10:32.674Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:33+03:00" level=warning msg="2026-09-27T15:10:33.258Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:33+03:00" level=warning msg="2026-09-27T15:10:33.353Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:33+03:00" level=warning msg="2026-09-27T15:10:33.654Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:34+03:00" level=warning msg="2026-09-27T15:10:34.202Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:34+03:00" level=warning msg="2026-09-27T15:10:34.336Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:34+03:00" level=warning msg="2026-09-27T15:10:34.414Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:34+03:00" level=warning msg="2026-09-27T15:10:34.476Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:34+03:00" level=warning msg="2026-09-27T15:10:34.638Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:35+03:00" level=warning msg="2026-09-27T15:10:35.214Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:35+03:00" level=warning msg="2026-09-27T15:10:35.615Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:35+03:00" level=warning msg="2026-09-27T15:10:35.974Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:35+03:00" level=warning msg="2026-09-27T15:10:35.995Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:36+03:00" level=warning msg="2026-09-27T15:10:36.413Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:36+03:00" level=warning msg="2026-09-27T15:10:36.433Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:36+03:00" level=warning msg="2026-09-27T15:10:36.595Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:36+03:00" level=warning msg="2026-09-27T15:10:36.697Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:37+03:00" level=warning msg="2026-09-27T15:10:37.134Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:37+03:00" level=warning msg="2026-09-27T15:10:37.514Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:37+03:00" level=warning msg="2026-09-27T15:10:37.734Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:37+03:00" level=warning msg="2026-09-27T15:10:37.855Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:38+03:00" level=warning msg="2026-09-27T15:10:38.393Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:39+03:00" level=warning msg="2026-09-27T15:10:39.514Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:39+03:00" level=warning msg="2026-09-27T15:10:39.536Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:40+03:00" level=warning msg="2026-09-27T15:10:40.136Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:41+03:00" level=warning msg="2026-09-27T15:10:41.061Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:41+03:00" level=warning msg="2026-09-27T15:10:41.655Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:42+03:00" level=warning msg="2026-09-27T15:10:42.506Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:42+03:00" level=warning msg="2026-09-27T15:10:42.514Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:42+03:00" level=warning msg="2026-09-27T15:10:42.673Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:42+03:00" level=warning msg="2026-09-27T15:10:42.997Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:43+03:00" level=warning msg="2026-09-27T15:10:43.795Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:44+03:00" level=warning msg="2026-09-27T15:10:44.035Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:44+03:00" level=warning msg="2026-09-27T15:10:44.454Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:44+03:00" level=warning msg="2026-09-27T15:10:44.935Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:45+03:00" level=warning msg="2026-09-27T15:10:45.066Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:45+03:00" level=warning msg="2026-09-27T15:10:45.234Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:45+03:00" level=warning msg="2026-09-27T15:10:45.255Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:45+03:00" level=warning msg="2026-09-27T15:10:45.454Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:46+03:00" level=warning msg="2026-09-27T15:10:46.356Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:46+03:00" level=warning msg="2026-09-27T15:10:46.394Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:47+03:00" level=warning msg="2026-09-27T15:10:47.017Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:47+03:00" level=warning msg="2026-09-27T15:10:47.294Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:47+03:00" level=warning msg="2026-09-27T15:10:47.677Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:49+03:00" level=warning msg="2026-09-27T15:10:49.156Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:49+03:00" level=warning msg="2026-09-27T15:10:49.595Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:49+03:00" level=warning msg="2026-09-27T15:10:49.657Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:50+03:00" level=warning msg="2026-09-27T15:10:50.092Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:50+03:00" level=warning msg="2026-09-27T15:10:50.154Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:50+03:00" level=warning msg="2026-09-27T15:10:50.299Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:50+03:00" level=warning msg="2026-09-27T15:10:50.495Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:50+03:00" level=warning msg="2026-09-27T15:10:50.791Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:51+03:00" level=warning msg="2026-09-27T15:10:51.415Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:51+03:00" level=warning msg="2026-09-27T15:10:51.591Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:52+03:00" level=warning msg="2026-09-27T15:10:52.997Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.177Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.354Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.375Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.517Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.595Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:53+03:00" level=warning msg="2026-09-27T15:10:53.876Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:54+03:00" level=warning msg="2026-09-27T15:10:54.208Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:54+03:00" level=warning msg="2026-09-27T15:10:54.380Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:54+03:00" level=warning msg="2026-09-27T15:10:54.606Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:54+03:00" level=warning msg="2026-09-27T15:10:54.771Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:54+03:00" level=warning msg="2026-09-27T15:10:54.796Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.199Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.201Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.516Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.813Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.913Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:55+03:00" level=warning msg="2026-09-27T15:10:55.964Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:56+03:00" level=warning msg="2026-09-27T15:10:56.541Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:56+03:00" level=warning msg="2026-09-27T15:10:56.876Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:57+03:00" level=warning msg="2026-09-27T15:10:57.359Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:57+03:00" level=warning msg="2026-09-27T15:10:57.850Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:57+03:00" level=warning msg="2026-09-27T15:10:57.964Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:58+03:00" level=warning msg="2026-09-27T15:10:58.810Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:58+03:00" level=warning msg="2026-09-27T15:10:58.898Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:59+03:00" level=warning msg="2026-09-27T15:10:59.109Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:59+03:00" level=warning msg="2026-09-27T15:10:59.281Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:59+03:00" level=warning msg="2026-09-27T15:10:59.748Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:59+03:00" level=warning msg="2026-09-27T15:10:59.819Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:10:59+03:00" level=warning msg="2026-09-27T15:10:59.835Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:00+03:00" level=warning msg="2026-09-27T15:11:00.636Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:00+03:00" level=warning msg="2026-09-27T15:11:00.834Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:01+03:00" level=warning msg="2026-09-27T15:11:01.118Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:01+03:00" level=warning msg="2026-09-27T15:11:01.536Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:01+03:00" level=warning msg="2026-09-27T15:11:01.636Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:01+03:00" level=warning msg="2026-09-27T15:11:01.797Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:02+03:00" level=warning msg="2026-09-27T15:11:02.394Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:02+03:00" level=warning msg="2026-09-27T15:11:02.456Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:02+03:00" level=warning msg="2026-09-27T15:11:02.634Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:02+03:00" level=warning msg="2026-09-27T15:11:02.896Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:03+03:00" level=warning msg="2026-09-27T15:11:03.296Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:03+03:00" level=warning msg="2026-09-27T15:11:03.421Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:03+03:00" level=warning msg="2026-09-27T15:11:03.737Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:03+03:00" level=warning msg="2026-09-27T15:11:03.901Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.038Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.056Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.561Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.561Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.679Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:04+03:00" level=warning msg="2026-09-27T15:11:04.890Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:05+03:00" level=warning msg="2026-09-27T15:11:05.119Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:05+03:00" level=warning msg="2026-09-27T15:11:05.394Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:05+03:00" level=warning msg="2026-09-27T15:11:05.419Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:05+03:00" level=warning msg="2026-09-27T15:11:05.565Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:06+03:00" level=warning msg="2026-09-27T15:11:06.000Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:07+03:00" level=warning msg="2026-09-27T15:11:07.386Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:08+03:00" level=warning msg="2026-09-27T15:11:08.299Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:08+03:00" level=warning msg="2026-09-27T15:11:08.357Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:08+03:00" level=warning msg="2026-09-27T15:11:08.520Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:08+03:00" level=warning msg="2026-09-27T15:11:08.598Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:08+03:00" level=warning msg="2026-09-27T15:11:08.986Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:09+03:00" level=warning msg="2026-09-27T15:11:09.195Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:09+03:00" level=warning msg="2026-09-27T15:11:09.276Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:10+03:00" level=warning msg="2026-09-27T15:11:10.355Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:10+03:00" level=warning msg="2026-09-27T15:11:10.476Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:10+03:00" level=warning msg="2026-09-27T15:11:10.979Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:11+03:00" level=warning msg="2026-09-27T15:11:11.096Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:11+03:00" level=warning msg="2026-09-27T15:11:11.302Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:11+03:00" level=warning msg="2026-09-27T15:11:11.316Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.039Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.134Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.716Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.756Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.855Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:12+03:00" level=warning msg="2026-09-27T15:11:12.938Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:13+03:00" level=warning msg="2026-09-27T15:11:13.395Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:13+03:00" level=warning msg="2026-09-27T15:11:13.917Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:15+03:00" level=warning msg="2026-09-27T15:11:15.134Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:15+03:00" level=warning msg="2026-09-27T15:11:15.454Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:15+03:00" level=warning msg="2026-09-27T15:11:15.596Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:15+03:00" level=warning msg="2026-09-27T15:11:15.714Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:15+03:00" level=warning msg="2026-09-27T15:11:15.735Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:16+03:00" level=warning msg="2026-09-27T15:11:16.721Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:17+03:00" level=warning msg="2026-09-27T15:11:17.195Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:17+03:00" level=warning msg="2026-09-27T15:11:17.723Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:18+03:00" level=warning msg="2026-09-27T15:11:18.136Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:18+03:00" level=warning msg="2026-09-27T15:11:18.815Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:19+03:00" level=warning msg="2026-09-27T15:11:19.496Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:19+03:00" level=warning msg="2026-09-27T15:11:19.753Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:19+03:00" level=warning msg="2026-09-27T15:11:19.837Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:19+03:00" level=warning msg="2026-09-27T15:11:19.956Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:20+03:00" level=warning msg="2026-09-27T15:11:20.317Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:20+03:00" level=warning msg="2026-09-27T15:11:20.714Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:20+03:00" level=warning msg="2026-09-27T15:11:20.875Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.100Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.196Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.336Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.596Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.757Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.874Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:21+03:00" level=warning msg="2026-09-27T15:11:21.934Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:22+03:00" level=warning msg="2026-09-27T15:11:22.463Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:22+03:00" level=warning msg="2026-09-27T15:11:22.717Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:23+03:00" level=warning msg="2026-09-27T15:11:23.325Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:23+03:00" level=warning msg="2026-09-27T15:11:23.497Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:24+03:00" level=warning msg="2026-09-27T15:11:24.578Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:25+03:00" level=warning msg="2026-09-27T15:11:25.037Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:26+03:00" level=warning msg="2026-09-27T15:11:26.185Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:26+03:00" level=warning msg="2026-09-27T15:11:26.197Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:26+03:00" level=warning msg="2026-09-27T15:11:26.534Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:26+03:00" level=warning msg="2026-09-27T15:11:26.734Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:26+03:00" level=warning msg="2026-09-27T15:11:26.859Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.075Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.296Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.447Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.495Z w-6.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.638Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:27+03:00" level=warning msg="2026-09-27T15:11:27.715Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:28+03:00" level=warning msg="2026-09-27T15:11:28.036Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:28+03:00" level=warning msg="2026-09-27T15:11:28.155Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:28+03:00" level=warning msg="2026-09-27T15:11:28.328Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:28+03:00" level=warning msg="2026-09-27T15:11:28.336Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:28+03:00" level=warning msg="2026-09-27T15:11:28.994Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:29+03:00" level=warning msg="2026-09-27T15:11:29.014Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:29+03:00" level=warning msg="2026-09-27T15:11:29.334Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:29+03:00" level=warning msg="2026-09-27T15:11:29.576Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:29+03:00" level=warning msg="2026-09-27T15:11:29.973Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:30+03:00" level=warning msg="2026-09-27T15:11:30.554Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:32+03:00" level=warning msg="2026-09-27T15:11:32.593Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:32+03:00" level=warning msg="2026-09-27T15:11:32.795Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:33+03:00" level=warning msg="2026-09-27T15:11:33.176Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:33+03:00" level=warning msg="2026-09-27T15:11:33.977Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:34+03:00" level=warning msg="2026-09-27T15:11:34.021Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:34+03:00" level=warning msg="2026-09-27T15:11:34.608Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:34+03:00" level=warning msg="2026-09-27T15:11:34.765Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:35+03:00" level=warning msg="2026-09-27T15:11:35.982Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:36+03:00" level=warning msg="2026-09-27T15:11:36.258Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:36+03:00" level=warning msg="2026-09-27T15:11:36.327Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:38+03:00" level=warning msg="2026-09-27T15:11:38.494Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:39+03:00" level=warning msg="2026-09-27T15:11:39.480Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:39+03:00" level=warning msg="2026-09-27T15:11:39.539Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:39+03:00" level=warning msg="2026-09-27T15:11:39.819Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:39+03:00" level=warning msg="2026-09-27T15:11:39.874Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:40+03:00" level=warning msg="2026-09-27T15:11:40.058Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:40+03:00" level=warning msg="2026-09-27T15:11:40.124Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:41+03:00" level=warning msg="2026-09-27T15:11:41.062Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:41+03:00" level=warning msg="2026-09-27T15:11:41.064Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:41+03:00" level=warning msg="2026-09-27T15:11:41.223Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:41+03:00" level=warning msg="2026-09-27T15:11:41.650Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:42+03:00" level=warning msg="2026-09-27T15:11:42.646Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:43+03:00" level=warning msg="2026-09-27T15:11:43.777Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:44+03:00" level=warning msg="2026-09-27T15:11:44.702Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:44+03:00" level=warning msg="2026-09-27T15:11:44.755Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:44+03:00" level=warning msg="2026-09-27T15:11:44.941Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:45+03:00" level=warning msg="2026-09-27T15:11:45.255Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:45+03:00" level=warning msg="2026-09-27T15:11:45.937Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:46+03:00" level=warning msg="2026-09-27T15:11:46.087Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:46+03:00" level=warning msg="2026-09-27T15:11:46.115Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:46+03:00" level=warning msg="2026-09-27T15:11:46.197Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:46+03:00" level=warning msg="2026-09-27T15:11:46.461Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:46+03:00" level=warning msg="2026-09-27T15:11:46.757Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:47+03:00" level=warning msg="2026-09-27T15:11:47.898Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.277Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.296Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.336Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.575Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.655Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:48+03:00" level=warning msg="2026-09-27T15:11:48.857Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:49+03:00" level=warning msg="2026-09-27T15:11:49.478Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:49+03:00" level=warning msg="2026-09-27T15:11:49.640Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:50+03:00" level=warning msg="2026-09-27T15:11:50.370Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:50+03:00" level=warning msg="2026-09-27T15:11:50.582Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:51+03:00" level=warning msg="2026-09-27T15:11:51.638Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:52+03:00" level=warning msg="2026-09-27T15:11:52.758Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:53+03:00" level=warning msg="2026-09-27T15:11:53.276Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:54+03:00" level=warning msg="2026-09-27T15:11:54.315Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:54+03:00" level=warning msg="2026-09-27T15:11:54.541Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:55+03:00" level=warning msg="2026-09-27T15:11:55.508Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:56+03:00" level=warning msg="2026-09-27T15:11:56.377Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:56+03:00" level=warning msg="2026-09-27T15:11:56.695Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:56+03:00" level=warning msg="2026-09-27T15:11:56.763Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:56+03:00" level=warning msg="2026-09-27T15:11:56.946Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:57+03:00" level=warning msg="2026-09-27T15:11:57.300Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:58+03:00" level=warning msg="2026-09-27T15:11:58.058Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:58+03:00" level=warning msg="2026-09-27T15:11:58.384Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:59+03:00" level=warning msg="2026-09-27T15:11:59.333Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:11:59+03:00" level=warning msg="2026-09-27T15:11:59.496Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:00+03:00" level=warning msg="2026-09-27T15:12:00.361Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:00+03:00" level=warning msg="2026-09-27T15:12:00.370Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:01+03:00" level=warning msg="2026-09-27T15:12:01.293Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:03+03:00" level=warning msg="2026-09-27T15:12:03.145Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:03+03:00" level=warning msg="2026-09-27T15:12:03.324Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:03+03:00" level=warning msg="2026-09-27T15:12:03.996Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:04+03:00" level=warning msg="2026-09-27T15:12:04.198Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:04+03:00" level=warning msg="2026-09-27T15:12:04.496Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:04+03:00" level=warning msg="2026-09-27T15:12:04.560Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:05+03:00" level=warning msg="2026-09-27T15:12:05.695Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:06+03:00" level=warning msg="2026-09-27T15:12:06.195Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:06+03:00" level=warning msg="2026-09-27T15:12:06.395Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:06+03:00" level=warning msg="2026-09-27T15:12:06.717Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:07+03:00" level=warning msg="2026-09-27T15:12:07.178Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:07+03:00" level=warning msg="2026-09-27T15:12:07.635Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:07+03:00" level=warning msg="2026-09-27T15:12:07.853Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:08+03:00" level=warning msg="2026-09-27T15:12:08.157Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:08+03:00" level=warning msg="2026-09-27T15:12:08.252Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:08+03:00" level=warning msg="2026-09-27T15:12:08.595Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:08+03:00" level=warning msg="2026-09-27T15:12:08.635Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:08+03:00" level=warning msg="2026-09-27T15:12:08.796Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:09+03:00" level=warning msg="2026-09-27T15:12:09.122Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:09+03:00" level=warning msg="2026-09-27T15:12:09.916Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:10+03:00" level=warning msg="2026-09-27T15:12:10.605Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:11+03:00" level=warning msg="2026-09-27T15:12:11.030Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:11+03:00" level=warning msg="2026-09-27T15:12:11.200Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:11+03:00" level=warning msg="2026-09-27T15:12:11.929Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:12+03:00" level=warning msg="2026-09-27T15:12:12.274Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:12+03:00" level=warning msg="2026-09-27T15:12:12.359Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:12+03:00" level=warning msg="2026-09-27T15:12:12.607Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:13+03:00" level=warning msg="2026-09-27T15:12:13.332Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:13+03:00" level=warning msg="2026-09-27T15:12:13.754Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:13+03:00" level=warning msg="2026-09-27T15:12:13.759Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:13+03:00" level=warning msg="2026-09-27T15:12:13.963Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:14+03:00" level=warning msg="2026-09-27T15:12:14.650Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:14+03:00" level=warning msg="2026-09-27T15:12:14.883Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.063Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.142Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.437Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.608Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.681Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:15+03:00" level=warning msg="2026-09-27T15:12:15.927Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:16+03:00" level=warning msg="2026-09-27T15:12:16.154Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:16+03:00" level=warning msg="2026-09-27T15:12:16.614Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:16+03:00" level=warning msg="2026-09-27T15:12:16.722Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:16+03:00" level=warning msg="2026-09-27T15:12:16.998Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:18+03:00" level=warning msg="2026-09-27T15:12:18.077Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:18+03:00" level=warning msg="2026-09-27T15:12:18.256Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:18+03:00" level=warning msg="2026-09-27T15:12:18.696Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:19+03:00" level=warning msg="2026-09-27T15:12:19.338Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:19+03:00" level=warning msg="2026-09-27T15:12:19.517Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:19+03:00" level=warning msg="2026-09-27T15:12:19.876Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:20+03:00" level=warning msg="2026-09-27T15:12:20.058Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:20+03:00" level=warning msg="2026-09-27T15:12:20.779Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:21+03:00" level=warning msg="2026-09-27T15:12:21.140Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:21+03:00" level=warning msg="2026-09-27T15:12:21.237Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:21+03:00" level=warning msg="2026-09-27T15:12:21.337Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:21+03:00" level=warning msg="2026-09-27T15:12:21.356Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:22+03:00" level=warning msg="2026-09-27T15:12:22.818Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:23+03:00" level=warning msg="2026-09-27T15:12:23.376Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:24+03:00" level=warning msg="2026-09-27T15:12:24.141Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:24+03:00" level=warning msg="2026-09-27T15:12:24.337Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:25+03:00" level=warning msg="2026-09-27T15:12:25.386Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:26+03:00" level=warning msg="2026-09-27T15:12:26.221Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:26+03:00" level=warning msg="2026-09-27T15:12:26.398Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:26+03:00" level=warning msg="2026-09-27T15:12:26.541Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:27+03:00" level=warning msg="2026-09-27T15:12:27.101Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:27+03:00" level=warning msg="2026-09-27T15:12:27.304Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:27+03:00" level=warning msg="2026-09-27T15:12:27.400Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:28+03:00" level=warning msg="2026-09-27T15:12:28.178Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:28+03:00" level=warning msg="2026-09-27T15:12:28.277Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:29+03:00" level=warning msg="2026-09-27T15:12:29.366Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:29+03:00" level=warning msg="2026-09-27T15:12:29.564Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:29+03:00" level=warning msg="2026-09-27T15:12:29.725Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:30+03:00" level=warning msg="2026-09-27T15:12:30.103Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:30+03:00" level=warning msg="2026-09-27T15:12:30.989Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:31+03:00" level=warning msg="2026-09-27T15:12:31.210Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:31+03:00" level=warning msg="2026-09-27T15:12:31.829Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:32+03:00" level=warning msg="2026-09-27T15:12:32.149Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:32+03:00" level=warning msg="2026-09-27T15:12:32.189Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:32+03:00" level=warning msg="2026-09-27T15:12:32.189Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:32+03:00" level=warning msg="2026-09-27T15:12:32.428Z w-8.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:32+03:00" level=warning msg="2026-09-27T15:12:32.794Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:33+03:00" level=warning msg="2026-09-27T15:12:33.117Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:34+03:00" level=warning msg="2026-09-27T15:12:34.496Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:34+03:00" level=warning msg="2026-09-27T15:12:34.842Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:35+03:00" level=warning msg="2026-09-27T15:12:35.461Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:36+03:00" level=warning msg="2026-09-27T15:12:36.538Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:36+03:00" level=warning msg="2026-09-27T15:12:36.716Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:37+03:00" level=warning msg="2026-09-27T15:12:37.824Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:38+03:00" level=warning msg="2026-09-27T15:12:38.018Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:38+03:00" level=warning msg="2026-09-27T15:12:38.514Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:39+03:00" level=warning msg="2026-09-27T15:12:39.883Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:39+03:00" level=warning msg="2026-09-27T15:12:39.883Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:39+03:00" level=warning msg="2026-09-27T15:12:39.906Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:40+03:00" level=warning msg="2026-09-27T15:12:40.041Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:40+03:00" level=warning msg="2026-09-27T15:12:40.115Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:40+03:00" level=warning msg="2026-09-27T15:12:40.161Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:41+03:00" level=warning msg="2026-09-27T15:12:41.045Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:41+03:00" level=warning msg="2026-09-27T15:12:41.053Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:41+03:00" level=warning msg="2026-09-27T15:12:41.054Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:41+03:00" level=warning msg="2026-09-27T15:12:41.054Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:42+03:00" level=warning msg="2026-09-27T15:12:42.330Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:43+03:00" level=warning msg="2026-09-27T15:12:43.296Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:43+03:00" level=warning msg="2026-09-27T15:12:43.722Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:43+03:00" level=warning msg="2026-09-27T15:12:43.724Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:43+03:00" level=warning msg="2026-09-27T15:12:43.987Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:45+03:00" level=warning msg="2026-09-27T15:12:45.296Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:45+03:00" level=warning msg="2026-09-27T15:12:45.700Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:45+03:00" level=warning msg="2026-09-27T15:12:45.758Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:46+03:00" level=warning msg="2026-09-27T15:12:46.937Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:47+03:00" level=warning msg="2026-09-27T15:12:47.076Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:48+03:00" level=warning msg="2026-09-27T15:12:48.875Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:49+03:00" level=warning msg="2026-09-27T15:12:49.817Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:50+03:00" level=warning msg="2026-09-27T15:12:50.236Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:50+03:00" level=warning msg="2026-09-27T15:12:50.475Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:50+03:00" level=warning msg="2026-09-27T15:12:50.915Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:51+03:00" level=warning msg="2026-09-27T15:12:51.078Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:51+03:00" level=warning msg="2026-09-27T15:12:51.818Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:52+03:00" level=warning msg="2026-09-27T15:12:52.154Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:54+03:00" level=warning msg="2026-09-27T15:12:54.549Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:55+03:00" level=warning msg="2026-09-27T15:12:55.391Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:55+03:00" level=warning msg="2026-09-27T15:12:55.600Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:55+03:00" level=warning msg="2026-09-27T15:12:55.901Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:56+03:00" level=warning msg="2026-09-27T15:12:56.293Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:56+03:00" level=warning msg="2026-09-27T15:12:56.620Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:56+03:00" level=warning msg="2026-09-27T15:12:56.821Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:57+03:00" level=warning msg="2026-09-27T15:12:57.040Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.247Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.291Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.345Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.891Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.923Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:58+03:00" level=warning msg="2026-09-27T15:12:58.926Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.008Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.325Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.326Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.374Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.396Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.396Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.397Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.429Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.516Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.599Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:12:59+03:00" level=warning msg="2026-09-27T15:12:59.951Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:00+03:00" level=warning msg="2026-09-27T15:13:00.881Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:00+03:00" level=warning msg="2026-09-27T15:13:00.924Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:01+03:00" level=warning msg="2026-09-27T15:13:01.074Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:01+03:00" level=warning msg="2026-09-27T15:13:01.627Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:01+03:00" level=warning msg="2026-09-27T15:13:01.974Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:02+03:00" level=warning msg="2026-09-27T15:13:02.438Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:03+03:00" level=warning msg="2026-09-27T15:13:03.403Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:04+03:00" level=warning msg="2026-09-27T15:13:04.051Z w-9.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:05+03:00" level=warning msg="2026-09-27T15:13:05.157Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:06+03:00" level=warning msg="2026-09-27T15:13:06.481Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:06+03:00" level=warning msg="2026-09-27T15:13:06.577Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:07+03:00" level=warning msg="2026-09-27T15:13:07.576Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:09+03:00" level=warning msg="2026-09-27T15:13:09.916Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:10+03:00" level=warning msg="2026-09-27T15:13:10.821Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:11+03:00" level=warning msg="2026-09-27T15:13:11.357Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:11+03:00" level=warning msg="2026-09-27T15:13:11.629Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:11+03:00" level=warning msg="2026-09-27T15:13:11.973Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:11+03:00" level=warning msg="2026-09-27T15:13:11.974Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:12+03:00" level=warning msg="2026-09-27T15:13:12.347Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:12+03:00" level=warning msg="2026-09-27T15:13:12.846Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:12+03:00" level=warning msg="2026-09-27T15:13:12.854Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:12+03:00" level=warning msg="2026-09-27T15:13:12.862Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:12+03:00" level=warning msg="2026-09-27T15:13:12.866Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:13+03:00" level=warning msg="2026-09-27T15:13:13.189Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:13+03:00" level=warning msg="2026-09-27T15:13:13.189Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:13+03:00" level=warning msg="2026-09-27T15:13:13.370Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:13+03:00" level=warning msg="2026-09-27T15:13:13.674Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:14+03:00" level=warning msg="2026-09-27T15:13:14.807Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:19+03:00" level=warning msg="2026-09-27T15:13:19.789Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:19+03:00" level=warning msg="2026-09-27T15:13:19.792Z w-12.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:19+03:00" level=warning msg="2026-09-27T15:13:19.824Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:19+03:00" level=warning msg="2026-09-27T15:13:19.891Z w-13.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:19+03:00" level=warning msg="2026-09-27T15:13:19.891Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.099Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.511Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.511Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.511Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.527Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:20+03:00" level=warning msg="2026-09-27T15:13:20.527Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:21+03:00" level=warning msg="2026-09-27T15:13:21.374Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:21+03:00" level=warning msg="2026-09-27T15:13:21.394Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.008Z w-12.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.151Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.202Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.202Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.207Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.208Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.208Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:22+03:00" level=warning msg="2026-09-27T15:13:22.246Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:23+03:00" level=warning msg="2026-09-27T15:13:23.426Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:24+03:00" level=warning msg="2026-09-27T15:13:24.434Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:25+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:13:25+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.041357542s while flush period is 5s. Some samples may be dropped." nts=198 output="Prometheus remote write"
+time="2026-09-27T18:13:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:25+03:00" level=warning msg="2026-09-27T15:13:25.347Z w-12.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:25+03:00" level=warning msg="2026-09-27T15:13:25.725Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:25+03:00" level=warning msg="2026-09-27T15:13:25.743Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.059Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.255Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.256Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.617Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.642Z w-13.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.878Z w-13.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.922Z w-12.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.943Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.962Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:26+03:00" level=warning msg="2026-09-27T15:13:26.978Z w-13.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.150Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.239Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.360Z w-12.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.404Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.404Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.419Z w-14.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.477Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.621Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.650Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.735Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.802Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.978Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:27+03:00" level=warning msg="2026-09-27T15:13:27.987Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.370Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.423Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.423Z w-14.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.591Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.591Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.591Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.592Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.628Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:28+03:00" level=warning msg="2026-09-27T15:13:28.728Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.116Z w-11.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.211Z w-14.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.430Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.435Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.626Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:29+03:00" level=warning msg="2026-09-27T15:13:29.994Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.000Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.000Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.019Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.093Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:30+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:13:30+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.016879666s while flush period is 5s. Some samples may be dropped." nts=228 output="Prometheus remote write"
+time="2026-09-27T18:13:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.463Z w-10.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.925Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:30+03:00" level=warning msg="2026-09-27T15:13:30.925Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:31+03:00" level=warning msg="2026-09-27T15:13:31.358Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:34+03:00" level=warning msg="2026-09-27T15:13:34.499Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:35+03:00" level=warning msg="2026-09-27T15:13:35.675Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:36+03:00" level=warning msg="2026-09-27T15:13:36.586Z w-14.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:36+03:00" level=warning msg="2026-09-27T15:13:36.586Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:36+03:00" level=warning msg="2026-09-27T15:13:36.586Z w-13.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:36+03:00" level=warning msg="2026-09-27T15:13:36.985Z w-14.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:36+03:00" level=warning msg="2026-09-27T15:13:36.985Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:37+03:00" level=warning msg="2026-09-27T15:13:37.147Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:37+03:00" level=warning msg="2026-09-27T15:13:37.148Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:37+03:00" level=warning msg="2026-09-27T15:13:37.909Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:38+03:00" level=warning msg="2026-09-27T15:13:38.938Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.419Z w-10.fed.local status=503 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.419Z w-10.fed.local status=503 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.431Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.553Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.556Z w-10.fed.local status=503 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.556Z w-10.fed.local status=503 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.951Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:39+03:00" level=warning msg="2026-09-27T15:13:39.951Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:40+03:00" level=warning msg="2026-09-27T15:13:40.199Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:40+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:13:40+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.058279958s while flush period is 5s. Some samples may be dropped." nts=256 output="Prometheus remote write"
+time="2026-09-27T18:13:41+03:00" level=warning msg="2026-09-27T15:13:41.228Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:41+03:00" level=warning msg="2026-09-27T15:13:41.752Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:41+03:00" level=warning msg="2026-09-27T15:13:41.752Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:41+03:00" level=warning msg="2026-09-27T15:13:41.812Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:43+03:00" level=warning msg="2026-09-27T15:13:43.488Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:43+03:00" level=warning msg="2026-09-27T15:13:43.917Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:44+03:00" level=warning msg="2026-09-27T15:13:44.146Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:44+03:00" level=warning msg="2026-09-27T15:13:44.146Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:44+03:00" level=warning msg="2026-09-27T15:13:44.146Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:45+03:00" level=warning msg="2026-09-27T15:13:45.923Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:47+03:00" level=warning msg="2026-09-27T15:13:47.383Z w-10.fed.local status=503 err=" source=console
+time="2026-09-27T18:13:49+03:00" level=warning msg="2026-09-27T15:13:49.924Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:50+03:00" level=warning msg="2026-09-27T15:13:50.326Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:50+03:00" level=warning msg="2026-09-27T15:13:50.545Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:50+03:00" level=warning msg="2026-09-27T15:13:50.626Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:50+03:00" level=warning msg="2026-09-27T15:13:50.664Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:51+03:00" level=warning msg="2026-09-27T15:13:51.905Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:52+03:00" level=warning msg="2026-09-27T15:13:52.298Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:53+03:00" level=warning msg="2026-09-27T15:13:53.511Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:54+03:00" level=warning msg="2026-09-27T15:13:54.114Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:55+03:00" level=warning msg="2026-09-27T15:13:55.996Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:58+03:00" level=warning msg="2026-09-27T15:13:58.828Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:58+03:00" level=warning msg="2026-09-27T15:13:58.829Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:59+03:00" level=warning msg="2026-09-27T15:13:59.246Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:13:59+03:00" level=warning msg="2026-09-27T15:13:59.629Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:00+03:00" level=warning msg="2026-09-27T15:14:00.295Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:02+03:00" level=warning msg="2026-09-27T15:14:02.282Z w-10.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:10+03:00" level=warning msg="2026-09-27T15:14:10.413Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:10+03:00" level=warning msg="2026-09-27T15:14:10.438Z w-11.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:11+03:00" level=warning msg="2026-09-27T15:14:11.079Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:29+03:00" level=warning msg="2026-09-27T15:14:29.567Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:29+03:00" level=warning msg="2026-09-27T15:14:29.745Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:29+03:00" level=warning msg="2026-09-27T15:14:29.747Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:14:30+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:14:30+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.01769125s while flush period is 5s. Some samples may be dropped." nts=136 output="Prometheus remote write"
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.676Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.785Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.896Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.918Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.939Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:04+03:00" level=warning msg="2026-09-27T15:15:04.977Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.115Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.196Z w-14.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.217Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.237Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.258Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.276Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.396Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.402Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.515Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:05+03:00" level=warning msg="2026-09-27T15:15:05.522Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:06+03:00" level=warning msg="2026-09-27T15:15:06.016Z w-14.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:15+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:15:15+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.027088125s while flush period is 5s. Some samples may be dropped." nts=196 output="Prometheus remote write"
+time="2026-09-27T18:15:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:22+03:00" level=warning msg="2026-09-27T15:15:22.940Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.015Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.295Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.318Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.356Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.376Z w-15.fed.local status=0 err=request timeout" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.501Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.501Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.505Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.505Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:15:23+03:00" level=warning msg="2026-09-27T15:15:23.509Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.369Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.380Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.380Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.380Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.380Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.380Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.381Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.381Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.403Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.403Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.403Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.404Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.450Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.450Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.450Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.450Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.450Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.502Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.509Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.509Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.509Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.510Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.510Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.519Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.519Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.520Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.520Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.520Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.520Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:16:05+03:00" level=warning msg="2026-09-27T15:16:05.520Z w-15.fed.local status=502 err=" source=console
+time="2026-09-27T18:17:20+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:17:20+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.042834833s while flush period is 5s. Some samples may be dropped." nts=106 output="Prometheus remote write"
+time="2026-09-27T18:17:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:9797/live\": dial tcp 127.0.0.1:9797: connect: connection reset by peer"
+time="2026-09-27T18:17:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:9797/live\": dial tcp 127.0.0.1:9797: connect: connection reset by peer"
+time="2026-09-27T18:17:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:9797/live\": read tcp 127.0.0.1:57335->127.0.0.1:9797: read: connection reset by peer"
+time="2026-09-27T18:17:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:9797/live\": dial tcp 127.0.0.1:9797: connect: connection reset by peer"
+time="2026-09-27T18:17:25+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:17:25+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.029813333s while flush period is 5s. Some samples may be dropped." nts=106 output="Prometheus remote write"
+time="2026-09-27T18:17:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:30+03:00" level=error msg="Failed to send the time series data to the endpoint" error="HTTP POST request failed: Post \"http://127.0.0.1:9090/api/v1/write\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)" output="Prometheus remote write"
+time="2026-09-27T18:17:30+03:00" level=warning msg="Successful flushed time series to remote write endpoint but it took 5.012931333s while flush period is 5s. Some samples may be dropped." nts=196 output="Prometheus remote write"
+time="2026-09-27T18:17:44+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58423->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58435->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58445->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58457->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58468->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58479->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58490->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58544->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58608->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58664->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58719->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58773->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58828->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58884->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:58947->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59003->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59014->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59112->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59167->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59243->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:17:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:17:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59307->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59364->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59423->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59480->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59556->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59610->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59674->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59730->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59789->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59850->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59906->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:59961->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60087->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60142->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60200->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60256->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60312->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60376->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60430->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60485->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60541->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60598->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60474->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:23+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60654->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:24+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60782->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:25+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60843->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:26+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60915->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:27+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:60982->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:28+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61037->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:29+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61106->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:30+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61159->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:31+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:31+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:31+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:31+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61171->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:32+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61297->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:33+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:33+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:33+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:33+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:33+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61354->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:34+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:34+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:34+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:34+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:35+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61423->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:35+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:35+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:35+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61488->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:36+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61533->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:37+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:37+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:37+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:37+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:38+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:38+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61599->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:38+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:38+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:38+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61655->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:39+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:40+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61712->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:40+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:40+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:40+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:40+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:41+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:41+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:41+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61767->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:42+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:43+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:43+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:43+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:43+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:43+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61929->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:44+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:44+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:44+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:44+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:61998->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:45+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62052->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:46+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62108->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:47+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62173->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:48+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62228->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:49+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62283->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:50+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62337->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:51+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62393->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:52+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62448->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:53+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62515->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:54+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62569->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:55+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62617->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:56+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62683->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:57+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62738->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:58+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62793->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:18:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:18:59+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62859->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:00+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62914->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:01+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:62968->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:02+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63012->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:03+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63067->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:04+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63133->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:05+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63198->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:06+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63253->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:07+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63310->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:08+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63369->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:09+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:10+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63491->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:11+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63559->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:12+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63619->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:13+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63675->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:14+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63663->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:15+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63787->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:16+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63842->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:17+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63905->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:18+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:63960->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:19+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": read tcp 127.0.0.1:64015->127.0.0.1:8080: read: connection reset by peer"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:20+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:21+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+time="2026-09-27T18:19:22+03:00" level=warning msg="Request Failed" error="Get \"http://127.0.0.1:8080/\": request timeout"
+
+workload requests: 27947 (35.8/s)
+error rate:        2.473% (691 failed)
+latency p95/p99:   1239.0 / 3146.9 ms
+latency avg/max:   321.7 / 5005.6 ms
+dropped iterations: 76
+background:        3888 requests, error rate 19.033%
+
+FAIL http_req_failed{kind:workload}: rate<0.01
+PASS http_req_duration{kind:background}: p(95)>=0
+FAIL http_req_duration{kind:workload}: p(95)<200
+PASS http_req_failed{kind:background}: rate<=1
+PASS http_reqs{kind:background}: count>=0
+PASS http_reqs{kind:workload}: count>0
+time="2026-09-27T18:20:01+03:00" level=error msg="thresholds on metrics 'http_req_duration{kind:workload}, http_req_failed{kind:workload}' have been crossed"

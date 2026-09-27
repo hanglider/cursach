@@ -198,8 +198,14 @@ def scenario1(prefix: str, window: int = 5) -> None:
     save(fig, ROOT / "analysis" / "scenario1" / f"{prefix}-availability")
 
 
+# Серии сценария 2 с оговоркой в подзаголовке (ADR 0037).
+S2_NOTES = {
+    "task8-s2": "первая серия: под netem backend убивался по liveness (ADR 0037), не приёмка",
+}
+
+
 def scenario2(prefix: str, window: int = 15) -> None:
-    modes, avoid = {}, []
+    modes, avoid, late_degraded = {}, [], 0
     for key, mode, label in (
         ("with", "meta", "meta-scheduler"),
         ("base", "naive", "наивный (round-robin)"),
@@ -216,6 +222,12 @@ def scenario2(prefix: str, window: int = 15) -> None:
             )
             if mode == "meta" and s["placement"]["first_avoid_s"] is not None:
                 avoid.append(s["placement"]["first_avoid_s"])
+            # Трафик потока в деградировавший кластер после истечения TTL (180 с) — есть ли.
+            t1 = epoch(s["fault"]["recovered_at"])
+            deg = per_second(run, "stream_degraded_requests", "stream_degraded_failed")
+            late_degraded += sum(
+                r for sec, (r, _) in deg.items() if t0 + 200 <= sec < t1
+            )
         modes[key] = (f"{label}, n={len(runs)}", series)
 
     fig, ax = plt.subplots(figsize=(10, 4.6), facecolor=SURFACE)
@@ -240,17 +252,15 @@ def scenario2(prefix: str, window: int = 15) -> None:
             top * 1.12,
             top * 1.17,
         )
-    # После TTL в cluster-b не остаётся workload'ов с трафиком ни в одном режиме: размещённые
-    # до отказа истекли, размещённые во время отказа не проходят готовность (ADR 0031).
-    event(
-        ax,
-        180,
-        "TTL 180 с: workload'ы, размещённые до отказа, истекли;\n"
-        "размещённые в cluster-b во время отказа не готовы —\n"
-        "трафика в cluster-b нет ни в одном режиме",
-        top * 0.88,
-        top * 1.0,
-    )
+    # Если после TTL в cluster-b нет трафика потока ни в одном прогоне — размещённые до
+    # отказа истекли, а размещённые во время отказа не стали готовыми, — это подписывается.
+    ttl = "TTL 180 с: workload'ы, размещённые до отказа, истекли"
+    if not late_degraded:
+        ttl += (
+            ";\nразмещённые в cluster-b во время отказа не готовы —\n"
+            "трафика в cluster-b нет ни в одном режиме"
+        )
+    event(ax, 180, ttl, top * 0.88, top * 1.0)
     ax.legend(loc="center right", frameon=False, fontsize=9, labelcolor=INK)
     fig.suptitle(
         "Сценарий 2: деградация сети — error rate потока workload'ов",
@@ -259,8 +269,11 @@ def scenario2(prefix: str, window: int = 15) -> None:
         color=INK,
         fontsize=12,
     )
+    subtitle = "50 RPS в поток (k6, клиентский ряд); линия — среднее повторов, полоса — мин…макс"
+    if prefix in S2_NOTES:
+        subtitle += f"\n{prefix} — {S2_NOTES[prefix]}"
     ax.set_title(
-        "50 RPS в поток (k6, клиентский ряд); линия — среднее повторов, полоса — мин…макс",
+        subtitle,
         loc="left",
         color=INK_2,
         fontsize=9,
@@ -272,11 +285,17 @@ def scenario2(prefix: str, window: int = 15) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--s1", default="task8-s1", help="префикс серии сценария 1")
-    ap.add_argument("--s2", default="task8-s2", help="префикс серии сценария 2")
+    ap.add_argument(
+        "--s2",
+        nargs="+",
+        default=["task8-s2c", "task8-s2"],
+        help="префиксы серий сценария 2 (ADR 0037: основная — task8-s2c)",
+    )
     args = ap.parse_args()
     plt.rcParams.update({"svg.hashsalt": "cursach", "font.family": "DejaVu Sans"})
     scenario1(args.s1)
-    scenario2(args.s2)
+    for prefix in args.s2:
+        scenario2(prefix)
 
 
 if __name__ == "__main__":

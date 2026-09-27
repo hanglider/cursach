@@ -23,7 +23,10 @@ from scoring import BASE_WEIGHTS, choice, load_decisions, parse_ts
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS = ROOT / "experiments" / "results"
 OUT = ROOT / "analysis" / "task9"
-S1, S2, S3 = "task8-s1", "task8-s2", "task8-s3"
+S1, S2, S3 = "task8-s1", "task8-s2c", "task8-s3"
+# Первая серия сценария 2: backend убивался по liveness под netem (ADR 0037) — отдельный
+# результат об усилении отказа, в приёмку H4 и H5 не входит.
+S2_AMPLIFIED = "task8-s2"
 REPEATS = (1, 2, 3)
 
 AVAILABILITY_TARGET = 0.99  # spec §1.3
@@ -335,10 +338,10 @@ def window_error_rate(run_dir: Path, t0: float, t1: float) -> float | None:
     return fail / req if req else None
 
 
-def h4() -> dict:
+def h4(prefix: str = S2) -> dict:
     rows = {}
     for mode, i in product(("meta", "naive"), REPEATS):
-        d = run(S2, mode, i)
+        d = run(prefix, mode, i)
         s = load(d / "summary.json")
         t0 = epoch(s["fault"]["injected_at"])
         gen = s["generator"]
@@ -563,8 +566,8 @@ def plot_sensitivity(r: dict) -> None:
 
 def reconcile() -> dict:
     er_diff, p95_rel, absent_ok, absent_bad = [], [], 0, 0
-    for mode, i in product(("meta", "naive"), REPEATS):
-        d = run(S2, mode, i)
+    for prefix, mode, i in product((S2, S2_AMPLIFIED), ("meta", "naive"), REPEATS):
+        d = run(prefix, mode, i)
         by = {}
         for s in series(d, "cluster_sli"):
             by[(s["metric"]["__name__"], s["metric"]["cluster"])] = s["values"]
@@ -810,41 +813,74 @@ def render(r: dict) -> str:
     out += [
         f"- нет значения в обоих: {rec['both_absent']}, только в одном: {rec['one_absent']}",
         "",
-        "## Наблюдение: хвост отказа после снятия NetworkChaos (сценарий 2)",
+        "## Сценарий 2: рестарты backend'а по liveness и хвост восстановления (ADR 0037)",
         "",
         (
-            "Фоновые 5 RPS в app.fed.local после события Recover. Разбивки фона по кластерам в k6 "
-            "нет; что сбоит cluster-b, видно по DR (режим observe): его проба app по NodePort "
-            "cluster-b снова проходит, и восстановление начинается с той же задержкой. Не входит "
-            "в гипотезы: окно H4 — сам отказ, трафика потока в cluster-b к этому моменту нет. "
-            "Причина на стенде не выяснена."
+            f"Первая серия ({S2_AMPLIFIED}) снята с пробами backend'а по умолчанию (таймаут "
+            "1 с): под netem kubelet убивал медленный, но живой backend, CrashLoopBackOff держал "
+            "его лежащим и после снятия отказа. Основная серия "
+            f"({S2}) — с таймаутами проб под netem. Backend — по ряду `up` Prometheus; хвост — "
+            "фоновые 5 RPS в app.fed.local после Recover (сбоит cluster-b: DR в observe "
+            "начинает его восстановление с той же задержкой)."
         ),
         "",
-        "| прогон | ошибок фона после Recover | последняя ошибка, с | DR: восстановление, с |",
-        "|---|---|---|---|",
+        (
+            "| прогон | backend выключен в отказе | backend снова up, с после Recover "
+            "| ошибок фона после Recover | последняя ошибка, с | DR: восстановление, с |"
+        ),
+        "|---|---|---|---|---|---|",
     ]
-    for t in r["tail"]:
-        last = "—" if t["last_error_s"] is None else t["last_error_s"]
-        dr = (
-            "—"
-            if t["dr_recovery_started_s"] is None
-            else f"{t['dr_recovery_started_s']:.0f}"
-        )
+
+    def num0(v):
+        return "—" if v is None else f"{v:.0f}"
+
+    for t in r["tail"] + r["tail_amplified"]:
         out.append(
-            f"| {t['run_id']} | {t['failed']} из {t['requests']} | {last} | {dr} |"
+            f"| {t['run_id']} | {pct(t['backend_down_share'], 0)} "
+            f"| {num0(t['backend_up_after_recover_s'])} | {t['failed']} из {t['requests']} "
+            f"| {num0(t['last_error_s'])} | {num0(t['dr_recovery_started_s'])} |"
         )
-    out.append("")
+    amp = r["h4_amplified"]
+    pairs = ", ".join(f"r{p['repeat']}: {pct(p['reduction'])}" for p in amp["pairs"])
+    out += [
+        "",
+        (
+            f"Первая серия по тем же правилам, что H4, — отдельный результат, не приёмка: ER "
+            f"{pct(amp['mean_er_fault']['meta'], 2)} против "
+            f"{pct(amp['mean_er_fault']['naive'], 2)}, снижение {pct(amp['reduction'])}; по "
+            f"парам {pairs}."
+        ),
+        "",
+    ]
     return "\n".join(out)
 
 
-def recovery_tail() -> list[dict]:
-    """Ошибки фона app.fed.local после снятия отказа в сценарии 2, по секундам k6, и начало
-    восстановления деградировавшего кластера в DR — оба от события Recover."""
+def backend_up(run_dir: Path, cluster: str, t0: float, t1: float) -> dict:
+    """Backend деградировавшего кластера по ряду `up` Prometheus: доля окна отказа, когда он
+    не отвечал на scrape, и через сколько секунд после Recover снова ответил (ADR 0037)."""
+    for s in series(run_dir, "up_test_service"):
+        m = s["metric"]
+        if m.get("cluster") != cluster or not m.get("pod", "").startswith("backend"):
+            continue
+        pts = [(float(t), v) for t, v in s["values"]]
+        fault = [v for t, v in pts if t0 <= t < t1]
+        back = next((t for t, v in pts if t >= t1 and v == "1"), None)
+        return {
+            "down_share": fault.count("0") / len(fault) if fault else None,
+            "up_after_recover_s": None if back is None else max(back - t1, 0.0),
+        }
+    return {"down_share": None, "up_after_recover_s": None}
+
+
+def recovery_tail(prefix: str = S2) -> list[dict]:
+    """Ошибки фона app.fed.local после снятия отказа в сценарии 2, по секундам k6, начало
+    восстановления деградировавшего кластера в DR и backend по ряду `up` — всё от Recover."""
     out = []
     for mode, i in product(("meta", "naive"), REPEATS):
-        d = run(S2, mode, i)
+        d = run(prefix, mode, i)
         s = load(d / "summary.json")
         t1 = epoch(s["fault"]["recovered_at"])
+        be = backend_up(d, s["cluster"], epoch(s["fault"]["injected_at"]), t1)
         started = [
             epoch(x["recovery_started_at"]) - t1
             for x in load(d / "incidents.json")
@@ -867,6 +903,8 @@ def recovery_tail() -> list[dict]:
                 "failed": fail,
                 "last_error_s": last,
                 "dr_recovery_started_s": max(started) if started else None,
+                "backend_down_share": be["down_share"],
+                "backend_up_after_recover_s": be["up_after_recover_s"],
             }
         )
     return out
@@ -880,7 +918,9 @@ def main() -> None:
         "h4": h4(),
         "h5": h5(),
         "reconcile": reconcile(),
-        "tail": recovery_tail(),
+        "tail": recovery_tail(S2),
+        "h4_amplified": h4(S2_AMPLIFIED),
+        "tail_amplified": recovery_tail(S2_AMPLIFIED),
     }
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "results.json").write_text(
