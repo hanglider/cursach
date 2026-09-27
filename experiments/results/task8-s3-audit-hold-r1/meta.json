@@ -1,0 +1,17 @@
+{
+  "run_id": "task8-s3-audit-hold-r1",
+  "scenario": "3-policy-violation",
+  "started_at": "2026-09-27T10:18:51Z",
+  "finished_at": "2026-09-27T10:19:19Z",
+  "enforcement": "audit",
+  "hold": "report",
+  "wait_s": 360,
+  "attempts": 5,
+  "certification": "pci-dss",
+  "target_cluster": "cluster-b",
+  "expected_eligible": [
+    "cluster-a"
+  ],
+  "placed_by": "workloadgen (в обход планировщика)",
+  "git_rev": "2ec0772"
+}

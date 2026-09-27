@@ -1,0 +1,5 @@
+{"ts": 1790504384.102466, "event": "placed", "workload": "pv-1", "cluster": "cluster-b", "node_port": 31901}
+{"ts": 1790504385.434751, "event": "placed", "workload": "pv-2", "cluster": "cluster-b", "node_port": 31902}
+{"ts": 1790504386.876009, "event": "placed", "workload": "pv-3", "cluster": "cluster-b", "node_port": 31903}
+{"ts": 1790504388.3329878, "event": "placed", "workload": "pv-4", "cluster": "cluster-b", "node_port": 31904}
+{"ts": 1790504389.668434, "event": "placed", "workload": "pv-5", "cluster": "cluster-b", "node_port": 31905}

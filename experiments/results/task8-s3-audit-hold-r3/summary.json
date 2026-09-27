@@ -1,0 +1,38 @@
+{
+  "enforcement": "audit",
+  "hold": "report",
+  "attempts": 5,
+  "rejected": 0,
+  "admitted": 5,
+  "other_errors": 0,
+  "violating_deployments_left": 0,
+  "recorded": 5,
+  "recorded_raw": 21,
+  "recorded_by_source": {
+    "event": 16,
+    "policyreport": 5
+  },
+  "recorded_unique_by_source": {
+    "event": 5,
+    "policyreport": 5
+  },
+  "eligible_ok": 21,
+  "detection_latency_s": {
+    "max": 30.193,
+    "median": 3.172
+  },
+  "detection_latency_by_source_s": {
+    "event": {
+      "max": 9.055,
+      "median": 2.877
+    },
+    "policyreport": {
+      "max": 30.193,
+      "median": 23.087
+    }
+  },
+  "policyreport_since_event_s": {
+    "max": 29.208,
+    "median": 23.062
+  }
+}

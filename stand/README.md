@@ -142,6 +142,7 @@ curl -s -H "Authorization: Bearer $REGISTRY_TOKEN_ADMIN" \
 make policy-run RUN=<id> ATTEMPTS=5      # сценарий 3 целиком, summary.json в результатах
 ENFORCEMENT=audit make policy-run RUN=<id>   # «до»: политики cluster-b в Audit на время прогона (ADR 0032)
 ENFORCEMENT=audit HOLD=report make policy-run RUN=<id>   # нарушители живут до записи из PolicyReport, до 6 мин (ADR 0034)
+make policy-series PREFIX=<p>            # серия: по 3 audit, enforce, audit-hold и таблица в analysis/scenario3/, ~35 мин
 kyverno test policies/tests              # политики без кластера
 ```
 

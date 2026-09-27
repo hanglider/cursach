@@ -8,7 +8,7 @@ CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series trace-run generate lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series trace-run generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -30,6 +30,9 @@ load:  ## прогон нагрузки: make load RUN=<id> [DURATION=3m] [INTER
 
 policy-run:  ## сценарий 3, нарушение политики в обход планировщика: make policy-run RUN=<id> [ATTEMPTS=5]
 	experiments/policy/run.sh $(RUN) $(ATTEMPTS)
+
+policy-series:  ## серия сценария 3, audit / enforce / audit-hold: make policy-series PREFIX=<p> [REPEATS=3]
+	experiments/policy/series.sh $(PREFIX) $(REPEATS)
 
 scheduler-mode:  ## режим планировщика: make scheduler-mode [MODE=meta|naive]
 	stand/scripts/scheduler-mode.sh $(MODE)
@@ -62,7 +65,7 @@ generate:  ## сгенерировать deepcopy и CRD планировщик�
 lint:  ## линт всего проекта
 	@for m in $(GO_MODULES); do (cd $$m && test -z "$$(gofmt -l .)" && go vet ./... && golangci-lint run ./...) || exit 1; done
 	@for p in $(PY_PROJECTS); do (cd $$p && uv run --quiet ruff check . && uv run --quiet ruff format --check .) || exit 1; done
-	@ruff check experiments/dr experiments/traces experiments/scheduler && ruff format --check experiments/dr experiments/traces experiments/scheduler
+	@ruff check experiments/dr experiments/traces experiments/scheduler experiments/policy && ruff format --check experiments/dr experiments/traces experiments/scheduler experiments/policy
 	@yamllint -f parsable .yamllint stand experiments/load experiments/policy experiments/chaos
 	@kubeconform -summary -ignore-missing-schemas -schema-location default \
 	  -schema-location '$(CRD_SCHEMAS)' \

@@ -52,6 +52,7 @@ make stand-down      # снести стенд (только вручную)
 make image           # пересобрать образы (тестовый сервис, каталог, планировщик, DR) и загрузить в кластеры
 make load RUN=<id>   # прогон нагрузки: генератор workload'ов + k6 (MODE=direct — в обход планировщика)
 make policy-run RUN=<id> [ATTEMPTS=5]  # сценарий 3: нарушения политики в обход планировщика
+make policy-series PREFIX=<p> [REPEATS=3]  # серия сценария 3: audit, enforce, audit-hold, таблица в analysis/scenario3/
 make scheduler-mode [MODE=meta|naive]  # режим планировщика на стенде
 make dr-mode [MODE=active|observe]     # режим DR Controller'а; observe — сценарий 1 «без DR» и сценарий 2
 make dr-run RUN=<id> [CLUSTER=cluster-b]  # сценарий 1: PodChaos на workloads + k6 в app.fed.local

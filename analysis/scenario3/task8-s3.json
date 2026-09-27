@@ -1,0 +1,271 @@
+{
+  "runs": [
+    {
+      "run_id": "task8-s3-audit-r1",
+      "set": "audit",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 10,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 10,
+      "latency": {
+        "max": 9.109,
+        "median": 6.366
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-audit-r2",
+      "set": "audit",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 10,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 10,
+      "latency": {
+        "max": 9.054,
+        "median": 2.982
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-audit-r3",
+      "set": "audit",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 10,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 10,
+      "latency": {
+        "max": 9.382,
+        "median": 3.347
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-enforce-r1",
+      "set": "enforce",
+      "attempts": 5,
+      "rejected": 5,
+      "admitted": 0,
+      "recorded": 5,
+      "recorded_raw": 5,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 5,
+      "latency": {
+        "max": 9.91,
+        "median": 3.635
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-enforce-r2",
+      "set": "enforce",
+      "attempts": 5,
+      "rejected": 5,
+      "admitted": 0,
+      "recorded": 5,
+      "recorded_raw": 5,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 5,
+      "latency": {
+        "max": 7.215,
+        "median": 4.686
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-enforce-r3",
+      "set": "enforce",
+      "attempts": 5,
+      "rejected": 5,
+      "admitted": 0,
+      "recorded": 5,
+      "recorded_raw": 5,
+      "unique_by_source": {
+        "event": 5
+      },
+      "eligible_ok": 5,
+      "latency": {
+        "max": 7.401,
+        "median": 4.788
+      },
+      "latency_by_source": null,
+      "policyreport_since_event": null,
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-audit-hold-r1",
+      "set": "audit-hold",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 15,
+      "unique_by_source": {
+        "policyreport": 5,
+        "event": 5
+      },
+      "eligible_ok": 15,
+      "latency": {
+        "max": 27.165,
+        "median": 5.027
+      },
+      "latency_by_source": {
+        "event": {
+          "max": 6.54,
+          "median": 3.677
+        },
+        "policyreport": {
+          "max": 27.165,
+          "median": 24.165
+        }
+      },
+      "policyreport_since_event": {
+        "max": 26.725,
+        "median": 23.862
+      },
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-audit-hold-r2",
+      "set": "audit-hold",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 23,
+      "unique_by_source": {
+        "policyreport": 5,
+        "event": 5
+      },
+      "eligible_ok": 23,
+      "latency": {
+        "max": 29.703,
+        "median": 3.296
+      },
+      "latency_by_source": {
+        "event": {
+          "max": 8.913,
+          "median": 3.022
+        },
+        "policyreport": {
+          "max": 29.703,
+          "median": 23.645
+        }
+      },
+      "policyreport_since_event": {
+        "max": 29.068,
+        "median": 23.244
+      },
+      "other_errors": 0,
+      "left": 0
+    },
+    {
+      "run_id": "task8-s3-audit-hold-r3",
+      "set": "audit-hold",
+      "attempts": 5,
+      "rejected": 0,
+      "admitted": 5,
+      "recorded": 5,
+      "recorded_raw": 21,
+      "unique_by_source": {
+        "policyreport": 5,
+        "event": 5
+      },
+      "eligible_ok": 21,
+      "latency": {
+        "max": 30.193,
+        "median": 3.172
+      },
+      "latency_by_source": {
+        "event": {
+          "max": 9.055,
+          "median": 2.877
+        },
+        "policyreport": {
+          "max": 30.193,
+          "median": 23.087
+        }
+      },
+      "policyreport_since_event": {
+        "max": 29.208,
+        "median": 23.062
+      },
+      "other_errors": 0,
+      "left": 0
+    }
+  ],
+  "sets": {
+    "enforce": {
+      "runs": 3,
+      "attempts": 15,
+      "rejected": 15,
+      "admitted": 0,
+      "recorded": 15,
+      "recorded_policyreport": 0,
+      "eligible_ok_all": true,
+      "latency_median_of_medians": 4.686,
+      "latency_max": 9.91,
+      "policyreport_since_event_median_of_medians": null
+    },
+    "audit": {
+      "runs": 3,
+      "attempts": 15,
+      "rejected": 0,
+      "admitted": 15,
+      "recorded": 15,
+      "recorded_policyreport": 0,
+      "eligible_ok_all": true,
+      "latency_median_of_medians": 3.347,
+      "latency_max": 9.382,
+      "policyreport_since_event_median_of_medians": null
+    },
+    "audit-hold": {
+      "runs": 3,
+      "attempts": 15,
+      "rejected": 0,
+      "admitted": 15,
+      "recorded": 15,
+      "recorded_policyreport": 15,
+      "eligible_ok_all": true,
+      "latency_median_of_medians": 3.296,
+      "latency_max": 30.193,
+      "policyreport_since_event_median_of_medians": 23.244
+    }
+  },
+  "target_zero_admitted_in_enforce": true
+}
