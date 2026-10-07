@@ -368,6 +368,33 @@ def generator_events(run_dir: Path) -> dict:
     return {e: dict(c) for e, c in sorted(counts.items())}
 
 
+def validity(
+    meta: dict, incidents: list, decisions: list, dropped: int, events: dict
+) -> tuple[list, list]:
+    """Признаки брака прогона и оговорки к числу (ADR 0031, п. 8)."""
+    reasons, notes = [], []
+    downs = sorted({i["cluster_id"] for i in incidents if i.get("peak_state") == "down"})
+    if downs:
+        # observe не трогает маршрут и каталог: DOWN — оговорка, не брак (ADR 0033).
+        notes.append(f"DR в observe дошёл до DOWN: {','.join(downs)} — с failover вмешался бы")
+    if any("down" in (c.get("filtered_by") or "") for d in decisions for c in d["candidates"]):
+        reasons.append("каталог отсеивал кластер как down")
+    bad = Counter(d["outcome"] for d in decisions if d["outcome"] != "placed")
+    if bad:
+        reasons.append(f"решения не placed: {dict(bad)}")
+    if dropped:
+        reasons.append(f"k6 пропустил итерации: {dropped}")
+    if not meta["fault"].get("recovered_at"):
+        # Конец окна по fault_s — оценка, не время инструмента (инвариант 7).
+        reasons.append("Chaos Mesh не сообщил Recover: окно отказа — оценка injected_at + fault_s")
+    not_ready = events.get("not_ready", {})
+    if not_ready:
+        notes.append(f"не стали готовыми (без трафика, их ошибки вне ряда): {not_ready}")
+    if events.get("not_placed"):
+        notes.append(f"планировщик не разместил вовремя: {events['not_placed']}")
+    return reasons, notes
+
+
 def main(run_dir: Path, csv_path: Path | None) -> None:
     meta = json.loads((run_dir / "meta.json").read_text())
     cluster = meta["cluster"]
@@ -390,25 +417,7 @@ def main(run_dir: Path, csv_path: Path | None) -> None:
     dropped = int(k6_metrics.get("dropped_iterations", {}).get("values", {}).get("count", 0))
     events = generator_events(run_dir)
 
-    reasons, notes = [], []
-    downs = sorted({i["cluster_id"] for i in incidents if i.get("peak_state") == "down"})
-    if downs:
-        # observe не трогает маршрут и каталог: DOWN — оговорка, не брак (ADR 0033).
-        notes.append(f"DR в observe дошёл до DOWN: {','.join(downs)} — с failover вмешался бы")
-    if any("down" in (c.get("filtered_by") or "") for d in decisions for c in d["candidates"]):
-        reasons.append("каталог отсеивал кластер как down")
-    bad = Counter(d["outcome"] for d in decisions if d["outcome"] != "placed")
-    if bad:
-        reasons.append(f"решения не placed: {dict(bad)}")
-    if dropped:
-        reasons.append(f"k6 пропустил итерации: {dropped}")
-    if not meta["fault"].get("recovered_at"):
-        notes.append("Chaos Mesh не сообщил Recover: конец окна отказа — injected_at + fault_s")
-    not_ready = events.get("not_ready", {})
-    if not_ready:
-        notes.append(f"не стали готовыми (без трафика, их ошибки вне ряда): {not_ready}")
-    if events.get("not_placed"):
-        notes.append(f"планировщик не разместил вовремя: {events['not_placed']}")
+    reasons, notes = validity(meta, incidents, decisions, dropped, events)
 
     client = {
         "stream": window_stats(stream, bounds, by_cluster=True),

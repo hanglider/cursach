@@ -161,3 +161,15 @@ def test_placement_rows_reaction(tmp_path):
     assert out["first_avoid_s"] == 25.0
     assert out["catalog_recovered_s"] == 5.0
     assert out["first_return_s"] is None
+
+
+def test_validity_missing_recover_is_defect():
+    meta = {"fault": {"injected_at": "2026-09-27T10:00:00Z", "recovered_at": None}}
+    reasons, _ = summary.validity(meta, [], [], 0, {})
+    assert any("Recover" in r for r in reasons)
+
+    meta["fault"]["recovered_at"] = "2026-09-27T10:05:00Z"
+    incidents = [{"cluster_id": "cluster-b", "peak_state": "down"}]
+    reasons, notes = summary.validity(meta, incidents, [], 0, {})
+    assert reasons == []
+    assert any("DOWN" in n for n in notes)
