@@ -282,6 +282,59 @@ DR-контроллера и цель его пробы; сценарий 1 из
 | Chaos Mesh | 2.8.4 (чарт), pause-образ `registry.k8s.io/pause:3.10` | `stand/scripts/lib.sh`, values — `stand/chaos/chaos-mesh-values.yaml` |
 | test-service | образ `federation/test-service:dev`, собирается локально | `test-service/` |
 
+## Хост на Linux и в облаке
+
+**Не проверено.** Стенд поднимался только на macOS (OrbStack, M4). Ниже —
+требования, выведенные из замера 2026-10-17, и известные отличия Linux. Повод —
+серия по числу кластеров N (`docs/open-questions.md`, раздел 8).
+
+Память по замеру 2026-10-17 (`crictl stats`, холодный стенд): кластер федерации
+≈ 1.8 GiB (под прогонами — до ≈ 2.3 GiB, kube-apiserver до 1.1 GiB), `control`
+≈ 1.7 GiB (до ≈ 2.2 GiB). Метрический стек (3 Prometheus, sidecar'ы, Querier,
+Ruler) — 0.4–0.8 GiB из этого; больше всего — kube-apiserver и Grafana.
+
+| Ресурс | Текущий стенд (N = 2) | N = 5 | Почему |
+|---|---|---|---|
+| RAM | 16 GB | **32 GB** (минимум 24) | 5 × 2.3 + 2.2 GiB control + k6 + Docker + сборка Go в `make image` ≈ 17 GiB |
+| vCPU | 8 | **16** (минимум 8) | шесть kube-apiserver + etcd, Kyverno и Chaos Mesh в каждом кластере, k6, netem |
+| Диск | ≈ 31 GB под Docker | **100 GB SSD/NVMe** | containerd узла: control 6 GB, федерация 3.1 GB на кластер; плюс образы 5 GB и кэш сборки 10 GB; итого при N = 5 ≈ 47 GB с ОС; etcd чувствителен к fsync |
+| ОС | Ubuntu 24.04 LTS, Docker CE из apt (не snap) | | |
+
+Требования к VM для замеров:
+
+- **Выделенные vCPU или гарантированная доля 100%.** Burstable-инстансы (AWS
+  t-серия, shared vCPU) душат CPU после исчерпания кредитов посреди серии — шум в
+  latency и TTD.
+- **Модуль `sch_netem`** — без него NetworkChaos сценария 2 не вносит задержку. На
+  урезанных облачных ядрах он в `linux-modules-extra-$(uname -r)`; проверка —
+  `sudo modprobe sch_netem`.
+- **inotify** — на нескольких кластерах kind без этого поды падают с «too many
+  open files»:
+
+  ```bash
+  sudo sysctl -w fs.inotify.max_user_instances=8192 fs.inotify.max_user_watches=1048576
+  ```
+
+- **Архитектура не важна:** свои образы собираются на хосте, сторонние
+  multi-arch. Серии, снятые на разных хостах, между собой не сравниваются.
+
+Безопасность: порты из таблицы «Порты на хосте» — `hostPort` без
+`listenAddress` (`stand/kind/control.yaml`), то есть слушают `0.0.0.0`. На
+облачной VM в firewall открыть только SSH, к стенду ходить через туннель:
+
+```bash
+ssh -L 8080:localhost:8080 -L 3000:localhost:3000 -L 10902:localhost:10902 \
+    -L 8000:localhost:8000 -L 16686:localhost:16686 <vm>
+```
+
+`.env` и `stand/kubeconfig/` с VM не коммитятся; `experiments/results/` забрать
+(push или rsync) до удаления VM.
+
+Известные отличия от macOS, которые придётся закрыть при первом подъёме:
+зависимости описаны только в `Brewfile`; раннеры сценариев 1 и 2 требуют
+`gdate` (`experiments/dr/run.sh`, `experiments/scheduler/run.sh`), которого на
+Linux нет; разделы выше про OrbStack (`orb config`) к Linux не относятся.
+
 ## Если что-то не так
 
 - `make stand-status` — поды, идентичность, маршруты, IP узлов.
