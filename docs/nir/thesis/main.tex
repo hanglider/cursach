@@ -1,0 +1,75 @@
+% ВКР: Исследование механизмов повышения надёжности сервиса в федерации
+% Kubernetes-кластеров. Сборка: make thesis (из корня репозитория).
+% Красным [TODO: ...] помечены места, которые нужно дописать вручную.
+\documentclass[14pt,a4paper]{extreport}
+
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage[left=30mm,right=15mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\graphicspath{{../../../analysis/}{figures/}}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*,labelindent=\parindent}
+\usepackage{caption}
+\captionsetup{labelsep=endash,font=small}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usepackage{titlesec}
+\usepackage{makecell}
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\normalfont\large\bfseries}
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+% Заголовки: «Глава 1. Название», разделы «1.1. Название».
+\titleformat{\chapter}[block]{\normalfont\large\bfseries\centering}{Глава \thechapter.}{0.5em}{}
+\titlespacing*{\chapter}{0pt}{-20pt}{14pt}
+\titleformat{\section}{\normalfont\normalsize\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection.}{0.5em}{}
+
+% Оглавление: «Глава 1. ...» и точки до номера страницы.
+\renewcommand{\cftchappresnum}{Глава }
+\renewcommand{\cftchapaftersnum}{.}
+\setlength{\cftchapnumwidth}{5.2em}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand{\cftchappagefont}{\normalfont}
+\addto\captionsrussian{%
+  \renewcommand{\contentsname}{Содержание}%
+  \renewcommand{\bibname}{Список литературы}%
+}
+
+% Раздел без номера, но в оглавлении: Введение, Постановка задачи и т. д.
+\newcommand{\unnumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+\newcommand{\todo}[1]{{\color{red}[\textbf{TODO:} #1]}}
+
+\begin{document}
+
+\input{title}
+\setcounter{page}{2} % титульный лист~--- страница 1 без номера
+
+\tableofcontents
+
+\input{sections/00-intro}
+\input{sections/01-problem}
+\input{sections/02-review}
+\input{sections/03-architecture}
+\input{sections/04-implementation}
+\input{sections/05-methodology}
+\input{sections/06-results}
+\input{sections/07-discussion}
+\input{sections/08-findings}
+\input{sections/09-conclusion}
+\input{sections/bibliography}
+\input{sections/appendix}
+
+\end{document}

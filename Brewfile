@@ -38,3 +38,6 @@ brew "coreutils"           # gtimeout: таймауты линтеров в ху
 brew "jq"                  # разбор JSON в хуках и скриптах
 brew "yq"                  # рендер манифестов из stand/clusters.yaml
 brew "poppler"             # pdftoppm: чтение PDF-отчётов НИР из репозитория
+
+# ---- Текст ВКР ----
+cask "mactex-no-gui"       # LaTeX: сборка docs/nir/thesis/ (как ВКР кафедры)

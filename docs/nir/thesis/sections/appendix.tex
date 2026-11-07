@@ -1,0 +1,52 @@
+\appendix
+\renewcommand{\thechapter}{\Asbuk{chapter}}
+\titleformat{\chapter}[block]{\normalfont\large\bfseries\centering}{Приложение \thechapter.}{0.5em}{}
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{Приложение }}
+\addtocontents{toc}{\protect\setlength{\protect\cftchapnumwidth}{8em}}
+
+\chapter{Воспроизведение экспериментов}
+
+Исходный код, конфигурация стенда, сценарии экспериментов и сырые данные
+всех прогонов находятся в репозитории \url{https://github.com/hanglider/cursach}.
+Требования к машине: docker с виртуальной машиной на 10~ГБ памяти.
+
+\begin{table}[ht]
+  \centering
+  \caption{Основные действия}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Действие & Команда & Время \\
+    \midrule
+    Развернуть стенд & \texttt{make stand-up} & около 3 мин \\
+    Серия сценария 1 & \texttt{make dr-series} & около 1.5 ч \\
+    Серия сценария 2 & \texttt{make sched-series} & 1.5--2 ч \\
+    Серия сценария 3 & \texttt{make policy-series} & около 35 мин \\
+    Анализ и графики & \texttt{make analysis}, \texttt{make plots} & минуты \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\chapter{Структура репозитория}
+
+\begin{table}[ht]
+  \centering
+  \caption{Каталоги репозитория}
+  \small
+  \begin{tabularx}{\textwidth}{@{}lX@{}}
+    \toprule
+    Каталог & Содержимое \\
+    \midrule
+    \texttt{stand/} & Развёртывание стенда: кластеры, наблюдаемость, шлюз,
+      политики \\
+    \texttt{test-service/} & Тестовый сервис, Go \\
+    \texttt{registry/} & Каталог кластеров, Python, FastAPI, PostgreSQL \\
+    \texttt{scheduler/} & Планировщик уровня федерации и наивный
+      планировщик, Go \\
+    \texttt{dr-controller/} & Контроллер аварийного восстановления, Go \\
+    \texttt{experiments/} & Сценарии отказов и нагрузки, сырые результаты \\
+    \texttt{analysis/} & Обработка результатов, графики, проверка гипотез \\
+    \texttt{docs/} & Постановка задачи, архитектура, принятые решения \\
+    \bottomrule
+  \end{tabularx}
+\end{table}

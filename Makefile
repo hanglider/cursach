@@ -8,7 +8,7 @@ CONTROLLER_GEN_VERSION := v0.22.0
 # Схемы CRD (Kyverno ClusterPolicy) для kubeconform; встроенные схемы k8s — из default.
 CRD_SCHEMAS := https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
 
-.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series plots analysis trace-run generate lint test
+.PHONY: help stand-up stand-down stand-status image load policy-run policy-series scheduler-mode dr-mode dr-run dr-series dr-check sched-run sched-series plots analysis thesis trace-run generate lint test
 
 help:  ## список целей
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -61,6 +61,10 @@ plots:  ## графики деградации и восстановления �
 analysis:  ## задача 9: гипотезы H1–H5, sensitivity, сверка каталога — analysis/task9/ (стенд не нужен)
 	uv run --no-project --quiet --python 3.13 --with matplotlib==3.11.2 python analysis/task9.py >/dev/null
 	@echo analysis/task9/results.md
+
+thesis:  ## текст ВКР: docs/nir/thesis/ → docs/nir/thesis/build/main.pdf (нужен MacTeX, см. Brewfile)
+	cd docs/nir/thesis && PATH="/Library/TeX/texbin:$$PATH" latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
+	@echo docs/nir/thesis/build/main.pdf
 
 trace-run:  ## замер трассировки: make trace-run RUN=<id> [SAMPLING=10] (DURATION=3m, ADR 0029)
 	experiments/traces/run.sh $(RUN) $(SAMPLING)

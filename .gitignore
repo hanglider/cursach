@@ -59,6 +59,22 @@ venv/
 .kind-cache/
 stand/**/generated/
 
+# ---- Примеры чужих ВКР от руководителя: только для чтения, не публикуем ----
+ВКР-*.pdf
+Отчёт_НИР_*.pdf
+
 # ---- Что НЕ игнорируем намеренно ----
 # experiments/results/ - сырые данные прогонов, основной результат НИР.
 # Коммитятся всегда, даже если крупные. См. CLAUDE.md.
+
+# ---- Сборка ВКР (make thesis) ----
+docs/nir/thesis/build/
+# вспомогательные файлы LaTeX, если сборка шла мимо build/ (LaTeX Workshop)
+docs/nir/thesis/*.aux
+docs/nir/thesis/*.log
+docs/nir/thesis/*.fls
+docs/nir/thesis/*.fdb_latexmk
+docs/nir/thesis/*.synctex.gz
+docs/nir/thesis/*.toc
+docs/nir/thesis/*.out
+docs/nir/thesis/*.pdf
