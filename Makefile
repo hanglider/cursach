@@ -62,9 +62,15 @@ analysis:  ## задача 9: гипотезы H1–H5, sensitivity, сверк�
 	uv run --no-project --quiet --python 3.13 --with matplotlib==3.11.2 python analysis/task9.py >/dev/null
 	@echo analysis/task9/results.md
 
-thesis:  ## текст ВКР: docs/nir/thesis/ → docs/nir/thesis/build/main.pdf (нужен MacTeX, см. Brewfile)
+# Копия собранной ВКР; THESIS_COPY= отключает. По умолчанию — корень iCloud Drive,
+# если он есть на машине.
+THESIS_COPY ?= $(HOME)/Library/Mobile Documents/com~apple~CloudDocs/ВКР.pdf
+
+thesis:  ## текст ВКР: docs/nir/thesis/ → docs/nir/thesis/build/main.pdf и копия в THESIS_COPY (нужен MacTeX, см. Brewfile)
 	cd docs/nir/thesis && PATH="/Library/TeX/texbin:$$PATH" latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 	@echo docs/nir/thesis/build/main.pdf
+	@if [ -n "$(THESIS_COPY)" ] && [ -d "$$(dirname "$(THESIS_COPY)")" ]; then \
+		cp docs/nir/thesis/build/main.pdf "$(THESIS_COPY)" && echo "копия: $(THESIS_COPY)"; fi
 
 trace-run:  ## замер трассировки: make trace-run RUN=<id> [SAMPLING=10] (DURATION=3m, ADR 0029)
 	experiments/traces/run.sh $(RUN) $(SAMPLING)
